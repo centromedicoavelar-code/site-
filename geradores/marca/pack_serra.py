@@ -1,8 +1,9 @@
 import pathlib, json
-from pack import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, BLACK, WHITE, canvas, SP,
+from geradores import BUILD
+from geradores.marca.pack import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, BLACK, WHITE, canvas,
                   lettering, sub, AVW)
 
-PK = SP / "pack_serra"
+PK = BUILD / "pack_serra"   # saída de render.py
 RED = "#C0392B"
 ADDR = "Rua Antônio de Mattos, 260 — Avelar"
 TAGTXT = "SAÚDE INTEGRADA PARA TODAS AS FASES DA VIDA"
@@ -128,7 +129,7 @@ selo = (f'<circle cx="150" cy="150" r="140" fill="{P}"/>'
         f'<text x="150" y="228" text-anchor="middle" style="{INT};font-weight:600;font-size:12px;letter-spacing:2.5px" fill="{S}">CLUBE · BENEFÍCIOS</text>')
 add("06_clube_cma_mais/selo_clube_cma_mais", canvas(300, 300, selo), False)
 
-print(json.dumps({"serra_base": len(ASSETS)}))
+if __name__ == "__main__": print(json.dumps({"serra_base": len(ASSETS)}))
 
 # ======================================================= 07 aplicações
 b = (f'<rect width="900" height="500" fill="{AR}"/>'
@@ -305,4 +306,4 @@ b = (f'<rect width="960" height="520" fill="{W}"/>'
      f'<text x="60" y="452" style="{INT};font-weight:400;font-size:16px" fill="{P}">Não usar fontes manuscritas. Priorizar leitura, contraste e tamanhos adequados. Montserrat e Inter são de código aberto (SIL OFL).</text>')
 add("08_pranchas_normativas/tipografia", canvas(960, 520, b), False)
 
-print(json.dumps({"serra_total": len(ASSETS)}))
+if __name__ == "__main__": print(json.dumps({"serra_total": len(ASSETS)}))

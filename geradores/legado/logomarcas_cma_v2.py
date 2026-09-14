@@ -1,5 +1,5 @@
 import pathlib
-from build import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, wm, tag, mono, svg, logos as batch1, OUT)
+from geradores.legado.logomarcas_cma_v1 import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, wm, tag, mono, svg, logos as batch1, OUT)
 
 logos = []
 
@@ -102,7 +102,7 @@ body = sym + wm(300, 115, 40) + tag(300, 190, 13)
 logos.append(("20", "Escudo do Cuidado", "Escudo arredondado com o monograma e a curva de continuidade — transmite proteção e confiança técnica. Forte em uniforme, crachá e adesivo de vidro.", svg(720, 260, body)))
 
 for n, title, desc, s in logos:
-    (OUT / f"CMA_logo_{n}_{title.replace(' ', '_')}.svg").write_text(s)
+    (OUT / f"CMA_logo_{n}_{title.replace(' ', '_')}.svg").write_text(s, encoding="utf-8")
 
 allog = batch1 + logos
 
@@ -152,5 +152,5 @@ footer{{margin-top:34px;color:var(--muted);font-size:13px;line-height:1.6;border
 
 <footer>Área de proteção mínima: metade da altura da letra C em todos os lados. Não distorcer, inclinar, trocar cores, aplicar sombra ou usar sobre fundo sem contraste. Escolha um número — ou combine o símbolo de uma com o lettering de outra — e eu fecho o kit completo: horizontal, vertical, monograma isolado, uma cor, negativa, área de proteção e arquivos finais em SVG, PNG e PDF.</footer>
 """
-(OUT / "logomarcas_cma.html").write_text(html)
+(OUT / "logomarcas_cma.html").write_text(html, encoding="utf-8")
 print("ok", len(allog))

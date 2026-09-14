@@ -1,10 +1,5 @@
 __pycache__/
 *.pyc
-geradores/_shots/
-geradores/_artifact.html
-geradores/pack/
-geradores/pack_cma/
-geradores/pack_serra/
-geradores/out/
-geradores/social/
+/build/
 .DS_Store
+Thumbs.db

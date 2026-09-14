@@ -1,8 +1,8 @@
 import base64, os, pathlib
 
-SP = pathlib.Path(__file__).parent
-FONTS = SP / "fonts/package/files"
-OUT = SP / "out"; OUT.mkdir(exist_ok=True)
+from geradores import FONTES, BUILD
+FONTS = FONTES
+OUT = BUILD / "legado"; OUT.mkdir(parents=True, exist_ok=True)
 
 P = "#165B5A"; S = "#9CB8A5"; A = "#284B63"; AR = "#F2EBDD"; W = "#FAF9F6"; T = "#C77B5B"
 
@@ -131,7 +131,7 @@ logos.append(("10", "Ícone e Avatar", "Monograma em quadrado arredondado nas tr
 
 # write individual SVGs
 for n, title, desc, s in logos:
-    (OUT / f"CMA_logo_{n}_{title.replace(' ', '_')}.svg").write_text(s)
+    (OUT / f"CMA_logo_{n}_{title.replace(' ', '_')}.svg").write_text(s, encoding="utf-8")
 
 # gallery HTML
 cards = "".join(
@@ -169,5 +169,5 @@ footer{{margin-top:34px;color:var(--muted);font-size:13px;line-height:1.6;border
 <section class="grid">{cards}</section>
 <footer>Área de proteção mínima: metade da altura da letra C em todos os lados. Não distorcer, inclinar, trocar cores, aplicar sombra ou usar sobre fundo sem contraste. Escolha um número e eu refino a opção com versões horizontal, monograma, uma cor, negativa e arquivos finais (SVG/PNG/PDF).</footer>
 """
-(OUT / "logomarcas_cma.html").write_text(html)
+(OUT / "logomarcas_cma.html").write_text(html, encoding="utf-8")
 print("ok", len(logos))

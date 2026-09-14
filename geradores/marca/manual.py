@@ -1,12 +1,12 @@
 import asyncio, pathlib, re, sys
 from playwright.async_api import async_playwright
-from pack import FONT_CSS, P, S, A, AR, W, T
+from geradores import BUILD
+from geradores.marca.pack import FONT_CSS, P, S, A, AR, W, T
 
-SP = pathlib.Path(__file__).parent
 
 def svg_of(root, rel):
     """Devolve o markup do SVG sem o bloco <defs><style> (a fonte é declarada no HTML)."""
-    s = (root / rel).read_text()
+    s = (root / rel).read_text(encoding="utf-8")
     s = re.sub(r"<defs>.*?</defs>", "", s, flags=re.S)
     s = s.replace("<svg ", '<svg preserveAspectRatio="xMidYMid meet" ', 1)
     return re.sub(r'(<svg[^>]*?)width="[\d.]+" height="[\d.]+"', r"\1", s, count=1)
@@ -166,7 +166,7 @@ ul {{ margin:0 0 3mm; padding-left:5mm; }} li {{ font-size:10pt; line-height:1.6
 """
 
 def build(key):
-    c = CFG[key]; root = SP / key
+    c = CFG[key]; root = BUILD / key
     sv = lambda rel: svg_of(root, rel)
     pg = []
 
@@ -333,10 +333,10 @@ async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
         for key in (sys.argv[1:] or ["pack", "pack_cma", "pack_serra"]):
-            root = SP / key
+            root = BUILD / key
             (root / "09_manual").mkdir(exist_ok=True)
             h = root / "09_manual" / "manual_da_marca.html"
-            h.write_text(build(key))
+            h.write_text(build(key), encoding="utf-8")
             pg = await b.new_page()
             await pg.goto(f"file://{h}")
             await pg.wait_for_timeout(1500)

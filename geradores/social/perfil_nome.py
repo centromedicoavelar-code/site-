@@ -1,10 +1,10 @@
 import asyncio, pathlib
 from playwright.async_api import async_playwright
-from pack import FONT_CSS, MONT, P, S, A, AR, W, T, WHITE, lettering, sub
-from pack_serra import serra, SERRA_W, SERRA_H
+from geradores import BUILD
+from geradores.marca.pack import FONT_CSS, MONT, P, S, A, AR, W, T, WHITE, lettering, sub
+from geradores.marca.pack_serra import serra, SERRA_W, SERRA_H
 
-SP = pathlib.Path(__file__).parent
-D = SP / "pack_serra" / "10_fotos_de_perfil"
+D = BUILD / "pack_serra" / "10_fotos_de_perfil"
 
 def nome(n=1080, bg=P, back=S, front=WHITE, sun=T, textc=WHITE, com_simbolo=True):
     """Foto de perfil quadrada com CENTRO MÉDICO + avelar por extenso."""
@@ -48,7 +48,7 @@ async def main():
                 import shutil; shutil.rmtree(d)
             d.mkdir(parents=True)
             svg = nome(1080, **kw)
-            (d / f"perfil_{base}_1080x1080.svg").write_text(svg)
+            (d / f"perfil_{base}_1080x1080.svg").write_text(svg, encoding="utf-8")
             for n in SIZES:
                 pg = await b.new_page(viewport={"width": 1080, "height": 1080}, device_scale_factor=n/1080)
                 await pg.set_content("<body style='margin:0'>" + svg + "</body>")

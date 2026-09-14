@@ -1,7 +1,8 @@
 import pathlib, json
-from pack import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, BLACK, WHITE, canvas, SP)
+from geradores import BUILD
+from geradores.marca.pack import (FONT_CSS, MONT, INT, P, S, A, AR, W, T, BLACK, WHITE, canvas)
 
-PK = SP / "pack_cma"
+PK = BUILD / "pack_cma"   # saída de render.py
 RED = "#C0392B"
 ADDR = "Rua Antônio de Mattos, 260 — Avelar"
 
@@ -296,4 +297,4 @@ b = (f'<rect width="960" height="520" fill="{W}"/>'
      f'<text x="60" y="452" style="{INT};font-weight:400;font-size:16px" fill="{P}">Não usar fontes manuscritas. Priorizar leitura, contraste e tamanhos adequados. Montserrat e Inter são de código aberto (SIL OFL).</text>')
 add("08_pranchas_normativas/tipografia", canvas(960, 520, b), False)
 
-print(json.dumps({"cma_assets": len(ASSETS)}))
+if __name__ == "__main__": print(json.dumps({"cma_assets": len(ASSETS)}))

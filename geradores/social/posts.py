@@ -1,9 +1,9 @@
 import asyncio, pathlib, shutil
 from playwright.async_api import async_playwright
-from social_common import *
+from geradores import BUILD
+from geradores.social.comum import *
 
-SP = pathlib.Path(__file__).parent
-OUT = SP / "social" / "feed"
+OUT = BUILD / "social" / "feed"
 
 ADDR_SHORT = "Rua Antônio de Mattos, 260 • Avelar"
 ADDR_FULL = "Rua Antônio de Mattos, 260 • Avelar • Paty do Alferes/RJ"

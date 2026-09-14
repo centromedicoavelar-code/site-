@@ -1,7 +1,8 @@
 import asyncio, re, pathlib, shutil
 from playwright.async_api import async_playwright
 import importlib, sys
-pack = importlib.import_module(sys.argv[1] if len(sys.argv)>1 else 'pack')
+nome = sys.argv[1] if len(sys.argv) > 1 else "pack"          # pack | pack_serra | pack_cma
+pack = importlib.import_module(nome if "." in nome else f"geradores.marca.{nome}")
 
 PK = pack.PK
 if PK.exists(): shutil.rmtree(PK)
@@ -33,7 +34,7 @@ async def main():
                 w, h = vw, vh
             else:
                 final = svg
-            out.with_suffix(".svg").write_text(final)
+            out.with_suffix(".svg").write_text(final, encoding="utf-8")
             dsf = max(1, min(8, 2400 / max(w, h)))
             await pg.set_content("<body style='margin:0;background:transparent'>" + final + "</body>")
             await pg.wait_for_timeout(260)
@@ -47,7 +48,7 @@ async def main():
                 await pg2.screenshot(path=str(out.parent / (out.name + "_fundo_claro.png")))
             await pg2.close()
         # favicons
-        ic = (PK / "05_icones_e_avatar/icone_quadrado_petroleo.svg").read_text()
+        ic = (PK / "05_icones_e_avatar/icone_quadrado_petroleo.svg").read_text(encoding="utf-8")
         for size in (32, 180, 256, 1024):
             pg3 = await b.new_page(viewport={"width": 512, "height": 512}, device_scale_factor=size/512)
             await pg3.set_content("<body style='margin:0'>" + ic + "</body>")

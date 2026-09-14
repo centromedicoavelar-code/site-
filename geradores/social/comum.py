@@ -1,5 +1,5 @@
-from pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T, WHITE, lettering, sub
-from pack_serra import serra, principal, SERRA_W, SERRA_H
+from geradores.marca.pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T, WHITE, lettering, sub
+from geradores.marca.pack_serra import serra, principal, SERRA_W, SERRA_H
 
 TAG = "SAÚDE INTEGRADA PARA TODAS AS FASES DA VIDA"
 

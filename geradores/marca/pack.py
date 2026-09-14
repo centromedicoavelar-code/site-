@@ -1,9 +1,9 @@
 import base64, pathlib, json
 
-SP = pathlib.Path(__file__).parent
-F = SP / "fonts/package/files"
-PK = SP / "pack"
-PK.mkdir(exist_ok=True)
+from geradores import FONTES, BUILD
+
+F = FONTES
+PK = BUILD / "pack"   # saída de render.py
 
 P = "#165B5A"; S = "#9CB8A5"; A = "#284B63"; AR = "#F2EBDD"; W = "#FAF9F6"; T = "#C77B5B"
 BLACK = "#1B2321"; WHITE = "#FFFFFF"
@@ -141,7 +141,7 @@ selo = (f'<circle cx="150" cy="150" r="140" fill="{P}"/>'
         f'<text x="150" y="222" text-anchor="middle" style="{INT};font-weight:600;font-size:13px;letter-spacing:2px" fill="{S}">BENEFÍCIOS</text>')
 add("06_clube_cma_mais/selo_clube_cma_mais", canvas(300, 300, selo), False)
 
-print(json.dumps({"assets": len(ASSETS)}))
+if __name__ == "__main__": print(json.dumps({"assets": len(ASSETS)}))
 
 # ======================================================= 07 aplicações
 RED = "#C0392B"
@@ -337,4 +337,4 @@ b = (f'<rect width="960" height="520" fill="{W}"/>'
      f'<text x="60" y="452" style="{INT};font-weight:400;font-size:16px" fill="{P}">Não usar fontes manuscritas. Priorizar leitura, contraste e tamanhos adequados. Montserrat e Inter são de código aberto (SIL OFL).</text>')
 add("08_pranchas_normativas/tipografia", canvas(960, 520, b), False)
 
-print(json.dumps({"assets_total": len(ASSETS)}))
+if __name__ == "__main__": print(json.dumps({"assets_total": len(ASSETS)}))

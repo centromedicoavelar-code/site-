@@ -1,14 +1,22 @@
-"""Site Centro Médico Avelar — v3 (design system + hero com a marca surgindo ao rolar)."""
+"""Gera site/index.html — site do Centro Médico Avelar (arquivo único, SPA com rotas por hash).
+
+Rode a partir da raiz do projeto: python -m geradores.site.build
+Também grava em site/: favicon.svg, site.webmanifest, robots.txt, sitemap.xml, 404.html, CNAME e .nojekyll."""
 import pathlib, json, base64
-from pack import FONT_CSS, P, S, A, AR, W, T, WHITE
-from pack_serra import serra, principal, SERRA_W, SERRA_H
+from geradores import FONTES_GEIST, SITE, BUILD
+from geradores.marca.pack import FONT_CSS, P, S, A, AR, W, T, WHITE
+from geradores.marca.pack_serra import serra, principal, icon_inner, SERRA_W, SERRA_H
 
 SP = pathlib.Path(__file__).parent
-OUT = SP.parent / "site"; OUT.mkdir(exist_ok=True)   # saída publicável: ../site
+OUT = SITE                                              # pasta publicável
+SITE_URL = "https://centromedicoavelar.com.br"          # domínio definitivo da clínica (sem barra no fim)
+DOMINIO_ATIVO = False                                   # mude para True quando o DNS estiver configurado: gera o CNAME e usa o domínio nas URLs absolutas
+URL_GITHUB = "https://centromedicoavelar-code.github.io/site-"   # endereço do GitHub Pages enquanto o domínio não está ativo
+URL_PUBLICA = SITE_URL if DOMINIO_ATIVO else URL_GITHUB  # usada em canonical, Open Graph, JSON-LD, sitemap, robots e 404
 N_FRAMES = len(list((OUT/"assets/frames").glob("f*.jpg")))
-MAPIMG = "data:image/jpeg;base64," + base64.b64encode((SP/"assets/mapa_google.jpg").read_bytes()).decode()
+MAPIMG = "data:image/jpeg;base64," + base64.b64encode((SP/"mapa_google.jpg").read_bytes()).decode()
 def b64(p): return base64.b64encode(p.read_bytes()).decode()
-GEIST = "".join(f"@font-face{{font-family:'Geist Mono';font-weight:{w};font-display:swap;src:url(data:font/woff2;base64,{b64(SP/f'fonts/geist/package/files/geist-mono-latin-{w}-normal.woff2')}) format('woff2');}}" for w in (400, 500))
+GEIST = "".join(f"@font-face{{font-family:'Geist Mono';font-weight:{w};font-display:swap;src:url(data:font/woff2;base64,{b64(FONTES_GEIST/f'geist-mono-latin-{w}-normal.woff2')}) format('woff2');}}" for w in (400, 500))
 
 LOGO = f'<svg viewBox="40 44 697 163" class="logo" aria-label="Centro Médico Avelar">{principal()}</svg>'
 LOGO_INV = f'<svg viewBox="40 44 697 163" class="logo" aria-label="Centro Médico Avelar">{principal(1.0, WHITE, S, S, WHITE, T, S)}</svg>'
@@ -52,12 +60,20 @@ I = {
 ARROW = ic(I["arrow"], 18)
 WA = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12 0C5.5 0 .2 5.3.2 11.8c0 2.1.5 4.1 1.6 5.9L0 24l6.5-1.7a11.8 11.8 0 0 0 5.5 1.4c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.3-8.4zM12 21.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.7 9.7 0 0 1 2.2 11.8C2.2 6.4 6.6 2 12 2c2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c0 5.4-4.4 9.9-9.8 9.9zm5.4-7.3c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5c.1-.2 0-.4 0-.5L8.9 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/></svg>'
 
+FOTO_ALT = {"fachada": "Fachada do Centro Médico Avelar", "atendimento": "Atendimento de enfermagem no Centro Médico Avelar", "equipe": "Equipe do Centro Médico Avelar"}
+def foto_real(kind):
+    """Se existir site/fotos/<kind>.(jpg|jpeg|png|webp), devolve a tag <img>; senão, string vazia (fica o gradiente da marca)."""
+    for ext in ("jpg", "jpeg", "png", "webp"):
+        if (OUT/"fotos"/f"{kind}.{ext}").exists():
+            lazy = "" if kind == "fachada" else ' loading="lazy"'
+            return f'<img src="fotos/{kind}.{ext}" alt="{FOTO_ALT.get(kind, "")}"{lazy}>'
+    return ""
 def photo(kind, cls="", caption=""):
     tones = {"fachada": (P, "#0f4443"), "equipe": (A, "#1b3448"), "atendimento": ("#2a6b69", P), "avelar": ("#6f8f7b", P)}
     c1, c2 = tones.get(kind, (P, A))
     cap = f'<span class="cap">{caption}</span>' if caption else ""
     return (f'<figure class="photo {cls}" data-photo="{kind}" style="--c1:{c1};--c2:{c2}">'
-            f'{serra_svg(S, "rgba(250,249,246,.92)", T, "ph-serra")}{cap}</figure>')
+            f'{serra_svg(S, "rgba(250,249,246,.92)", T, "ph-serra")}{foto_real(kind)}{cap}</figure>')
 
 def tile(icon, tone="p"):
     return f'<div class="tile {tone}">{ic(I[icon], 24)}</div>'
@@ -372,9 +388,9 @@ NAV = [("inicio","Início"),("clube","Clube CMA+"),("especialidades","Especialid
 nav_html = "".join(f'<li><a class="nav-link" href="#/{k}" data-nav="{k}">{v}</a></li>' for k,v in NAV)
 mnav_html = "".join(f'<a href="#/{k}" data-nav="{k}">{v}</a>' for k,v in NAV) + '<a href="#/cliente" data-nav="cliente">Área do cliente</a>'
 
-CSS = open(SP/"site3_css.css", encoding="utf-8").read().replace("__GRAIN__", GRAIN)
+CSS = open(SP/"site.css", encoding="utf-8").read().replace("__GRAIN__", GRAIN)
 CSS = FONT_CSS + GEIST + CSS
-JS = open(SP/"site3_js.js", encoding="utf-8").read().replace("__PAGES__", json.dumps(PAGES, ensure_ascii=False)).replace("__NFRAMES__", str(N_FRAMES))
+JS = open(SP/"site.js", encoding="utf-8").read().replace("__PAGES__", json.dumps(PAGES, ensure_ascii=False)).replace("__NFRAMES__", str(N_FRAMES))
 
 HEAD = f'''<header id="hdr"><div class="hwrap">
   <a class="brand" href="#/inicio" aria-label="Centro Médico Avelar — início">{LOGO}</a>
@@ -398,10 +414,38 @@ FOOT = f'''<footer class="grain"><div class="f-glow"></div><div class="grid-line
 <a class="wa-fab" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar." aria-label="WhatsApp">{WA}<span>Agendar pelo WhatsApp</span></a>
 <div class="toast" id="toast">{ic(I["check"],16)}<span id="toast-t"></span></div>'''
 
-LD = json.dumps({"@context":"https://schema.org","@type":"MedicalClinic","name":"Centro Médico Avelar","address":{"@type":"PostalAddress","streetAddress":"Rua Antônio de Mattos, 260","addressLocality":"Avelar, Paty do Alferes","addressRegion":"RJ","postalCode":"26950-000","addressCountry":"BR"},"medicalSpecialty":[n for n,_,_ in ESP],"url":"https://centromedicoavelar.com.br"}, ensure_ascii=False)
+LD = json.dumps({"@context":"https://schema.org","@type":"MedicalClinic","name":"Centro Médico Avelar","address":{"@type":"PostalAddress","streetAddress":"Rua Antônio de Mattos, 260","addressLocality":"Avelar, Paty do Alferes","addressRegion":"RJ","postalCode":"26950-000","addressCountry":"BR"},"medicalSpecialty":[n for n,_,_ in ESP],"url":URL_PUBLICA+"/","logo":URL_PUBLICA+"/assets/icon-512.png","image":URL_PUBLICA+"/assets/og.jpg"}, ensure_ascii=False)
 BODY = HEAD + '<main id="app"></main>' + FOOT + f'<script type="application/ld+json">{LD}</script><script>' + JS + '</script>'
-META = '<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Centro Médico Avelar</title><meta name="description" content="Centro Médico Avelar — saúde integrada para todas as fases da vida. Dez especialidades, enfermagem e eletrocardiograma em Avelar, Paty do Alferes/RJ."><meta name="theme-color" content="#165B5A">'
+DESC = "Centro Médico Avelar — saúde integrada para todas as fases da vida. Dez especialidades, enfermagem e eletrocardiograma em Avelar, Paty do Alferes/RJ."
+META = (f'<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Centro Médico Avelar</title>'
+        f'<meta name="description" content="{DESC}"><meta name="theme-color" content="{P}"><link rel="canonical" href="{URL_PUBLICA}/">'
+        '<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">'
+        '<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><link rel="manifest" href="site.webmanifest">'
+        '<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR"><meta property="og:site_name" content="Centro Médico Avelar">'
+        f'<meta property="og:title" content="Centro Médico Avelar — saúde integrada para todas as fases da vida"><meta property="og:description" content="{DESC}">'
+        f'<meta property="og:url" content="{URL_PUBLICA}/"><meta property="og:image" content="{URL_PUBLICA}/assets/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+        '<meta name="twitter:card" content="summary_large_image">')
 html = f'<!doctype html><html lang="pt-BR"><head>{META}<style>{CSS}</style></head><body>{BODY}</body></html>'
 (OUT/"index.html").write_text(html, encoding="utf-8", newline="\n")
-(SP/"_artifact.html").write_text(f"<title>Centro Médico Avelar</title><style>{CSS}</style>{BODY}", encoding="utf-8", newline="\n")  # só para pré-visualização em artifact (ignorado no git)
-print("site3 ok", len(html)//1024, "KB", N_FRAMES, "frames")
+BUILD.mkdir(exist_ok=True)
+(BUILD/"site_preview.html").write_text(f"<title>Centro Médico Avelar</title><style>{CSS}</style>{BODY}", encoding="utf-8", newline="\n")  # pré-visualização (ignorado no git)
+
+# ---------------- arquivos de publicação (GitHub Pages / hospedagem estática) ----------------
+def gravar(rel, txt): (OUT/rel).write_text(txt, encoding="utf-8", newline="\n")
+if DOMINIO_ATIVO: gravar("CNAME", SITE_URL.split("//", 1)[1] + "\n")   # domínio personalizado do GitHub Pages
+elif (OUT/"CNAME").exists(): (OUT/"CNAME").unlink()                     # sem DNS, o CNAME deixaria o site inacessível
+gravar(".nojekyll", "")                                 # Pages não deve processar com Jekyll
+gravar("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {URL_PUBLICA}/sitemap.xml\n")
+gravar("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+       f'  <url><loc>{URL_PUBLICA}/</loc></url>\n</urlset>\n')
+gravar("site.webmanifest", json.dumps({"name": "Centro Médico Avelar", "short_name": "CMA", "start_url": "./#/inicio", "display": "standalone",
+       "background_color": W, "theme_color": P, "icons": [{"src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png"},
+       {"src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, ensure_ascii=False, indent=2) + "\n")
+gravar("assets/favicon.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">'
+       f'<rect width="512" height="512" rx="118" fill="{P}"/>{icon_inner()}</svg>\n')   # PNGs: python -m geradores.site.icones
+gravar("404.html", '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+       '<title>Centro Médico Avelar</title><meta name="robots" content="noindex">'
+       f"<script>location.replace('{URL_PUBLICA}/' + (location.hash || '#/inicio'));</script>"
+       f'<meta http-equiv="refresh" content="0;url={URL_PUBLICA}/"></head><body style="font-family:system-ui;padding:24px;color:{P}">'
+       '<p>Página não encontrada. Redirecionando para o <a href="{URL_PUBLICA}/">Centro Médico Avelar</a>…</p></body></html>\n')
+print("site ok", len(html)//1024, "KB", N_FRAMES, "frames")

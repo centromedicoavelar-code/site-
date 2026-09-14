@@ -1,0 +1,61 @@
+# Publica a pasta site/ no GitHub Pages a cada push na branch main.
+# O site versionado precisa estar atualizado: o job regenera o index.html
+# e falha se o resultado for diferente do que está no repositório.
+name: Publicar site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Gerar e conferir
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerar o site
+        run: python -m geradores.site.build
+      - name: Conferir que site/ versionado está atualizado
+        run: git diff --exit-code --stat -- site/
+      - name: Instalar Playwright
+        run: |
+          pip install -r requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Testar (overflow, erros de console, capturas)
+        run: python -m geradores.site.test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: capturas
+          path: build/shots
+          retention-days: 14
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true   # ativa o GitHub Pages (origem: GitHub Actions) na primeira execução
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Publicar no GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

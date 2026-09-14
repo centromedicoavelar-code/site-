@@ -1,9 +1,9 @@
 import asyncio, base64, pathlib
 from playwright.async_api import async_playwright
-from pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T
+from geradores import BUILD
+from geradores.marca.pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T
 
-SP = pathlib.Path(__file__).parent
-D = SP / "pack_serra" / "10_fotos_de_perfil"
+D = BUILD / "pack_serra" / "10_fotos_de_perfil"
 def b64(f): return base64.b64encode(pathlib.Path(f).read_bytes()).decode()
 
 SIMB = [("01_petroleo", "petroleo", "Verde petróleo", "Recomendada — funciona em interface clara e escura"),

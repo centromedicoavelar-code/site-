@@ -1,6 +1,6 @@
 import base64, pathlib, glob
-from pack import FONT_CSS, P, S, A, AR, W, T
-SP = pathlib.Path(__file__).parent
+from geradores import BUILD
+from geradores.marca.pack import FONT_CSS, P, S, A, AR, W, T
 def b64(f): return base64.b64encode(pathlib.Path(f).read_bytes()).decode()
 
 POSTS = [("01", "Apresentação", "Nasce o Centro Médico Avelar", "post_01_apresentacao", True),
@@ -12,17 +12,17 @@ POSTS = [("01", "Apresentação", "Nasce o Centro Médico Avelar", "post_01_apre
          ("07", "Eletrocardiograma", "Eletrocardiograma no Centro Médico Avelar", "post_07_eletrocardiograma", True),
          ("08", "Clube CMA+", "Vem aí o Clube CMA+", "post_08_clube_cma_mais", False),
          ("09", "Contagem regressiva", "Dia 07 de novembro, Avelar ganha um novo centro de cuidado", "post_09_contagem_regressiva", False)]
-DEST = sorted(glob.glob(str(SP/"social/destaques/destaque_*.png")))
+DEST = sorted(glob.glob(str(BUILD/"social/destaques/destaque_*.png")))
 TIT = ["Comece aqui","Especialidades","Equipe","Agendamento","CMA+","Enfermagem","Exames","Localização","Dúvidas"]
 
 cards = "".join(
-    f'<figure><img src="data:image/png;base64,{b64(SP/"social/feed"/(f+".png"))}">'
+    f'<figure><img src="data:image/png;base64,{b64(BUILD/"social/feed"/(f+".png"))}">'
     f'<figcaption><span class="n">{n}</span><strong>{t}</strong><em>“{h}”</em>'
     + ('<small>Existe variante com área reservada para fotografia real.</small>' if foto else '')
     + '</figcaption></figure>' for n, t, h, f, foto in POSTS)
 
 fotos = "".join(
-    f'<figure><img src="data:image/png;base64,{b64(SP/"social/feed/com_area_de_foto"/(f+"_com_foto.png"))}">'
+    f'<figure><img src="data:image/png;base64,{b64(BUILD/"social/feed/com_area_de_foto"/(f+"_com_foto.png"))}">'
     f'<figcaption><span class="n">{n}</span><strong>{t}</strong></figcaption></figure>'
     for n, t, h, f, foto in POSTS if foto)
 
@@ -110,5 +110,5 @@ pequena fora da área de recorte.</p>
 </div>
 </div>
 """
-(SP/"revisao_feed.html").write_text(html)
+(BUILD/"revisao_feed.html").write_text(html, encoding="utf-8")
 print("ok", len(html)//1024, "KB")

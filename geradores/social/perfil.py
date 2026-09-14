@@ -1,10 +1,10 @@
 import asyncio, pathlib
 from playwright.async_api import async_playwright
-from pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T, WHITE
-from pack_serra import serra, SERRA_W, SERRA_H
+from geradores import BUILD
+from geradores.marca.pack import FONT_CSS, MONT, INT, P, S, A, AR, W, T, WHITE
+from geradores.marca.pack_serra import serra, SERRA_W, SERRA_H
 
-SP = pathlib.Path(__file__).parent
-OUT = SP / "pack_serra" / "10_fotos_de_perfil"
+OUT = BUILD / "pack_serra" / "10_fotos_de_perfil"
 
 # Variantes: (pasta, rótulo, fundo, colina de trás, colina da frente, sol)
 VAR = [
@@ -56,7 +56,7 @@ async def main():
                 await pg.wait_for_timeout(220)
                 await pg.screenshot(path=str(d / f"perfil_{slug[3:]}_{n}x{n}.png"))
                 await pg.close()
-            (d / f"perfil_{slug[3:]}_1080x1080.svg").write_text(foto(1080, bg, back, front, sun))
+            (d / f"perfil_{slug[3:]}_1080x1080.svg").write_text(foto(1080, bg, back, front, sun), encoding="utf-8")
         # alternativa com o nome
         d = OUT / "05_com_nome"; d.mkdir()
         for n in SIZES:
@@ -66,7 +66,7 @@ async def main():
             await pg.wait_for_timeout(220)
             await pg.screenshot(path=str(d / f"perfil_com_nome_{n}x{n}.png"))
             await pg.close()
-        (d / "perfil_com_nome_1080x1080.svg").write_text(foto(1080, P, S, WHITE, T, com_nome=True))
+        (d / "perfil_com_nome_1080x1080.svg").write_text(foto(1080, P, S, WHITE, T, com_nome=True), encoding="utf-8")
         await b.close()
     print("fotos ok")
 

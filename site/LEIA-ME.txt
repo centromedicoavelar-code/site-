@@ -1,56 +1,47 @@
 Site — Centro Médico Avelar
-Versão 3.0 (design system + marca surgindo com o scroll) — Setembro de 2026
+Setembro de 2026
 
 O QUE É
-Site completo em um único arquivo (index.html) mais a pasta assets/, com as
-abas: Início, Clube CMA+, Especialidades, Exames, Enfermagem, Unidade,
-Contato, Amigo Indica, Trabalhe Conosco, Área do Cliente (em implantação),
-Política de Privacidade e Regulamentos. Fontes (Montserrat, Inter, Geist
-Mono), logotipo, ícones e o mapa estão embutidos.
+Esta pasta é o site publicável: index.html (arquivo único, gerado — não edite à mão),
+assets/ (quadros do vídeo da marca, vídeo do Clube, ícones, imagem de compartilhamento),
+fotos/ (fotos reais), mais os arquivos de publicação: 404.html, robots.txt, sitemap.xml,
+site.webmanifest, .nojekyll e, quando o domínio estiver ativo, CNAME.
 
-O visual segue o designer_system.html: fundo branco como palco, grade
-editorial com feixes de luz (6% · 28% · 62% · 94%), mesh animado no hero,
-cartões "bento" com brilho que segue o mouse, seção escura "aurora" para o
-Clube CMA+, botão com borda em feixe, rodapé com lettering gigante.
+Abas: Início, Clube CMA+, Especialidades, Exames, Enfermagem, Unidade, Contato,
+Amigo Indica, Trabalhe Conosco, Área do Cliente (em implantação), Política de
+Privacidade e Regulamentos. Rotas por hash (#/inicio, #/clube, ...).
+
+COMO ALTERAR
+Tudo é gerado a partir de geradores/site/ (build.py, site.css, site.js). A partir da
+raiz do projeto:
+  python -m geradores.site.build     regenera este index.html e os arquivos de publicação
+  python -m geradores.site.test      capturas e verificação (build/shots)
 
 A MARCA SURGE COM O SCROLL (hero)
-Ao rolar a página inicial, o vídeo institucional é "esfregado" quadro a
-quadro: a serra, o sol e o lettering aparecem conforme o usuário desce
-(assets/frames/f001.jpg … f041.jpg, extraídos de video-institucional.mp4).
-Quando a marca termina de surgir, o logotipo entra no cabeçalho — e fica
-fixo em todas as outras páginas. Quem tem "reduzir movimento" ativado vê a
-marca já formada.
-
-Para trocar o vídeo: gere novos quadros (ex.: ffmpeg -i video.mp4 -t 3.3
--vf "fps=12,scale=1280:-1" assets/frames/f%03d.jpg) e ajuste n_frames no
-bloco CONFIGURAÇÃO do index.html.
-
-COMO PUBLICAR
-Envie index.html + assets/ + fotos/ para qualquer hospedagem estática
-(Hostinger, Locaweb, Vercel, Netlify, GitHub Pages, Cloudflare Pages).
-Não exige banco de dados.
+Ao rolar a página inicial, os quadros assets/frames/f001.jpg … f041.jpg (extraídos de
+midia/video-institucional-logo.mp4) são desenhados conforme a rolagem. Quando a marca
+termina de surgir, o logotipo entra no cabeçalho. Quem tem "reduzir movimento" ativado
+vê a marca já formada. O número de quadros é detectado automaticamente no build.
 
 FOTOS REAIS
-Espaços de fotografia: data-photo="fachada" (hero, cartão da unidade),
-"atendimento" (Enfermagem, 16:9) e "equipe" (Trabalhe Conosco, 16:9).
-Abra o index.html, procure por data-photo="fachada" e, logo depois da tag
-<figure ...>, acrescente:
-  <img src="fotos/fachada.jpg" alt="Fachada do Centro Médico Avelar">
+Salve em fotos/ com estes nomes (jpg, jpeg, png ou webp):
+  fachada.jpg       hero e cartão da unidade (vertical, 4:5)
+  atendimento.jpg   página Enfermagem (16:9)
+  equipe.jpg        página Trabalhe Conosco (16:9)
+Depois rode o build: as imagens entram automaticamente nos espaços data-photo.
+Enquanto não houver foto, aparece o gradiente da marca com a serra.
 
 O QUE PREENCHER ANTES DE PUBLICAR
-No início do <script>, o bloco "CONFIGURAÇÃO — edite aqui":
-  whatsapp, whatsapp_fmt, telefone, email, email_rh, horario, rt, dpo,
-  cnpj, endereco (já preenchido), lat/lng (opcional, recomendado),
-  instagram, facebook.
+Bloco CFG no topo de geradores/site/site.js: whatsapp, whatsapp_fmt, telefone, email,
+email_rh, horario, rt, dpo, cnpj, endereco (já preenchido), lat/lng (opcional),
+instagram, facebook. Domínio: SITE_URL e DOMINIO_ATIVO em geradores/site/build.py (o CNAME só é gerado com DOMINIO_ATIVO = True).
 
 MAPA, ROTAS E FORMULÁRIOS
-Botões Google Maps, Waze, Traçar rota, Apple Maps, Copiar endereço e
-"Ver mapa interativo" (Google embutido, sem chave de API). Os formulários
-montam a mensagem e abrem o WhatsApp (adesão, contato, indicação) ou o
-e-mail (currículo). A Área do Cliente é um esqueleto: o botão Entrar
-apenas avisa que o acesso está em implantação.
+Botões Google Maps, Waze, Traçar rota, Apple Maps, Copiar endereço e "Ver mapa
+interativo" (Google embutido, sem chave de API). Os formulários montam a mensagem e
+abrem o WhatsApp (adesão, contato, indicação) ou o e-mail (currículo). A Área do
+Cliente é um esqueleto: o botão Entrar avisa que o acesso está em implantação.
 
-CONTEÚDO A CONFIRMAR
-Regulamentos do Clube CMA+ e do Amigo Indica; horário; responsável técnico.
-O Clube CMA+ é apresentado como programa de benefícios, nunca como plano de
-saúde, conforme o manual da marca.
+COMPLIANCE
+O Clube CMA+ é apresentado como programa de benefícios, nunca como plano de saúde,
+conforme o manual da marca. Regulamentos, horário e responsável técnico a confirmar.

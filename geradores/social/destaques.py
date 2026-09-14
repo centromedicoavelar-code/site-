@@ -1,9 +1,9 @@
 import asyncio, pathlib, shutil, base64
 from playwright.async_api import async_playwright
-from social_common import *
+from geradores import BUILD
+from geradores.social.comum import *
 
-SP = pathlib.Path(__file__).parent
-OUT = SP / "social" / "destaques"
+OUT = BUILD / "social" / "destaques"
 
 # Ícones em caixa 100x100, traço uniforme 6, pontas redondas.
 IC = {
