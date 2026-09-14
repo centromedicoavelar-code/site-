@@ -11,8 +11,8 @@ SP = pathlib.Path(__file__).parent
 OUT = SITE                                              # pasta publicável
 SITE_URL = "https://centromedicoavelar.com.br"          # domínio definitivo da clínica (sem barra no fim)
 DOMINIO_ATIVO = False                                   # mude para True quando o DNS estiver configurado: gera o CNAME e usa o domínio nas URLs absolutas
-URL_GITHUB = "https://centromedicoavelar-code.github.io/site-"   # endereço do GitHub Pages enquanto o domínio não está ativo
-URL_PUBLICA = SITE_URL if DOMINIO_ATIVO else URL_GITHUB  # usada em canonical, Open Graph, JSON-LD, sitemap, robots e 404
+URL_PROVISORIA = "https://centromedicoavelar-code.github.io/site-"   # [PREENCHER] endereço do Vercel (algo.vercel.app) enquanto o domínio não está ativo
+URL_PUBLICA = SITE_URL if DOMINIO_ATIVO else URL_PROVISORIA  # usada em canonical, Open Graph, JSON-LD, sitemap e robots
 N_FRAMES = len(list((OUT/"assets/frames").glob("f*.jpg")))
 MAPIMG = "data:image/jpeg;base64," + base64.b64encode((SP/"mapa_google.jpg").read_bytes()).decode()
 def b64(p): return base64.b64encode(p.read_bytes()).decode()
@@ -445,7 +445,7 @@ gravar("assets/favicon.svg", f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="
        f'<rect width="512" height="512" rx="118" fill="{P}"/>{icon_inner()}</svg>\n')   # PNGs: python -m geradores.site.icones
 gravar("404.html", '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
        '<title>Centro Médico Avelar</title><meta name="robots" content="noindex">'
-       f"<script>location.replace('{URL_PUBLICA}/' + (location.hash || '#/inicio'));</script>"
-       f'<meta http-equiv="refresh" content="0;url={URL_PUBLICA}/"></head><body style="font-family:system-ui;padding:24px;color:{P}">'
-       '<p>Página não encontrada. Redirecionando para o <a href="{URL_PUBLICA}/">Centro Médico Avelar</a>…</p></body></html>\n')
+       "<script>location.replace('/' + (location.hash || '#/inicio'));</script>"
+       f'<meta http-equiv="refresh" content="0;url=/"></head><body style="font-family:system-ui;padding:24px;color:{P}">'
+       '<p>Página não encontrada. Redirecionando para o <a href="/">Centro Médico Avelar</a>…</p></body></html>\n')
 print("site ok", len(html)//1024, "KB", N_FRAMES, "frames")

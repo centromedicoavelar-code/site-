@@ -1,0 +1,6 @@
+# O Vercel só precisa da pasta publicável. Esconder o resto evita que ele
+# detecte o requirements.txt e trate o projeto como aplicação Python.
+*
+!site
+!site/**
+!vercel.json

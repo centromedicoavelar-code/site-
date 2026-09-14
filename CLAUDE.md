@@ -13,7 +13,8 @@ Idioma de trabalho: **português do Brasil**. Responda e escreva código/coment�
 | `social/` | Prévias do feed de lançamento do Instagram (9 posts + 9 capas de destaques) — ainda **não publicado**, aguarda revisão do Branding. |
 | `docs/` | Prompts de referência: hero com vídeo scroll-scrub e prompts por seção. |
 | `build/` | Saídas geradas (pacotes de marca, social, capturas dos testes, prévia do site). **Ignorado no git.** |
-| `.github/workflows/deploy.yml` | Publica `site/` no GitHub Pages a cada push na `main` (regenera, testa e confere que o `site/` versionado está atualizado). |
+| `vercel.json` / `.vercelignore` | Publicação no Vercel: só a pasta `site/`, sem build. Cada push na `main` gera um deploy. |
+| `.github/workflows/verificar.yml` | A cada push: regenera, confere que o `site/` versionado está atualizado e roda os testes Playwright. |
 
 ## Como trabalhar no site
 
@@ -70,7 +71,7 @@ Branco como palco; grade editorial 6% · 28% · 62% · 94% com feixes de luz (`.
 ## Pendências conhecidas
 - Preencher `CFG` (contatos, RT/CRM, DPO, CNPJ, redes, lat/lng) em `geradores/site/site.js`.
 - Domínio definitivo `centromedicoavelar.com.br` (confirmado em 14/09/2026) ainda sem DNS: `DOMINIO_ATIVO = False` em `geradores/site/build.py`. Quando o DNS estiver configurado, mudar para `True` (gera o `CNAME` e troca as URLs absolutas), rebuild e commit.
-- Publicação: repositório `github.com/centromedicoavelar-code/site-` + GitHub Pages (origem "GitHub Actions") + registros DNS do domínio (tabela no README). Qualquer hospedagem estática também serve: enviar a pasta `site/`.
+- Publicação: repositório `github.com/centromedicoavelar-code/site-` conectado ao Vercel (pasta `site/`). Domínio: adicionar no Vercel (Settings → Domains) e criar os registros DNS indicados; depois `DOMINIO_ATIVO = True`.
 - Inserir fotos reais (fachada, atendimento, equipe) em `site/fotos/`.
 - Publicar regulamentos do Clube CMA+ e do Amigo Indica em `#/regulamento`.
 - Área do Cliente: hoje é esqueleto; plano em `docs/PROMPTS_secoes_CMA.md` (Etapa 14) prevê Supabase/Auth.

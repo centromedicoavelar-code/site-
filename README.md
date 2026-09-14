@@ -63,25 +63,19 @@ e faça commit do `site/` regenerado.
 Fotos reais: salve `fachada.jpg`, `atendimento.jpg` e `equipe.jpg` em `site/fotos/` e rode o build —
 o gerador insere as imagens automaticamente nos espaços correspondentes.
 
-## Publicação (GitHub Pages)
+## Publicação (Vercel)
 
-1. Todo push na branch `main` dispara o workflow **Publicar site**, que regenera o `index.html`,
-   confere que o `site/` versionado está atualizado e publica a pasta no GitHub Pages.
-2. No repositório, em **Settings → Pages**, a origem deve ser **GitHub Actions**.
-3. Domínio próprio (`centromedicoavelar.com.br`): crie no provedor de DNS os registros abaixo; depois
-   mude `DOMINIO_ATIVO` para `True` em `geradores/site/build.py`, rode o build e faça commit (isso gera
-   o `site/CNAME`). Em **Settings → Pages → Custom domain**, informe o domínio e marque **Enforce HTTPS**
-   (disponível após a propagação, até 24 h). Enquanto isso o site fica em
-   https://centromedicoavelar-code.github.io/site-/
+O repositório está conectado ao Vercel: cada push na `main` gera um deploy de produção. O
+[`vercel.json`](vercel.json) define a pasta `site/` como saída, sem etapa de build, e o
+[`.vercelignore`](.vercelignore) esconde o resto do repositório (assim o Vercel não confunde
+o projeto com uma aplicação Python). O workflow **Verificar site** roda a cada push e falha
+se o `site/` versionado estiver desatualizado ou se os testes quebrarem.
 
-| Tipo  | Nome | Valor |
-|-------|------|-------|
-| A     | @    | 185.199.108.153 |
-| A     | @    | 185.199.109.153 |
-| A     | @    | 185.199.110.153 |
-| A     | @    | 185.199.111.153 |
-| AAAA  | @    | 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153, 2606:50c0:8003::153 |
-| CNAME | www  | centromedicoavelar-code.github.io |
+Domínio próprio (`centromedicoavelar.com.br`): em **Vercel → Settings → Domains**, adicione o
+domínio e siga os registros DNS que o Vercel indicar (normalmente `A @ 76.76.21.21` e
+`CNAME www cname.vercel-dns.com`). Depois mude `DOMINIO_ATIVO` para `True` em
+`geradores/site/build.py`, rode o build e faça commit, para que canonical, Open Graph e
+sitemap passem a usar o domínio.
 
-Qualquer outra hospedagem estática (Cloudflare Pages, Netlify, Vercel, Hostinger) também serve:
-basta enviar a pasta `site/`.
+Alternativa sem o Vercel: qualquer hospedagem estática (Cloudflare Pages, Netlify, GitHub Pages,
+Hostinger) serve, basta enviar a pasta `site/`.

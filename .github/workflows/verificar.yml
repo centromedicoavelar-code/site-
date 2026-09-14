@@ -1,26 +1,20 @@
-# Publica a pasta site/ no GitHub Pages a cada push na branch main.
-# Pré-requisito (uma vez): Settings → Pages → Source = GitHub Actions.
-# O site versionado precisa estar atualizado: o job regenera o index.html
-# e falha se o resultado for diferente do que está no repositório.
-name: Publicar site
+# Verificação contínua do site a cada push/PR: regenera o index.html, confere que o
+# site/ versionado está atualizado e roda os testes Playwright (capturas ficam como artefato).
+# A publicação é feita pelo Vercel (integração com o GitHub, pasta site/ — ver vercel.json).
+name: Verificar site
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  build:
-    name: Gerar e conferir
+  verificar:
+    name: Gerar, conferir e testar
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -43,18 +37,3 @@ jobs:
           name: capturas
           path: build/shots
           retention-days: 14
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: site
-
-  deploy:
-    name: Publicar no GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
