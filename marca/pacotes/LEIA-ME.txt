@@ -1,0 +1,7 @@
+Coloque aqui os pacotes de marca já entregues (zips):
+  Marca_avelar_serra_pacote_completo.zip  (marca adotada: avelar + serra)
+  Marca_avelar_pacote_completo.zip
+  Marca_CMA_pacote_completo.zip
+  Fotos_de_perfil_avelar_serra.zip
+  Logomarcas_CMA_20_propostas.zip
+Eles ficaram fora do zip do projeto por causa do limite de tamanho do envio.

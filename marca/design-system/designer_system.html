@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Centro Médico Avelar — Design System</title>
+<meta name="description" content="Design system do Centro Médico Avelar: tipografia, cores, componentes, ícones e animações. Base: white-medical (VITALIS) + animações Gemini + digital-architect + index.html do CMA."/>
+
+<!-- fonts (self-hosted, copiadas dos templates artools) -->
+<!-- Montserrat (display/headings — a mesma fonte do logotipo) -->
+<link href="assets/fonts/montserrat.css" rel="stylesheet"/>
+<!-- Inter (body copy) -->
+<link href="assets/fonts/inter.css" rel="stylesheet"/>
+<!-- Geist Mono (labels técnicos, captions, código) -->
+<link href="assets/fonts/geist-mono.css" rel="stylesheet"/>
+<!-- Plus Jakarta Sans (heading alternativo herdado do white-medical) -->
+<link href="assets/fonts/jakarta.css" rel="stylesheet"/>
+
+<!-- css base do white-medical: grid lines + markers, reveal-up/fade-in, scroll-reveal, beams, mobile menu, marquee mask -->
+<link rel="stylesheet" href="assets/css/white-medical-base.css"/>
+
+<!-- head-only js (Tailwind runtime, must stay in head to process utility classes before paint) -->
+<script src="assets/js/tailwind-runtime.js"></script>
+<script>
+// Tokens da marca expostos ao Tailwind (mesma paleta do index.html do CMA: --p --s --a --ar --w --t --ink --mut --line)
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Montserrat', 'Plus Jakarta Sans', 'ui-sans-serif', 'sans-serif'],
+        mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+      },
+      colors: {
+        petroleo: { 50:'#EEF5F4', 100:'#D6E7E5', 200:'#AFCFCC', 300:'#7FB0AC', 400:'#4E8A86', 500:'#2C716F', 600:'#165B5A', 700:'#124A49', 800:'#0F3B3A', 900:'#0A2A29', 950:'#061A1A' },
+        sage:     { 50:'#F3F7F4', 100:'#E3ECE6', 200:'#CBDCD1', 300:'#B3CBBB', 400:'#9CB8A5', 500:'#7FA08A', 600:'#648470', 700:'#4E6858', 800:'#3A4E42', 900:'#27342C' },
+        terracota:{ 50:'#FBF3EF', 100:'#F5E1D7', 200:'#EBC3B1', 300:'#DFA38A', 400:'#D28D6F', 500:'#C77B5B', 600:'#A96247', 700:'#874D38', 800:'#653A2B', 900:'#43271D' },
+        azul:     { 50:'#EEF3F6', 100:'#D4DFE7', 200:'#A9BFCF', 300:'#7E9FB6', 400:'#537F9D', 500:'#3A6580', 600:'#284B63', 700:'#203C4F', 800:'#182D3B', 900:'#101E28' },
+        areia:    { 50:'#FAF9F6', 100:'#F2EBDD', 200:'#E4DED2', 300:'#D3CBBA' },
+        ink: '#1C2827',
+        mut: '#5F6F6D',
+        line: '#E4DED2',
+      },
+      boxShadow: {
+        'soft': '0 20px 50px rgba(20,40,40,.10)',
+        'card': '0 30px 70px rgba(20,40,40,.18)',
+        'glow-p': '0 0 0 1px rgba(22,91,90,.15), 0 12px 40px rgba(22,91,90,.25)',
+        'glow-t': '0 0 0 1px rgba(199,123,91,.2), 0 12px 40px rgba(199,123,91,.28)',
+      },
+      animation: {
+        'float': 'float 8s ease-in-out infinite',
+        'float-slow': 'float 14s ease-in-out infinite',
+        'spin-slow': 'spin 12s linear infinite',
+        'morph': 'morph 10s ease-in-out infinite',
+        'shine': 'shine 6s linear infinite',
+        'drift': 'drift 24s ease-in-out infinite alternate',
+        'sunrise': 'sunrise 1.6s cubic-bezier(0.16,1,0.3,1) forwards',
+        'serra-up': 'serra-up 1.4s cubic-bezier(0.16,1,0.3,1) forwards',
+        'in-blur': 'animationIn 0.9s cubic-bezier(0.16,1,0.3,1) both',
+        'beam-h': 'beam-h 6s infinite',
+        'beam-v': 'beam-v 6s infinite',
+        'wave': 'wave 12s linear infinite',
+        'pulse-ring': 'pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite',
+      },
+      keyframes: {
+        float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-14px)' } },
+        morph: { '0%,100%': { borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }, '50%': { borderRadius: '30% 60% 70% 40% / 50% 60% 30% 60%' } },
+        shine: { '0%': { backgroundPosition: '200% center' }, '100%': { backgroundPosition: '-200% center' } },
+        drift: { '0%': { transform: 'translate3d(0,0,0) scale(1)' }, '100%': { transform: 'translate3d(6%, -4%, 0) scale(1.08)' } },
+        sunrise: { '0%': { transform: 'translateY(60px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+        'serra-up': { '0%': { transform: 'translateY(40px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+        wave: { '0%': { transform: 'translateX(0)' }, '100%': { transform: 'translateX(-50%)' } },
+        'pulse-ring': { '0%': { transform: 'scale(.6)', opacity: '.8' }, '100%': { transform: 'scale(2.2)', opacity: '0' } },
+      }
+    }
+  }
+}
+</script>
+<!-- Iconify icon framework (renders <span class="iconify" data-icon="..."> placeholders) -->
+<script src="assets/js/iconify.js"></script>
+<!-- Lucide icon library (renders <i data-lucide> placeholders) -->
+<script src="assets/js/lucide.js"></script>
+
+<style>
+/* =====================================================================
+   CENTRO MÉDICO AVELAR — DESIGN SYSTEM
+   Base: artools/white-medical/design-system.html (VITALIS)
+   Marca: Site_CMA/index.html (--p --s --a --ar --w --t --ink --mut --line)
+   Animações: animations-gemini (animationIn, shimmer, textSlide, flashlight, beam button),
+              animations-gemini2 (kinetic loaders, morph, draw, tooltip-box, wave dividers),
+              digital-architect (reveal/active, text-reveal-wrapper, carousel Ken Burns, parallax-img, big ghost text)
+   ===================================================================== */
+
+/* ---- 1. Tokens ---------------------------------------------------- */
+:root{
+  /* paleta oficial (index.html) */
+  --p:#165B5A;  --s:#9CB8A5;  --a:#284B63;  --ar:#F2EBDD;  --w:#FAF9F6;  --t:#C77B5B;
+  --ink:#1c2827; --mut:#5f6f6d; --line:#e4ded2; --rad:10px;
+  /* grid do white-medical — cores ajustadas para a marca */
+  --gx-1: 6%; --gx-2: 28%; --gx-3: 62%; --gx-4: 94%; --gy-1: 100px; --gy-2: 62vh; --gy-3: 94vh;
+  --grid-color: rgba(22,91,90,.07);
+  --beam-color: #165B5A;
+  /* easing (gemini2) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  /* durações */
+  --d-fast:.18s; --d-base:.3s; --d-slow:.6s; --d-reveal:1s;
+}
+html{color-scheme:light}
+body{font-family:'Inter',ui-sans-serif,system-ui,sans-serif;background:#fff;color:var(--ink);-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:'Montserrat','Plus Jakarta Sans',sans-serif}
+::selection{background:#D6E7E5;color:#0A2A29}
+.marker{background-color:var(--p)}
+.beam-h,.beam-v{--beam-color:#165B5A}
+.beam-t{--beam-color:#C77B5B}
+.beam-s{--beam-color:#9CB8A5}
+
+/* keyframes compartilhados (CSS puro — não depender do runtime Tailwind) */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes morph{0%,100%{border-radius:60% 40% 30% 70% / 60% 30% 70% 40%}50%{border-radius:30% 60% 70% 40% / 50% 60% 30% 60%}}
+@keyframes shine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes drift{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(6%,-4%,0) scale(1.08)}}
+@keyframes sunrise{0%{transform:translateY(60px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes serra-up{0%{transform:translateY(40px);opacity:0}100%{transform:translateY(0);opacity:1}}
+@keyframes wave{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes pulse-ring{0%{transform:scale(.6);opacity:.8}100%{transform:scale(2.2);opacity:0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shake{10%,90%{transform:translate3d(-1px,0,0)}20%,80%{transform:translate3d(2px,0,0)}30%,50%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}
+.animate-float{animation:float 8s ease-in-out infinite}.animate-float-slow{animation:float 14s ease-in-out infinite}.animate-spin-slow{animation:spin 12s linear infinite}.animate-morph{animation:morph 10s ease-in-out infinite}.animate-drift{animation:drift 24s ease-in-out infinite alternate}.animate-pulse-ring{animation:pulse-ring 2.4s cubic-bezier(0.16,1,0.3,1) infinite}
+
+/* ---- 2. Tipografia utilitária -------------------------------------- */
+.font-montserrat{font-family:'Montserrat',sans-serif!important}
+.font-jakarta{font-family:'Plus Jakarta Sans',sans-serif!important}
+.font-geist-mono{font-family:'Geist Mono',monospace!important}
+.eyebrow{font-family:'Inter';font-weight:600;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--t);margin:0 0 20px;display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:2px;background:var(--t);transform-origin:left;animation:eyebrow-line 1s var(--ease-out) both}
+.eyebrow.light{color:var(--s)} .eyebrow.light::before{background:var(--s)}
+@keyframes eyebrow-line{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.lead{font-size:clamp(18px,1.5vw,21px);color:var(--mut);max-width:640px;line-height:1.55;font-weight:300}
+.lead.light{color:var(--s)}
+.small{font-size:14px;color:var(--mut)}
+.note{font-size:14.5px;color:var(--mut);border-left:2px solid var(--t);padding:6px 0 6px 16px;margin:22px 0}
+
+/* lettering transparente (white-medical: text-transparent bg-clip-text) — versões da marca */
+.text-shine{display:inline-block;
+  background:linear-gradient(90deg,#165B5A 0%,#4E8A86 30%,#9CB8A5 50%,#4E8A86 70%,#165B5A 100%);
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 6s linear infinite;
+}
+.text-shine-warm{
+  background:linear-gradient(90deg,#C77B5B 0%,#DFA38A 40%,#F2EBDD 55%,#C77B5B 100%);
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 7s linear infinite;
+}
+.text-ghost{color:transparent;-webkit-text-stroke:1px rgba(22,91,90,.28)}
+.text-ghost-soft{color:transparent;-webkit-text-stroke:1px rgba(22,91,90,.14)}
+.text-ghost-light{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.35)}
+.text-serra{ /* texto como janela para a imagem da serra */
+  background:url("assets/brand/simbolo-serra.jpg") center/cover no-repeat;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+/* janela de vídeo através das letras: fundo branco + texto preto + mix-blend screen (o preto vira transparente) */
+.text-window{background:#fff;color:#000;mix-blend-mode:screen;font-family:'Montserrat';font-weight:800;letter-spacing:-.05em;line-height:.85}
+
+/* text-reveal (digital-architect) */
+.text-reveal-wrapper{overflow:hidden;display:inline-block;vertical-align:bottom}
+.text-reveal-content{transform:translateY(110%);opacity:0;transition:transform 1.2s var(--ease-out),opacity 1.2s ease;display:block}
+.reveal-active .text-reveal-content{transform:translateY(0);opacity:1}
+/* reveal genérico (digital-architect .reveal/.active + index.html .reveal/.in) */
+.reveal{opacity:0;transform:translateY(2rem);transition:all 1s var(--ease-out)}
+.reveal.active,.reveal.in{opacity:1;transform:translateY(0)}
+.delay-700{animation-delay:.7s;transition-delay:.7s}
+.delay-1000{animation-delay:1s;transition-delay:1s}
+/* text-clip-anim letra por letra (animations-gemini) */
+@keyframes textSlide{0%{transform:translateY(110%);opacity:0}100%{transform:translateY(0);opacity:1}}
+.text-clip-anim{overflow:hidden;display:inline-block}
+.text-clip-anim span{display:inline-block;animation:textSlide .9s var(--ease-out) forwards;opacity:0}
+/* animationIn com blur (animations-gemini) */
+@keyframes animationIn{0%{opacity:0;transform:translateY(30px);filter:blur(10px)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+.animate-on-scroll{animation-play-state:paused!important}
+.animate-on-scroll.animate{animation-play-state:running!important}
+.anim-in{animation:animationIn .9s var(--ease-out) both}
+
+/* ---- 3. Backgrounds animados --------------------------------------- */
+/* grain (index.html .grain / .photo::after) */
+.grain{position:relative}
+.grain::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");opacity:.12;mix-blend-mode:soft-light;pointer-events:none;z-index:1}
+/* blobs ambientes (white-medical ambient-background) com deriva */
+.ds-blob{position:absolute;border-radius:9999px;filter:blur(90px);opacity:.55;will-change:transform;animation:drift 26s ease-in-out infinite alternate}
+.ds-blob.b2{animation-duration:34s;animation-direction:alternate-reverse}
+.ds-blob.b3{animation-duration:40s}
+/* dot grid que respira */
+.dots-bg{background-image:radial-gradient(rgba(22,91,90,.14) 1px,transparent 1.2px);background-size:22px 22px;animation:dots-move 30s linear infinite}
+@keyframes dots-move{to{background-position:220px 220px}}
+/* mesh gradient animado (fundo claro) */
+.mesh-bg{background:
+  radial-gradient(60% 50% at 10% 10%,rgba(156,184,165,.35),transparent 60%),
+  radial-gradient(50% 45% at 90% 20%,rgba(199,123,91,.16),transparent 60%),
+  radial-gradient(60% 60% at 60% 100%,rgba(40,75,99,.14),transparent 60%),#fff;
+  background-size:200% 200%;animation:mesh-move 18s ease-in-out infinite alternate}
+@keyframes mesh-move{0%{background-position:0% 0%}100%{background-position:100% 100%}}
+/* aurora (seção escura) */
+.aurora{background:#0F3B3A;position:relative;overflow:hidden}
+.aurora::before,.aurora::after{content:"";position:absolute;inset:-20%;pointer-events:none}
+.aurora::before{background:conic-gradient(from 180deg at 50% 50%,#165B5A,#284B63,#9CB8A5 40%,#165B5A 60%,#C77B5B 80%,#165B5A);filter:blur(120px);opacity:.45;animation:spin 40s linear infinite}
+.aurora::after{background:radial-gradient(40% 40% at 70% 30%,rgba(199,123,91,.35),transparent 70%);animation:drift 20s ease-in-out infinite alternate}
+/* serra parallax (silhuetas em camadas) */
+.serra-layer{position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;pointer-events:none}
+/* onda infinita (divisor animado) */
+.wave-track{display:flex;width:200%;animation:wave 14s linear infinite}
+.wave-track svg{width:50%;height:100%;flex:none}
+/* linha de "pulso" (ECG suave) */
+.ecg{stroke-dasharray:1200;stroke-dashoffset:1200;animation:ecg-draw 4s var(--ease-out) infinite}
+@keyframes ecg-draw{0%{stroke-dashoffset:1200;opacity:0}10%{opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+
+/* ---- 4. Logo animada (storyboard: opening → emergence → settling → presence) ---- */
+.logo-anim .lg-sun{transform-box:fill-box;transform-origin:center;opacity:0;animation:sunrise 1.6s var(--ease-out) .35s forwards}
+.logo-anim .lg-back{opacity:0;animation:serra-up 1.3s var(--ease-out) .15s forwards}
+.logo-anim .lg-front{opacity:0;animation:serra-up 1.3s var(--ease-out) .3s forwards}
+.logo-anim .lg-cm{opacity:0;animation:animationIn 1s var(--ease-out) .9s forwards}
+.logo-anim .lg-word{clip-path:inset(0 100% 0 0);animation:clip-x 1.4s var(--ease-out) 1s forwards}
+.logo-anim .lg-wave{stroke-dasharray:380;stroke-dashoffset:380;animation:draw-wave 1.2s var(--ease-out) 1.9s forwards}
+.logo-anim .lg-tag{opacity:0;animation:animationIn .9s var(--ease-out) 2.4s forwards}
+@keyframes clip-x{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes draw-wave{to{stroke-dashoffset:0}}
+.logo-breathe{animation:breathe 6s ease-in-out 3.2s infinite}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.logo-glow{position:absolute;inset:10%;border-radius:9999px;background:radial-gradient(closest-side,rgba(156,184,165,.45),rgba(199,123,91,.18) 50%,transparent 75%);filter:blur(30px);opacity:0;animation:fade-in 2s ease 1s forwards,breathe 6s ease-in-out 3s infinite}
+
+/* ---- 5. Botões ---------------------------------------------------- */
+.btn{display:inline-flex;align-items:center;gap:12px;font-family:'Montserrat';font-weight:700;font-size:15px;padding:16px 24px;border-radius:var(--rad);background:var(--p);color:#fff;border:1.5px solid var(--p);transition:transform var(--d-fast) var(--ease-soft),background var(--d-fast),box-shadow var(--d-base),color var(--d-fast);position:relative;overflow:hidden;cursor:pointer;line-height:1}
+.btn:hover{background:#0f4746;transform:translateY(-1px);box-shadow:0 12px 30px rgba(22,91,90,.28)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn svg,.btn .iconify{transition:transform var(--d-fast)} .btn:hover svg,.btn:hover .iconify{transform:translateX(4px)}
+.btn.inv{background:#fff;color:var(--p);border-color:#fff}
+.btn.ghost{background:transparent;color:var(--p)} .btn.ghost:hover{background:rgba(22,91,90,.06);box-shadow:none}
+.btn.terra{background:var(--t);border-color:var(--t)} .btn.terra:hover{background:#A96247;box-shadow:0 12px 30px rgba(199,123,91,.32)}
+.btn.sm{padding:12px 18px;font-size:14px} .btn.lg{padding:20px 32px;font-size:16px}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.45;pointer-events:none;box-shadow:none;transform:none}
+.btn:focus-visible{outline:2px solid var(--t);outline-offset:3px}
+/* shimmer sweep (animations-gemini) */
+@keyframes shimmer{from{transform:translateX(-100%) skewX(-15deg)}to{transform:translateX(200%) skewX(-15deg)}}
+.btn-shimmer::after{content:"";position:absolute;top:0;left:0;height:100%;width:60%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.28),transparent);transform:translateX(-100%) skewX(-15deg);pointer-events:none}
+.btn-shimmer:hover::after{animation:shimmer 1.4s infinite}
+/* beam button: borda cônica girando (animations-gemini slide 3) */
+.btn-beam{position:relative;display:inline-flex;border-radius:9999px;padding:1px;overflow:hidden;isolation:isolate}
+.btn-beam::before{content:"";position:absolute;inset:-1000%;background:conic-gradient(from 0deg,transparent 0 300deg,#C77B5B 330deg,#fff 345deg,transparent 360deg);animation:spin 2.4s linear infinite;z-index:-1}
+.btn-beam>span{display:inline-flex;align-items:center;gap:14px;border-radius:9999px;background:var(--p);color:#fff;padding:16px 28px;font-family:'Montserrat';font-weight:700;font-size:15px;position:relative;overflow:hidden}
+.btn-beam:hover>span{background:#0f4746}
+/* magnetic pill (white-medical "Encontrar especialista") */
+.pill-btn{display:inline-flex;align-items:center;gap:12px;padding:8px 8px 8px 24px;background:#fff;border:1px solid var(--line);border-radius:9999px;box-shadow:0 1px 2px rgba(0,0,0,.04);transition:all var(--d-base) var(--ease-out);font-weight:500;font-size:14px;color:#334155;cursor:pointer}
+.pill-btn:hover{background:var(--w);border-color:#d3cbba;box-shadow:0 10px 30px rgba(20,40,40,.10)}
+.pill-btn .disc{width:36px;height:36px;border-radius:9999px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:all var(--d-base)}
+.pill-btn:hover .disc{background:var(--p);color:#fff;transform:rotate(-45deg)}
+/* link underline (index.html .lnk) */
+.lnk{font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--p);position:relative;padding-bottom:3px;display:inline-block}
+.lnk::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:2px;background:var(--t);transform:scaleX(.35);transform-origin:left;transition:.25s var(--ease-out)} .lnk:hover::after{transform:scaleX(1)}
+/* loading spinner */
+.spinner{width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin 1s linear infinite}
+/* ripple */
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.35);animation:ripple .6s linear;pointer-events:none}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+
+/* ---- 6. Inputs (index.html .uf) ------------------------------------ */
+.uf label{display:block;margin-top:18px}
+.uf label>span{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:600;margin-bottom:6px;transition:color var(--d-fast)}
+.uf input,.uf select,.uf textarea{width:100%;border:0;border-bottom:1.5px solid var(--line);background:transparent;padding:10px 0;font:inherit;font-size:16px;color:var(--ink);border-radius:0;transition:border-color var(--d-base)}
+.uf input:focus,.uf select:focus,.uf textarea:focus{outline:0;border-bottom-color:var(--p)}
+.uf label:focus-within>span{color:var(--p)}
+.uf .line-anim{position:relative} .uf .line-anim::after{content:"";position:absolute;left:0;bottom:0;height:1.5px;width:100%;background:var(--p);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--ease-out)} .uf .line-anim:focus-within::after{transform:scaleX(1)}
+.uf .chk{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--mut);margin-top:22px;line-height:1.5} .uf .chk input{width:auto;margin-top:3px;flex:none;accent-color:var(--p)} .uf .chk a{color:var(--p);text-decoration:underline}
+.uf .err input{border-bottom-color:#B4483A} .uf .err>span{color:#B4483A} .uf .err .help{color:#B4483A}
+.uf .ok input{border-bottom-color:#2C716F}
+.uf .help{font-size:12px;color:var(--mut);margin-top:6px}
+/* boxed input (white-medical/gemini2) */
+.input-box{width:100%;background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px 12px 42px;font-size:14px;color:var(--ink);transition:all var(--d-base);outline:none}
+.input-box:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(22,91,90,.12)}
+.input-box:disabled{background:var(--w);color:#9aa5a3;cursor:not-allowed}
+/* checkbox / toggle (gemini2 peer pattern) */
+.chk-box{width:22px;height:22px;border:1.5px solid #b9b3a6;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all var(--d-base) var(--ease-elastic);background:#fff}
+.chk-box svg{transform:scale(0);transition:transform .25s var(--ease-elastic);color:#fff}
+input:checked~.chk-box{background:var(--p);border-color:var(--p)} input:checked~.chk-box svg{transform:scale(1)}
+input:focus-visible~.chk-box{box-shadow:0 0 0 4px rgba(22,91,90,.15)}
+.toggle{width:46px;height:26px;border-radius:9999px;background:#d8d2c4;position:relative;transition:background var(--d-base)}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.2);transition:transform .35s var(--ease-elastic)}
+input:checked~.toggle{background:var(--p)} input:checked~.toggle::after{transform:translateX(20px)}
+.radio-dot{width:20px;height:20px;border:1.5px solid #b9b3a6;border-radius:50%;display:grid;place-items:center;transition:border-color var(--d-base)}
+.radio-dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--p);transform:scale(0);transition:transform .25s var(--ease-elastic)}
+input:checked~.radio-dot{border-color:var(--p)} input:checked~.radio-dot::after{transform:scale(1)}
+/* range */
+.range{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--p) var(--val,40%),#e4ded2 var(--val,40%))}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--p);box-shadow:0 2px 8px rgba(22,91,90,.3);cursor:pointer;transition:transform .2s var(--ease-elastic)} .range::-webkit-slider-thumb:hover{transform:scale(1.15)}
+
+/* ---- 7. Cards ------------------------------------------------------- */
+/* bento (white-medical) — glow que segue o mouse via --mouse-x/--mouse-y */
+.bento-card{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.55);backdrop-filter:blur(6px);padding:32px;transition:all var(--d-base) var(--ease-out);box-shadow:0 1px 2px rgba(0,0,0,.03)}
+.bento-card:hover{background:#fff;border-color:#c9c1b0;box-shadow:0 20px 50px rgba(20,40,40,.10);transform:translateY(-2px)}
+.bento-card .glow{pointer-events:none;position:absolute;inset:-1px;opacity:0;transition:opacity var(--d-base);background:radial-gradient(420px circle at var(--mouse-x) var(--mouse-y),rgba(22,91,90,.07),transparent 40%);z-index:0}
+.bento-card:hover .glow{opacity:1}
+/* flashlight (animations-gemini) — versão clara */
+.flashlight-card{position:relative;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.flashlight-card::before{content:"";position:absolute;inset:0;background:radial-gradient(500px circle at var(--mouse-x) var(--mouse-y),rgba(156,184,165,.35),transparent 40%);opacity:0;transition:opacity .5s;pointer-events:none;z-index:1}
+.flashlight-card:hover::before{opacity:1}
+/* border trace: borda que "acende" com conic gradient seguindo o mouse */
+.trace-card{position:relative;border-radius:8px;background:#fff;isolation:isolate}
+.trace-card::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:radial-gradient(260px circle at var(--mouse-x) var(--mouse-y),#C77B5B,rgba(22,91,90,.15) 45%,var(--line) 70%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:-1;transition:opacity .4s}
+/* glass */
+.glass-panel{background:rgba(255,255,255,.62);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.7);box-shadow:0 10px 40px rgba(20,40,40,.08)}
+.glass-dark{background:rgba(10,42,41,.55);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12)}
+/* photo card (index.html .photo) */
+.photo{position:relative;margin:0;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#284B63,#165B5A);aspect-ratio:4/5;isolation:isolate}
+.photo.wide{aspect-ratio:16/9}
+.photo::after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");opacity:.18;mix-blend-mode:soft-light;pointer-events:none}
+.photo .ph-serra{position:absolute;left:-12%;right:-12%;bottom:-6%;width:124%;height:auto;opacity:.95}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease-out)}
+.photo:hover img{transform:scale(1.05)}
+.photo .cap{position:absolute;left:18px;top:16px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);font-weight:600;z-index:2}
+.chip{position:absolute;left:-18px;bottom:36px;background:#fff;border-radius:var(--rad);padding:14px 18px;box-shadow:0 20px 50px rgba(20,40,40,.18);font-family:'Montserrat';font-weight:800;font-size:22px;color:var(--p);letter-spacing:-.01em;z-index:3}
+.chip b{display:block;font-family:'Inter';font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--t);margin-bottom:2px}
+/* carousel Ken Burns (digital-architect) */
+.carousel-slide{position:absolute;inset:0;transition:opacity 1.5s ease-in-out;opacity:0;overflow:hidden}
+.carousel-slide.active{opacity:1}
+.carousel-slide img{transform:scale(1);transition:transform 10s ease-out;width:100%;height:100%;object-fit:cover}
+.carousel-slide.active img{transform:scale(1.1)}
+/* cartão do clube (index.html .ccard) */
+.ccard{width:min(440px,100%);aspect-ratio:1.6;border-radius:18px;background:linear-gradient(135deg,#2e5a72,var(--a) 60%,#1e3a4d);box-shadow:0 40px 80px rgba(0,0,0,.35);padding:26px 28px;display:flex;flex-direction:column;justify-content:space-between;transform:rotate(-6deg) rotateY(-8deg);position:relative;overflow:hidden;transition:transform .8s var(--ease-out)}
+.ccard:hover{transform:rotate(-2deg) rotateY(0deg) translateY(-6px)}
+.ccard::after{content:"";position:absolute;left:-30%;right:-30%;top:52%;height:6px;background:rgba(156,184,165,.45);transform:rotate(-8deg)}
+.ccard::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.14) 45%,transparent 60%);transform:translateX(-100%);transition:transform 1.2s var(--ease-out)} .ccard:hover::before{transform:translateX(100%)}
+/* stat number com sublinhado que cresce (white-medical) */
+.stat .bar{height:2px;width:48px;background:var(--line);margin:8px 0 12px;transition:all .7s var(--ease-out)}
+.stat:hover .bar{width:100%;background:var(--t)}
+.stat:hover .num{color:var(--p)}
+
+/* ---- 8. Navbar / menu (white-medical) ------------------------------ */
+.nav-link{position:relative;font-size:14px;font-weight:500;color:var(--mut);transition:color var(--d-fast)}
+.nav-link::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:100%;background:var(--t);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out)}
+.nav-link:hover,.nav-link.on{color:var(--ink)} .nav-link:hover::after,.nav-link.on::after{transform:scaleX(1)}
+/* ---- 9. Badges / tooltips / modal / toast --------------------------- */
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:9999px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border:1px solid transparent;line-height:1}
+.badge-p{background:#EEF5F4;border-color:#D6E7E5;color:#124A49}
+.badge-s{background:#F3F7F4;border-color:#CBDCD1;color:#4E6858}
+.badge-t{background:#FBF3EF;border-color:#EBC3B1;color:#874D38}
+.badge-a{background:#EEF3F6;border-color:#D4DFE7;color:#203C4F}
+.badge-dark{background:var(--ink);color:#fff}
+.badge-outline{background:transparent;border-color:var(--line);color:var(--mut)}
+.badge-ok{background:#ECFDF5;border-color:#A7F3D0;color:#065F46}
+.badge-warn{background:#FFFBEB;border-color:#FDE68A;color:#92400E}
+.badge-err{background:#FEF2F2;border-color:#FECACA;color:#991B1B}
+.badge-info{background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF}
+/* tooltip (gemini2 .tooltip-box) */
+.tip{position:relative;display:inline-flex}
+.tooltip-box{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translate(-50%,10px) scale(.95);opacity:0;transition:all .3s var(--ease-elastic);pointer-events:none;white-space:nowrap;z-index:40}
+.tooltip-box>div{background:var(--ink);color:#fff;padding:7px 12px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.tooltip-box>div::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--ink)}
+.tip:hover .tooltip-box,.tip:focus-within .tooltip-box{opacity:1;transform:translate(-50%,0) scale(1)}
+.tooltip-box.right{bottom:auto;left:calc(100% + 10px);top:50%;transform:translate(-10px,-50%) scale(.95)} .tip:hover .tooltip-box.right{transform:translate(0,-50%) scale(1)}
+.tooltip-box.right>div::after{top:50%;left:auto;right:100%;transform:translateY(-50%);border-color:transparent var(--ink) transparent transparent}
+.tooltip-box.light>div{background:#fff;color:var(--ink);border:1px solid var(--line)} .tooltip-box.light>div::after{border-top-color:#fff}
+/* modal */
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .35s ease}
+.modal .backdrop{position:absolute;inset:0;background:rgba(28,40,39,.45);backdrop-filter:blur(8px)}
+.modal .dialog{position:relative;width:min(560px,100%);background:#fff;border-radius:16px;box-shadow:0 40px 90px rgba(10,42,41,.35);transform:translateY(24px) scale(.96);transition:transform .5s var(--ease-out);overflow:hidden}
+.modal.open{opacity:1;pointer-events:auto} .modal.open .dialog{transform:translateY(0) scale(1)}
+/* toast (index.html) */
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:var(--a);color:#fff;padding:12px 18px;border-radius:10px;font-size:14px;z-index:70;opacity:0;pointer-events:none;transition:all .4s var(--ease-out);display:flex;align-items:center;gap:10px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+/* whatsapp fab (index.html) */
+.wa-fab{position:fixed;right:22px;bottom:22px;z-index:60;display:flex;align-items:center;gap:10px;background:#25D366;color:#fff;padding:12px 16px 12px 14px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.22);font-family:'Montserrat';font-weight:700;font-size:14px;transition:transform .3s var(--ease-elastic)}
+.wa-fab:hover{transform:translateY(-3px) scale(1.03)}
+.wa-fab::before{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid #25D366;animation:pulse-ring 2.4s var(--ease-out) infinite}
+/* faq (index.html) */
+.faq{border-top:1px solid var(--line)} .faq:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;font-family:'Montserrat';font-weight:700;font-size:18px;color:var(--p)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary span{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--p);position:relative;flex:none;transition:.3s var(--ease-out)}
+.faq summary span::before,.faq summary span::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:1.5px;background:var(--p);transform:translate(-50%,-50%);transition:.3s} .faq summary span::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq[open] summary span{background:var(--p);transform:rotate(180deg)} .faq[open] summary span::before,.faq[open] summary span::after{background:#fff} .faq[open] summary span::after{transform:translate(-50%,-50%)}
+.faq p{color:var(--mut);margin:0 0 20px;max-width:640px;animation:animationIn .6s var(--ease-out)}
+/* marquee (index.html .marquee/.track) */
+.track{display:flex;gap:56px;white-space:nowrap;animation:mq 38s linear infinite;font-family:'Montserrat';font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;width:max-content}
+.track span::before{content:"•";color:var(--t);margin-right:56px}
+@keyframes mq{to{transform:translateX(-50%)}}
+/* tabs */
+.tab{padding:8px 14px;border-radius:9999px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);transition:all .3s var(--ease-out)}
+.tab.on{background:var(--ink);color:#fff}
+/* progress / skeleton */
+.skeleton{background:linear-gradient(90deg,#F2EBDD 25%,#faf6ee 50%,#F2EBDD 75%);background-size:200% 100%;animation:skel 1.4s infinite;border-radius:6px}
+@keyframes skel{to{background-position:-200% 0}}
+
+/* ---- 10. Design-system chrome (docs) -------------------------------- */
+.ds-section{position:relative;overflow:hidden}
+.ds-label{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.spec{font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--mut);line-height:1.7}
+.spec b{color:var(--ink);font-weight:500}
+.spec-table{width:100%;border-collapse:collapse;font-size:13px}
+.spec-table th{text-align:left;font-family:'Geist Mono';font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:500;padding:12px 14px;border-bottom:1px solid var(--line);background:rgba(250,249,246,.7)}
+.spec-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:middle;color:var(--ink)}
+.spec-table tr:hover td{background:rgba(250,249,246,.9)}
+.swatch{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff;cursor:pointer;transition:transform .4s var(--ease-out),box-shadow .4s}
+.swatch:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,40,40,.14)}
+.swatch .sw{height:110px;position:relative;overflow:hidden}
+.swatch .sw::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.25) 50%,transparent 60%);transform:translateX(-100%);transition:transform .9s var(--ease-out)}
+.swatch:hover .sw::after{transform:translateX(100%)}
+.kf-tile{position:relative;border:1px solid var(--line);border-radius:10px;background:#fff;height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.kf-tile:hover{border-color:#c9c1b0;box-shadow:0 12px 30px rgba(20,40,40,.08)}
+.kf-tile .label{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-family:'Geist Mono';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.code{font-family:'Geist Mono',monospace;font-size:12px;background:#0F3B3A;color:#CBDCD1;border-radius:8px;padding:14px 16px;overflow-x:auto;line-height:1.6}
+.code .k{color:#DFA38A} .code .c{color:#7FB0AC}
+.hidden-menu{display:flex}
+/* acessibilidade: reduz movimento */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  .scroll-reveal,.reveal,.animate-reveal,.text-reveal-content{opacity:1!important;transform:none!important;clip-path:none!important}
+}
+</style>
+</head>
+<body class="bg-white text-ink min-h-screen w-full relative overflow-x-hidden antialiased">
+
+<!-- svg defs: símbolos da marca reutilizáveis (serra, sol, onda) -->
+<svg class="hidden" aria-hidden="true">
+<defs>
+<symbol id="brand-serra" viewBox="0 0 240 110"><circle cx="178" cy="34" r="34" fill="#C77B5B"/><path d="M0 110Q60 10 120 60Q160 90 220 110Z" fill="#9CB8A5"/><path d="M40 110Q110 -10 180 50Q210 80 240 110Z" fill="#165B5A"/></symbol>
+<symbol id="brand-serra-mono" viewBox="0 0 240 110"><circle cx="178" cy="34" r="34" fill="currentColor" opacity=".55"/><path d="M0 110Q60 10 120 60Q160 90 220 110Z" fill="currentColor" opacity=".35"/><path d="M40 110Q110 -10 180 50Q210 80 240 110Z" fill="currentColor"/></symbol>
+<symbol id="brand-wave" viewBox="0 0 360 30"><path d="M2 20C100 42 220 -2 358 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></symbol>
+<pattern id="p-dots-brand" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.2" fill="#165B5A" opacity=".18"/></pattern>
+<pattern id="p-grid-brand" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0L0 0 0 40" fill="none" stroke="#165B5A" stroke-opacity=".08"/></pattern>
+</defs>
+</svg>
+
+<!-- ambient-background (white-medical) → blobs da marca com deriva -->
+<div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+<div class="ds-blob top-[-12%] right-[-10%] w-[600px] lg:w-[900px] h-[600px] lg:h-[900px] bg-sage-100"></div>
+<div class="ds-blob b2 bottom-[-12%] left-[-10%] w-[500px] lg:w-[720px] h-[500px] lg:h-[720px] bg-petroleo-50"></div>
+<div class="ds-blob b3 top-[40%] left-[45%] w-[360px] lg:w-[520px] h-[360px] lg:h-[520px] bg-terracota-50 opacity-70"></div>
+</div>
+
+<!-- global-grid (white-medical): linhas + beams viajando -->
+<div class="fixed inset-0 z-0 pointer-events-none hidden lg:block h-screen">
+<div class="grid-line-v" style="left: var(--gx-1)"></div>
+<div class="grid-line-v" style="left: var(--gx-2)"><div class="beam-v" style="animation: beam-v 6s infinite 1s;"></div></div>
+<div class="grid-line-v" style="left: var(--gx-3)"><div class="beam-v beam-t" style="animation: beam-v 7s infinite 3s;"></div></div>
+<div class="grid-line-v" style="left: var(--gx-4)"></div>
+<div class="grid-line-h" style="top: var(--gy-1)"></div>
+<div class="grid-line-h" style="top: 62%"><div class="beam-h beam-s" style="animation: beam-h 9s infinite 2s;"></div></div>
+<div class="grid-line-h" style="top: 94%"></div>
+</div>
+
+<!-- mobile-menu (white-medical: #mobile-menu / hidden-menu / visible-menu) -->
+<div class="fixed inset-0 z-[60] bg-white/95 backdrop-blur-xl hidden-menu flex flex-col pt-32 px-8" id="mobile-menu">
+<button class="absolute top-8 right-6 text-mut hover:text-ink" id="close-menu" aria-label="Fechar menu">
+<span class="iconify w-8 h-8" data-icon="solar:close-circle-linear"></span>
+</button>
+<nav class="flex flex-col gap-6 text-2xl font-medium tracking-tight font-display">
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#hero">Hero</a>
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#tipografia">Tipografia</a>
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#cores">Cores</a>
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#componentes">Componentes</a>
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#icones">Ícones</a>
+<a class="hover:text-petroleo-600 transition-colors border-b border-line pb-4" href="#animacoes">Animações</a>
+</nav>
+<div class="mt-auto mb-12">
+<a class="btn w-full justify-center" href="#componentes">Agendar consulta <span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></a>
+</div>
+</div>
+
+<!-- navbar (white-medical sticky + backdrop blur) -->
+<nav class="relative z-50 w-full h-[80px] lg:h-[100px] flex items-center justify-between px-6 lg:px-[6%] border-b border-line/70 bg-white/70 backdrop-blur-md animate-reveal sticky top-0" id="navbar">
+<a class="flex items-center gap-3 group" href="#hero" aria-label="Centro Médico Avelar">
+<svg viewBox="40 44 697 163" class="h-9 lg:h-11 w-auto transition-transform duration-700 group-hover:-translate-y-0.5" aria-label="Centro Médico Avelar"><circle cx="226.9" cy="103.7" r="35.7" fill="#C77B5B" class="transition-transform duration-700 group-hover:-translate-y-1"/><path d="M 40.0 183.5 Q 103.0 78.5 166.0 131.0 Q 208.0 162.5 271.0 183.5 Z" fill="#9CB8A5"/><path d="M 82.0 183.5 Q 155.5 57.5 229.0 120.5 Q 260.5 152.0 292.0 183.5 Z" fill="#165B5A"/><text x="344.0" y="66.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:600;font-size:23px;letter-spacing:7px" fill="#284B63">CENTRO MÉDICO</text><text x="342.0" y="176.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:128px;letter-spacing:-2px" fill="#165B5A">avelar</text><path d="M 344.0 200.0 C 442.0 222.0, 562.0 178.0, 702.0 200.0" fill="none" stroke="#9CB8A5" stroke-width="7" stroke-linecap="round"/></svg>
+<span class="hidden xl:inline-flex badge badge-outline ml-2">Design System v1</span>
+</a>
+<div class="hidden md:flex gap-x-8 items-center">
+<a class="nav-link" href="#tipografia">Tipografia</a>
+<a class="nav-link" href="#cores">Cores</a>
+<a class="nav-link" href="#componentes">Componentes</a>
+<a class="nav-link" href="#icones">Ícones</a>
+<a class="nav-link" href="#animacoes">Animações</a>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden md:inline-flex btn sm btn-shimmer" href="#componentes">Agendar <span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></a>
+<button class="md:hidden text-mut hover:text-ink transition-colors" id="open-menu" aria-label="Abrir menu">
+<span class="iconify w-6 h-6" data-icon="solar:hamburger-menu-linear"></span>
+</button>
+</div>
+</nav>
+
+<!-- =====================================================================
+     1. HERO — demonstração das capacidades do design system
+     Layout absoluto do white-medical (sidebar 6→28% | título 28→62% | mídia 62→94%)
+     ===================================================================== -->
+<section class="flex flex-col lg:block lg:h-[calc(100vh-100px)] lg:min-h-[760px] z-10 w-full relative mesh-bg" id="hero">
+
+<!-- canvas: serra viva (ondas suaves em camadas) -->
+<canvas id="serra-canvas" class="absolute inset-x-0 bottom-0 w-full h-[55%] pointer-events-none opacity-70" aria-hidden="true"></canvas>
+
+<!-- lettering fantasma gigante atrás do hero -->
+<div class="absolute inset-0 flex items-end justify-center overflow-hidden pointer-events-none select-none" aria-hidden="true">
+<span class="font-display font-extrabold leading-none tracking-tighter text-[22vw] lg:text-[19vw] text-ghost-soft translate-y-[22%] animate-on-scroll [animation:animationIn_1.6s_ease-out_0.2s_both]">avelar</span>
+</div>
+
+<!-- hero-copy -->
+<div class="order-1 flex flex-col lg:py-0 lg:absolute lg:top-0 lg:right-[38%] lg:bottom-[6%] lg:left-[28%] lg:pr-12 lg:pl-12 z-20 pointer-events-none pt-20 pr-8 pb-12 pl-8 relative justify-center">
+<div class="animate-reveal delay-100 mb-6 lg:mb-8 flex items-center gap-3 justify-center lg:justify-start pointer-events-auto">
+<span class="badge badge-t"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-terracota-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-terracota-500"></span></span>Design System · 2026</span>
+<span class="hidden sm:inline ds-label">Avelar · Paty do Alferes / RJ</span>
+</div>
+<h1 class="sm:text-6xl md:text-7xl lg:text-[3.6rem] xl:text-[4.6rem] 2xl:text-[5.2rem] leading-[1] lg:leading-[.95] lg:text-left text-5xl font-bold text-ink tracking-tight text-center font-display">
+<span class="block animate-reveal delay-200">Saúde</span>
+<span class="block text-ghost lg:ml-[0.5em] animate-reveal delay-300">integrada</span>
+<span class="block animate-reveal delay-500"><span class="text-shine">para todas as<br class="hidden lg:block"/> fases da vida.</span></span>
+</h1>
+<p class="animate-reveal delay-500 mt-6 lg:mt-8 text-base lg:text-lg text-mut font-light leading-relaxed max-w-md text-center lg:text-left mx-auto lg:mx-0">Um sistema visual branco, silencioso e preciso: a serra, o sol e a onda da marca entram em cena com luz, profundidade e movimento.</p>
+<div class="flex animate-reveal delay-700 lg:justify-start lg:mt-10 pointer-events-auto mt-10 gap-x-5 gap-y-5 items-center justify-center flex-wrap">
+<a class="btn-beam" href="#componentes"><span class="btn-shimmer">Explorar componentes <span class="iconify w-5 h-5 transition-transform group-hover:translate-x-1" data-icon="solar:arrow-right-linear"></span></span></a>
+<button class="pill-btn" data-scroll="#tipografia"><span>Ver tipografia</span><span class="disc"><span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></span></button>
+</div>
+<div class="animate-reveal delay-1000 mt-10 flex items-center gap-6 justify-center lg:justify-start pointer-events-auto">
+<div class="flex -space-x-2">
+<img alt="" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-1.webp"/>
+<img alt="" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-2.webp"/>
+<img alt="" class="inline-block h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-3.avif"/>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-white bg-areia-100 flex items-center justify-center text-[10px] font-semibold text-petroleo-700">+12</div>
+</div>
+<div class="flex flex-col text-left">
+<span class="text-xs font-semibold text-ink uppercase tracking-wide">Equipe em atendimento</span>
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+<span class="text-xs text-mut font-mono">AGORA · 08h–18h</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- hero-sidebar -->
+<div class="relative order-2 w-full px-6 py-12 border-y border-line/70 lg:border-y-0 lg:border-r lg:absolute lg:left-[6%] lg:top-0 lg:bottom-[6%] lg:w-[22%] lg:px-0 lg:py-0 flex flex-col bg-areia-50/60 lg:bg-transparent z-10">
+<div class="lg:pt-12 lg:pr-8 lg:absolute lg:top-0 lg:h-[62%] lg:w-full animate-reveal delay-200">
+<p class="eyebrow justify-center lg:justify-start">Centro Médico Avelar</p>
+<p class="leading-relaxed lg:text-left lg:mx-0 text-base font-normal text-mut text-center max-w-md mx-auto">Especialistas, enfermagem e exames essenciais em um só lugar, perto de quem vive em Avelar e região.</p>
+<div class="mt-8 hidden lg:flex flex-col gap-3">
+<div class="stat group cursor-default"><div class="num text-3xl font-display font-bold text-ink tracking-tight transition-colors">12+</div><div class="bar"></div><p class="text-xs text-mut leading-snug">especialidades médicas</p></div>
+<div class="stat group cursor-default"><div class="num text-3xl font-display font-bold text-ink tracking-tight transition-colors">3</div><div class="bar"></div><p class="text-xs text-mut leading-snug">fases da vida: infância, adulto, 60+</p></div>
+</div>
+</div>
+<div class="mt-12 lg:mt-0 lg:absolute lg:top-[62%] lg:bottom-0 lg:left-0 lg:right-0 lg:border-t border-line/70 lg:pt-6 flex flex-col justify-between animate-reveal delay-300 items-center lg:items-start">
+<div class="hidden lg:block marker -top-[2.5px] -left-[2.5px]"></div>
+<div class="hidden lg:block marker -top-[2.5px] -right-[2.5px]"></div>
+<div class="absolute top-[-1px] left-0 right-0 h-[1px] overflow-hidden hidden lg:block"><div class="beam-h" style="animation: beam-h 5s infinite;"></div></div>
+<div class="lg:text-left text-center w-full overflow-hidden">
+<p class="text-[10px] font-semibold tracking-widest text-mut uppercase mb-6 pl-1">Especialidades</p>
+<div class="relative w-full max-w-[320px] lg:max-w-[360px] mx-auto lg:mx-0 h-[40px] flex items-center mask-linear-fade">
+<div class="flex gap-10 items-center w-max animate-marquee will-change-transform">
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-petroleo-600" data-icon="solar:heart-pulse-linear"></span>Cardiologia</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-terracota-500" data-icon="solar:stethoscope-linear"></span>Clínica geral</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-sage-500" data-icon="solar:users-group-two-rounded-linear"></span>Pediatria</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-azul-600" data-icon="solar:test-tube-linear"></span>Exames</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-petroleo-600" data-icon="solar:heart-pulse-linear"></span>Cardiologia</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-terracota-500" data-icon="solar:stethoscope-linear"></span>Clínica geral</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-sage-500" data-icon="solar:users-group-two-rounded-linear"></span>Pediatria</div>
+<div class="text-mut font-semibold text-base flex items-center gap-2 whitespace-nowrap"><span class="iconify w-5 h-5 text-azul-600" data-icon="solar:test-tube-linear"></span>Exames</div>
+</div>
+</div>
+</div>
+<div class="pb-1 mt-6 lg:mt-0">
+<div class="flex items-center gap-2 mb-2">
+<span class="relative flex h-2 w-2"><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+<span class="text-xs text-mut">Unidade em operação</span>
+</div>
+</div>
+</div>
+</div>
+
+<!-- hero-media: logo entrando e aparecendo sobre o branco -->
+<div class="relative order-3 w-full h-72 sm:h-96 lg:absolute lg:left-[62%] lg:right-[6%] lg:top-0 lg:h-[62%] lg:border-l lg:w-auto border-line/70 overflow-hidden group animate-reveal delay-200 bg-white/60 z-10">
+<div class="absolute top-0 bottom-0 left-[-1px] w-[1px] overflow-hidden z-20 hidden lg:block"><div class="beam-v" style="animation: beam-v 4s infinite;"></div></div>
+<div class="hidden lg:block marker -top-[2.5px] -left-[2.5px]"></div>
+<div class="hidden lg:block marker -top-[2.5px] -right-[2.5px]"></div>
+<div class="absolute inset-0 dots-bg opacity-60"></div>
+<div class="logo-glow"></div>
+<!-- anéis concêntricos que pulsam a partir do sol -->
+<div class="absolute left-[38%] top-[34%] w-24 h-24 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<span class="absolute inset-0 rounded-full border border-terracota-300/60 animate-pulse-ring"></span>
+<span class="absolute inset-0 rounded-full border border-terracota-300/40 animate-pulse-ring" style="animation-delay:.8s"></span>
+<span class="absolute inset-0 rounded-full border border-terracota-300/30 animate-pulse-ring" style="animation-delay:1.6s"></span>
+</div>
+<div class="absolute inset-0 flex items-center justify-center p-8 lg:p-10">
+<svg viewBox="30 30 720 200" class="logo-anim logo-breathe w-full max-w-[520px] h-auto drop-shadow-[0_18px_30px_rgba(22,91,90,0.12)]" aria-label="Centro Médico Avelar — logotipo animado">
+<circle class="lg-sun" cx="226.9" cy="103.7" r="35.7" fill="#C77B5B"/>
+<path class="lg-back" d="M 40.0 183.5 Q 103.0 78.5 166.0 131.0 Q 208.0 162.5 271.0 183.5 Z" fill="#9CB8A5"/>
+<path class="lg-front" d="M 82.0 183.5 Q 155.5 57.5 229.0 120.5 Q 260.5 152.0 292.0 183.5 Z" fill="#165B5A"/>
+<text class="lg-cm" x="344.0" y="66.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:600;font-size:23px;letter-spacing:7px" fill="#284B63">CENTRO MÉDICO</text>
+<text class="lg-word" x="342.0" y="176.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:128px;letter-spacing:-2px" fill="#165B5A">avelar</text>
+<path class="lg-wave" d="M 344.0 200.0 C 442.0 222.0, 562.0 178.0, 702.0 200.0" fill="none" stroke="#9CB8A5" stroke-width="7" stroke-linecap="round"/>
+<text class="lg-tag" x="344" y="226" style="font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:11.5px;letter-spacing:2.2px" fill="#165B5A">SAÚDE INTEGRADA PARA TODAS AS FASES DA VIDA</text>
+</svg>
+</div>
+<div class="absolute bottom-6 left-6 z-20 bg-white/90 backdrop-blur border border-line p-3 rounded shadow-sm flex items-center gap-3">
+<span class="iconify w-5 h-5 text-petroleo-600" data-icon="solar:play-circle-linear"></span>
+<span class="text-[10px] font-mono uppercase tracking-widest text-mut">Emergência da marca · 2.8s</span>
+<button class="text-[10px] font-semibold uppercase tracking-widest text-terracota-600 hover:text-terracota-700" data-replay-logo>Replay</button>
+</div>
+</div>
+
+<!-- hero-card: vídeo institucional -->
+<div class="relative order-4 p-6 flex items-center justify-center animate-reveal delay-300 lg:p-0 lg:absolute lg:right-[6%] lg:top-[62%] lg:bottom-[6%] lg:border-l lg:border-t lg:border-line/70 lg:left-[62%] z-10">
+<div class="absolute top-[-1px] left-0 right-0 h-[1px] overflow-hidden z-20 hidden lg:block"><div class="beam-h beam-t" style="animation: beam-h 6s infinite reverse;"></div></div>
+<div class="absolute top-0 bottom-0 left-[-1px] w-[1px] overflow-hidden z-20 hidden lg:block"><div class="beam-v" style="animation: beam-v 6s infinite 2s;"></div></div>
+<div class="relative w-full h-full min-h-[220px] overflow-hidden lg:rounded-none rounded-xl shadow-soft border border-line lg:border-none bg-petroleo-900 group/vid">
+<video class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-[1500ms] group-hover/vid:scale-105" src="assets/brand/video-institucional.mp4" autoplay muted loop playsinline preload="metadata"></video>
+<div class="absolute inset-0 bg-gradient-to-t from-petroleo-950/70 via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4 flex items-center gap-2 text-white/90"><span class="iconify w-4 h-4" data-icon="solar:videocamera-record-linear"></span><span class="text-[10px] font-semibold uppercase tracking-widest">Vídeo institucional</span></div>
+<div class="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+<div><h3 class="text-white font-display font-semibold text-lg leading-tight tracking-tight">A serra, o sol e a onda</h3><p class="text-sage-200 text-xs mt-1 font-light">Loop silencioso · 16:9 · usado como fundo de seção</p></div>
+<button class="w-11 h-11 rounded-full bg-white text-petroleo-700 flex items-center justify-center shadow-lg hover:scale-110 transition-transform" data-video-toggle aria-label="Pausar/retomar vídeo"><span class="iconify w-5 h-5" data-icon="solar:pause-linear"></span></button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- marquee da marca (index.html .marquee/.track) -->
+<div class="relative z-10 overflow-hidden bg-petroleo-600 text-sage-400 py-4 border-t border-white/10 grain">
+<div class="track"><span>Especialidades</span><span>Exames</span><span>Enfermagem</span><span>Clube CMA+</span><span>Amigo Indica</span><span>Trabalhe conosco</span><span>Especialidades</span><span>Exames</span><span>Enfermagem</span><span>Clube CMA+</span><span>Amigo Indica</span><span>Trabalhe conosco</span></div>
+</div>
+
+<!-- =====================================================================
+     1b. LETTERING TRANSPARENTE — a palavra "avelar" como janela para o vídeo da logo
+     Técnica: fundo branco + texto preto + mix-blend-mode:screen (o preto vira transparente)
+     ===================================================================== -->
+<section class="relative z-10 w-full bg-white border-b border-line/70 overflow-hidden ds-section" id="janela">
+<div class="absolute inset-0">
+<video class="absolute inset-0 w-full h-full object-cover" src="assets/brand/logo-animation.mp4" autoplay muted loop playsinline preload="metadata"></video>
+<div class="absolute inset-0 bg-gradient-to-r from-petroleo-600/80 via-sage-400/50 to-terracota-500/70 mix-blend-multiply"></div><div class="absolute inset-0 dots-bg opacity-40"></div>
+</div>
+<div class="relative text-window w-full py-10 lg:py-16 flex flex-col items-center">
+<span class="text-[24vw] lg:text-[17vw] block">avelar</span>
+</div>
+<div class="absolute inset-x-0 bottom-0 flex items-center justify-between px-6 lg:px-[6%] py-4 text-[10px] font-mono uppercase tracking-widest text-mut z-10 bg-gradient-to-t from-white to-transparent pointer-events-none">
+<span>.text-window · mix-blend-mode: screen</span><span class="hidden sm:inline">assets/brand/logo-animation.mp4</span><span>lettering transparente</span>
+</div>
+</section>
+
+<!-- =====================================================================
+     FUNDAMENTOS — impacto (white-medical impact-report) com stats e texto gradiente
+     ===================================================================== -->
+<section class="w-full relative z-10 bg-white border-b border-line/70 overflow-hidden ds-section" id="fundamentos">
+<div class="absolute inset-0 pointer-events-none"><svg class="w-full h-full opacity-70"><rect width="100%" height="100%" fill="url(#p-grid-brand)"/></svg></div>
+<div class="absolute -right-24 top-10 w-[520px] h-[520px] rounded-full bg-sage-100/70 blur-[100px] animate-float-slow pointer-events-none"></div>
+<div class="lg:px-[6%] lg:py-32 max-w-[1600px] mr-auto ml-auto pt-24 pr-6 pb-24 pl-6 relative">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+<div class="relative z-10 scroll-reveal">
+<div class="badge badge-p mb-6"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-petroleo-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-petroleo-500"></span></span>Fundamentos do sistema</div>
+<h2 class="text-4xl md:text-5xl lg:text-6xl font-semibold text-ink tracking-tight leading-[1.05] mb-6 font-display">Branco como palco,<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-petroleo-600 via-petroleo-400 to-sage-400">a marca como luz.</span></h2>
+<p class="text-lg text-mut font-light leading-relaxed mb-10 max-w-lg">Herdamos do white-medical a estrutura: grid de 4 colunas (6% · 28% · 62% · 94%), beams de luz nas linhas, marcadores nos cantos e revelações suaves. Sobre isso entram as cores do Centro Médico Avelar e o movimento das referências Gemini e Digital Architect.</p>
+<div class="grid grid-cols-2 gap-x-12 gap-y-10">
+<div class="stat group cursor-default"><div class="num text-4xl font-semibold text-ink tracking-tight font-display transition-colors">4 cols</div><div class="bar"></div><p class="text-sm text-mut leading-snug">grid editorial com linhas-guia e beams animados</p></div>
+<div class="stat group cursor-default"><div class="num text-4xl font-semibold text-ink tracking-tight font-display transition-colors">6 cores</div><div class="bar"></div><p class="text-sm text-mut leading-snug">petróleo, sálvia, terracota, azul, areia e branco quente</p></div>
+<div class="stat group cursor-default"><div class="num text-4xl font-semibold text-ink tracking-tight font-display transition-colors">1.0s</div><div class="bar"></div><p class="text-sm text-mut leading-snug">revelação padrão · cubic-bezier(.16,1,.3,1)</p></div>
+<div class="stat group cursor-default"><div class="num text-4xl font-semibold text-ink tracking-tight font-display transition-colors">AA</div><div class="bar"></div><p class="text-sm text-mut leading-snug">contraste mínimo em texto; AAA no corpo</p></div>
+</div>
+</div>
+<!-- card com cartão do clube + foto -->
+<div class="relative scroll-reveal delay-200 grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
+<figure class="photo tall relative">
+<img src="assets/img/medica.webp" alt="Médica sorrindo"/>
+<span class="cap">Enfermagem</span>
+<div class="chip"><b>Atendimento</b>Humanizado</div>
+</figure>
+<div class="cardwrap flex justify-center items-center" style="perspective:1200px">
+<div class="ccard">
+<div class="cc-top flex justify-between items-start">
+<svg viewBox="0 0 240 110" class="w-[96px] h-auto"><use href="#brand-serra"/></svg>
+<span class="text-right font-display font-semibold text-[12px] tracking-[.3em] text-sage-400">CLUBE<b class="block font-extrabold text-[40px] tracking-normal text-white leading-none">CMA<i class="not-italic text-terracota-400">+</i></b></span>
+</div>
+<div class="cc-bot"><span>BENEFÍCIOS</span><span>NÃO É PLANO DE SAÚDE</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- =====================================================================
+     2. TIPOGRAFIA
+     ===================================================================== -->
+<section class="lg:py-32 w-full z-10 border-line/70 border-t pt-24 pb-24 relative ds-section bg-areia-50/50" id="tipografia">
+<div class="absolute inset-0 pointer-events-none hidden lg:block z-0">
+<div class="absolute top-0 bottom-0 left-[6%] w-[1px] bg-petroleo-600/10"><div class="beam-v" style="animation: beam-v 8s infinite 1s"></div></div>
+<div class="absolute top-0 bottom-0 left-[28%] w-[1px] bg-petroleo-600/10"></div>
+<div class="absolute top-0 bottom-0 left-[62%] w-[1px] bg-petroleo-600/10"><div class="beam-v beam-t" style="animation: beam-v 9s infinite 4s"></div></div>
+<div class="absolute top-0 bottom-0 right-[6%] w-[1px] bg-petroleo-600/10"></div>
+</div>
+<!-- letras gigantes fantasmas em parallax (digital-architect parallax-element) -->
+<div class="absolute -top-10 right-[4%] text-[26vw] font-display font-extrabold text-ghost-soft leading-none select-none pointer-events-none parallax-element" data-speed="-0.06" aria-hidden="true">Aa</div>
+
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
+<div class="mb-16 lg:mb-20 max-w-4xl">
+<p class="eyebrow scroll-reveal">02 · Tipografia</p>
+<h2 class="lg:text-7xl text-4xl font-medium text-ink tracking-tight mb-8 scroll-reveal font-display" id="type-title">
+<span class="text-reveal-wrapper"><span class="text-reveal-content">Montserrat fala.</span></span>
+<span class="text-reveal-wrapper"><span class="text-reveal-content delay-200 text-ghost">Inter explica.</span></span>
+</h2>
+<div class="scroll-reveal delay-100 grid grid-cols-1 lg:grid-cols-2 gap-12">
+<p class="lead">Display na mesma fonte do logotipo (Montserrat 700/800, tracking negativo). Corpo em Inter, leve e neutro. Geist Mono para labels técnicos, captions e código. Todas as fontes são self-hosted em <span class="font-mono text-sm text-petroleo-700">assets/fonts/</span>.</p>
+<div class="spec">
+<b>Estratégia de carregamento</b><br/>
+@font-face local (woff2, unicode-range por script) · font-display: swap<br/>
+Montserrat 300–800 · Inter 300–600 · Geist Mono 300–700 · Plus Jakarta Sans 300–800 (alternativa)<br/>
+Fallback stack: 'Montserrat','Plus Jakarta Sans',ui-sans-serif,system-ui · 'Inter',ui-sans-serif,system-ui · 'Geist Mono',ui-monospace,Menlo
+</div>
+</div>
+</div>
+
+<!-- famílias -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16" data-bento-grid>
+<div class="bento-card scroll-reveal delay-100"><div class="glow"></div>
+<div class="relative z-10"><span class="ds-label">Primary display</span>
+<div class="text-[88px] leading-none font-display font-extrabold text-petroleo-600 tracking-tighter mt-4 mb-2">Ag</div>
+<h3 class="font-display font-semibold text-lg text-ink">Montserrat</h3>
+<p class="text-sm text-mut mt-1">h1–h4, números de destaque, botões, links fortes, wordmark.</p>
+<p class="spec mt-4">weights 500 · 600 · 700 · 800<br/>letter-spacing -.025em a -.05em</p></div></div>
+<div class="bento-card scroll-reveal delay-200"><div class="glow"></div>
+<div class="relative z-10"><span class="ds-label">Body</span>
+<div class="text-[88px] leading-none font-sans font-light text-ink tracking-tight mt-4 mb-2">Ag</div>
+<h3 class="font-display font-semibold text-lg text-ink">Inter</h3>
+<p class="text-sm text-mut mt-1">parágrafos, formulários, navegação, eyebrows, helper text.</p>
+<p class="spec mt-4">weights 300 · 400 · 500 · 600<br/>line-height 1.55 – 1.65</p></div></div>
+<div class="bento-card scroll-reveal delay-300"><div class="glow"></div>
+<div class="relative z-10"><span class="ds-label">Mono</span>
+<div class="text-[88px] leading-none font-mono font-medium text-terracota-500 tracking-tight mt-4 mb-2">Ag</div>
+<h3 class="font-display font-semibold text-lg text-ink">Geist Mono</h3>
+<p class="text-sm text-mut mt-1">captions, labels técnicos, códigos de exame, horários, tokens.</p>
+<p class="spec mt-4">weights 400 · 500<br/>uppercase + tracking .16em – .2em</p></div></div>
+</div>
+
+<!-- escala tipográfica viva -->
+<div class="bg-white/80 backdrop-blur-sm border border-line rounded-xl overflow-hidden scroll-reveal">
+<div class="px-6 lg:px-10 py-5 border-b border-line flex flex-wrap items-center justify-between gap-4">
+<div><span class="ds-label">Escala tipográfica</span><p class="text-sm text-mut mt-1">Cada estilo: família · peso · tamanho · line-height · letter-spacing · transform</p></div>
+<div class="flex gap-1 bg-areia-50 rounded-full p-1" data-tabs="type">
+<button class="tab on" data-tab="pt">Exemplo</button><button class="tab" data-tab="spec">Spec</button>
+</div>
+</div>
+<div class="divide-y divide-line" id="type-scale">
+<!-- cada linha: exemplo + spec -->
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h1 · display</b><br/>Montserrat 800<br/>clamp(42px, 6.4vw, 84px)<br/>lh 1.02 · ls -.025em<br/>none</div>
+<div class="lg:col-span-10 font-display font-extrabold text-petroleo-600 tracking-[-.025em] leading-[1.02] text-[clamp(42px,6.4vw,84px)]">Saúde integrada</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h2 · section</b><br/>Montserrat 800<br/>clamp(32px, 4.4vw, 56px)<br/>lh 1.05 · ls -.025em<br/>none</div>
+<div class="lg:col-span-10 font-display font-extrabold text-ink tracking-[-.025em] leading-[1.05] text-[clamp(32px,4.4vw,56px)]">Cuidado que coloca <span class="text-ghost">você</span> em primeiro lugar.</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h3 · card title</b><br/>Montserrat 700<br/>24px<br/>lh 1.2 · ls -.01em<br/>none</div>
+<div class="lg:col-span-10 font-display font-bold text-petroleo-600 tracking-[-.01em] leading-[1.2] text-[24px]">Atenção primária e exames no mesmo lugar</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h4 · subtitle</b><br/>Montserrat 600<br/>20px<br/>lh 1.3 · ls -.005em<br/>none</div>
+<div class="lg:col-span-10 font-display font-semibold text-ink leading-[1.3] text-[20px]">Próxima consulta · Cardiologia</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h5 · overline title</b><br/>Montserrat 600<br/>16px<br/>lh 1.35 · ls 0<br/>none</div>
+<div class="lg:col-span-10 font-display font-semibold text-ink leading-[1.35] text-[16px]">Dra. Carla Silva — Recepção</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>h6 · eyebrow</b><br/>Inter 600<br/>12px<br/>lh 1.4 · ls .16em<br/>uppercase</div>
+<div class="lg:col-span-10"><p class="eyebrow !mb-0">Centro Médico Avelar — Paty do Alferes, RJ</p></div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>body-lg · lead</b><br/>Inter 300<br/>clamp(18px, 1.5vw, 21px)<br/>lh 1.55 · ls 0<br/>none</div>
+<div class="lg:col-span-10"><p class="lead !max-w-3xl">Especialistas, enfermagem e exames essenciais em um só lugar, perto de quem vive em Avelar e região.</p></div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>body</b><br/>Inter 400<br/>17px<br/>lh 1.65 · ls 0<br/>none</div>
+<div class="lg:col-span-10 text-[17px] leading-[1.65] text-ink max-w-3xl">O Clube CMA+ é apresentado em todo o site como programa de benefícios, nunca como plano de saúde, conforme o manual da marca. Formulários montam a mensagem e abrem o WhatsApp.</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>body-sm</b><br/>Inter 400<br/>15px<br/>lh 1.6 · ls 0<br/>none</div>
+<div class="lg:col-span-10 text-[15px] leading-[1.6] text-mut max-w-3xl">Aceitamos os principais convênios da região. Entre em contato com a recepção para confirmar o seu plano específico.</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>caption</b><br/>Geist Mono 400<br/>11.5px<br/>lh 1.5 · ls .14em<br/>uppercase</div>
+<div class="lg:col-span-10 font-mono text-[11.5px] tracking-[.14em] uppercase text-mut">Dias médios até a alta · Fonte: relatório interno 2026</div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>label</b><br/>Inter 600<br/>12px<br/>lh 1.4 · ls .10em<br/>uppercase</div>
+<div class="lg:col-span-10 text-[12px] font-semibold tracking-[.10em] uppercase text-mut">Nome completo <span class="text-terracota-500">*</span></div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>helper text</b><br/>Inter 400<br/>12px<br/>lh 1.5 · ls 0<br/>none</div>
+<div class="lg:col-span-10 text-[12px] leading-[1.5] text-mut">Usamos seu telefone apenas para confirmar o agendamento. <span class="text-petroleo-600 underline">Política de privacidade</span></div>
+</div>
+<div class="type-row grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 lg:px-10 py-8 items-center">
+<div class="lg:col-span-2 spec"><b>button</b><br/>Montserrat 700<br/>15px<br/>lh 1 · ls 0<br/>none</div>
+<div class="lg:col-span-10 flex flex-wrap gap-4 items-center"><button class="btn btn-shimmer">Agendar consulta <span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></button><a class="lnk">Ver especialidades</a></div>
+</div>
+</div>
+</div>
+
+<!-- efeitos de texto -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-12">
+<div class="flashlight-card p-8 scroll-reveal delay-100" data-flashlight>
+<span class="ds-label">Gradiente animado · .text-shine</span>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-shine mt-4 mb-3">avelar</div>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-shine-warm">saúde</div>
+<p class="spec mt-4">background-clip:text + background-size 200% + @keyframes shine 6s</p>
+</div>
+<div class="flashlight-card p-8 scroll-reveal delay-200" data-flashlight>
+<span class="ds-label">Contorno fantasma · .text-ghost</span>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-ghost mt-4 mb-3 hover:text-petroleo-600 transition-colors duration-700 cursor-default">avelar</div>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-serra">serra</div>
+<p class="spec mt-4">-webkit-text-stroke 1px · .text-serra usa a imagem do símbolo como preenchimento</p>
+</div>
+<div class="flashlight-card p-8 scroll-reveal delay-300" data-flashlight>
+<span class="ds-label">Letra por letra · .text-clip-anim</span>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-petroleo-600 mt-4 mb-3 text-clip-anim" data-split="Avelar"></div>
+<div class="text-5xl font-display font-extrabold tracking-tighter text-ghost text-clip-anim" data-split="Cuida"></div>
+<button class="mt-4 text-[10px] font-semibold uppercase tracking-widest text-terracota-600" data-replay-split>↻ Replay</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- =====================================================================
+     3. SISTEMA DE CORES
+     ===================================================================== -->
+<section class="relative z-10 w-full border-t border-line/70 pt-24 pb-24 lg:py-32 overflow-hidden ds-section bg-white" id="cores">
+<!-- fundo: aura cônica lenta + serra em camadas -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1100px] h-[1100px] rounded-full opacity-[.16] blur-3xl animate-spin-slow" style="background:conic-gradient(from 0deg,#165B5A,#9CB8A5,#F2EBDD,#C77B5B,#284B63,#165B5A)"></div>
+<svg class="serra-layer opacity-[.07] parallax-element" data-speed="0.04" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="#165B5A" d="M0,256L80,229.3C160,203,320,149,480,154.7C640,160,800,224,960,229.3C1120,235,1280,181,1360,154.7L1440,128L1440,320L0,320Z"/></svg>
+<svg class="serra-layer opacity-[.05] parallax-element" data-speed="0.08" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="#9CB8A5" d="M0,288L120,250.7C240,213,480,139,720,138.7C960,139,1200,213,1320,250.7L1440,288L1440,320L0,320Z"/></svg>
+</div>
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-end">
+<div class="lg:col-span-7">
+<p class="eyebrow scroll-reveal">03 · Sistema de cores</p>
+<h2 class="lg:text-7xl text-4xl font-medium text-ink tracking-tight scroll-reveal font-display">Petróleo, sálvia e <span class="text-transparent bg-clip-text bg-gradient-to-r from-terracota-500 to-terracota-300">um sol de terracota.</span></h2>
+</div>
+<p class="lg:col-span-5 lead scroll-reveal delay-100">O branco é o palco. Petróleo dá autoridade clínica, sálvia acalma, terracota aquece e marca ações secundárias; azul petróleo é a voz institucional. Clique numa cor para copiar o hex.</p>
+</div>
+
+<!-- paleta principal -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6" id="palette">
+<div class="swatch scroll-reveal" data-hex="#165B5A"><div class="sw" style="background:#165B5A"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Petróleo</div><div class="spec mt-1">--p · primary<br/>#165B5A<br/>rgb(22 91 90)<br/>hsl(179 61% 22%)</div></div></div>
+<div class="swatch scroll-reveal delay-100" data-hex="#9CB8A5"><div class="sw" style="background:#9CB8A5"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Sálvia</div><div class="spec mt-1">--s · secondary<br/>#9CB8A5<br/>rgb(156 184 165)<br/>hsl(139 16% 67%)</div></div></div>
+<div class="swatch scroll-reveal delay-200" data-hex="#C77B5B"><div class="sw" style="background:#C77B5B"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Terracota</div><div class="spec mt-1">--t · accent<br/>#C77B5B<br/>rgb(199 123 91)<br/>hsl(18 49% 57%)</div></div></div>
+<div class="swatch scroll-reveal delay-300" data-hex="#284B63"><div class="sw" style="background:#284B63"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Azul petróleo</div><div class="spec mt-1">--a · institutional<br/>#284B63<br/>rgb(40 75 99)<br/>hsl(204 42% 27%)</div></div></div>
+<div class="swatch scroll-reveal delay-300" data-hex="#F2EBDD"><div class="sw" style="background:#F2EBDD"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Areia</div><div class="spec mt-1">--ar · surface alt<br/>#F2EBDD<br/>rgb(242 235 221)<br/>hsl(40 45% 91%)</div></div></div>
+<div class="swatch scroll-reveal delay-500" data-hex="#FAF9F6"><div class="sw border-b border-line" style="background:#FAF9F6"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Branco quente</div><div class="spec mt-1">--w · page bg alt<br/>#FAF9F6<br/>rgb(250 249 246)<br/>hsl(45 29% 97%)</div></div></div>
+</div>
+<!-- neutros -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+<div class="swatch scroll-reveal" data-hex="#FFFFFF"><div class="sw border-b border-line" style="background:#fff"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Branco</div><div class="spec mt-1">page bg · card<br/>#FFFFFF · hsl(0 0% 100%)</div></div></div>
+<div class="swatch scroll-reveal delay-100" data-hex="#E4DED2"><div class="sw" style="background:#E4DED2"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Linha</div><div class="spec mt-1">--line · border<br/>#E4DED2 · rgb(228 222 210) · hsl(40 25% 86%)</div></div></div>
+<div class="swatch scroll-reveal delay-200" data-hex="#5F6F6D"><div class="sw" style="background:#5F6F6D"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Muted</div><div class="spec mt-1">--mut · text-secondary<br/>#5F6F6D · rgb(95 111 109) · hsl(172 8% 40%)</div></div></div>
+<div class="swatch scroll-reveal delay-300" data-hex="#1C2827"><div class="sw" style="background:#1C2827"></div><div class="p-4"><div class="font-display font-semibold text-sm text-ink">Ink</div><div class="spec mt-1">--ink · text-primary<br/>#1C2827 · rgb(28 40 39) · hsl(175 18% 13%)</div></div></div>
+</div>
+
+<!-- escalas tonais -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+<div class="scroll-reveal">
+<span class="ds-label">Escala · petroleo-50 → 950</span>
+<div class="flex rounded-lg overflow-hidden mt-3 h-14 border border-line">
+<div class="flex-1 tip" style="background:#EEF5F4" data-hex="#EEF5F4"><div class="tooltip-box"><div>50 · #EEF5F4</div></div></div>
+<div class="flex-1 tip" style="background:#D6E7E5" data-hex="#D6E7E5"><div class="tooltip-box"><div>100 · #D6E7E5</div></div></div>
+<div class="flex-1 tip" style="background:#AFCFCC" data-hex="#AFCFCC"><div class="tooltip-box"><div>200 · #AFCFCC</div></div></div>
+<div class="flex-1 tip" style="background:#7FB0AC" data-hex="#7FB0AC"><div class="tooltip-box"><div>300 · #7FB0AC</div></div></div>
+<div class="flex-1 tip" style="background:#4E8A86" data-hex="#4E8A86"><div class="tooltip-box"><div>400 · #4E8A86</div></div></div>
+<div class="flex-1 tip" style="background:#2C716F" data-hex="#2C716F"><div class="tooltip-box"><div>500 · #2C716F</div></div></div>
+<div class="flex-1 tip ring-2 ring-inset ring-white" style="background:#165B5A" data-hex="#165B5A"><div class="tooltip-box"><div>600 · #165B5A ★</div></div></div>
+<div class="flex-1 tip" style="background:#124A49" data-hex="#124A49"><div class="tooltip-box"><div>700 · #124A49</div></div></div>
+<div class="flex-1 tip" style="background:#0F3B3A" data-hex="#0F3B3A"><div class="tooltip-box"><div>800 · #0F3B3A</div></div></div>
+<div class="flex-1 tip" style="background:#0A2A29" data-hex="#0A2A29"><div class="tooltip-box"><div>900 · #0A2A29</div></div></div>
+<div class="flex-1 tip" style="background:#061A1A" data-hex="#061A1A"><div class="tooltip-box"><div>950 · #061A1A</div></div></div>
+</div>
+<span class="ds-label block mt-6">Escala · terracota-50 → 900</span>
+<div class="flex rounded-lg overflow-hidden mt-3 h-14 border border-line">
+<div class="flex-1" style="background:#FBF3EF"></div><div class="flex-1" style="background:#F5E1D7"></div><div class="flex-1" style="background:#EBC3B1"></div><div class="flex-1" style="background:#DFA38A"></div><div class="flex-1" style="background:#D28D6F"></div><div class="flex-1 ring-2 ring-inset ring-white" style="background:#C77B5B"></div><div class="flex-1" style="background:#A96247"></div><div class="flex-1" style="background:#874D38"></div><div class="flex-1" style="background:#653A2B"></div><div class="flex-1" style="background:#43271D"></div>
+</div>
+<span class="ds-label block mt-6">Escala · sage-50 → 900</span>
+<div class="flex rounded-lg overflow-hidden mt-3 h-14 border border-line">
+<div class="flex-1" style="background:#F3F7F4"></div><div class="flex-1" style="background:#E3ECE6"></div><div class="flex-1" style="background:#CBDCD1"></div><div class="flex-1" style="background:#B3CBBB"></div><div class="flex-1 ring-2 ring-inset ring-white" style="background:#9CB8A5"></div><div class="flex-1" style="background:#7FA08A"></div><div class="flex-1" style="background:#648470"></div><div class="flex-1" style="background:#4E6858"></div><div class="flex-1" style="background:#3A4E42"></div><div class="flex-1" style="background:#27342C"></div>
+</div>
+<span class="ds-label block mt-6">Escala · azul-50 → 900</span>
+<div class="flex rounded-lg overflow-hidden mt-3 h-14 border border-line">
+<div class="flex-1" style="background:#EEF3F6"></div><div class="flex-1" style="background:#D4DFE7"></div><div class="flex-1" style="background:#A9BFCF"></div><div class="flex-1" style="background:#7E9FB6"></div><div class="flex-1" style="background:#537F9D"></div><div class="flex-1" style="background:#3A6580"></div><div class="flex-1 ring-2 ring-inset ring-white" style="background:#284B63"></div><div class="flex-1" style="background:#203C4F"></div><div class="flex-1" style="background:#182D3B"></div><div class="flex-1" style="background:#101E28"></div>
+</div>
+</div>
+<!-- opacidade + gradientes -->
+<div class="scroll-reveal delay-200">
+<span class="ds-label">Variações de opacidade (sobre branco e sobre foto)</span>
+<div class="relative rounded-lg overflow-hidden mt-3 border border-line h-40">
+<img src="assets/img/paciente.jpg" class="absolute inset-y-0 right-0 w-1/2 h-full object-cover" alt=""/>
+<div class="absolute inset-0 grid grid-cols-6">
+<div style="background:rgba(22,91,90,.05)" class="flex items-end p-2 spec">5%</div><div style="background:rgba(22,91,90,.10)" class="flex items-end p-2 spec">10%</div><div style="background:rgba(22,91,90,.25)" class="flex items-end p-2 spec">25%</div><div style="background:rgba(22,91,90,.50)" class="flex items-end p-2 spec text-white">50%</div><div style="background:rgba(22,91,90,.75)" class="flex items-end p-2 spec text-white">75%</div><div style="background:rgba(22,91,90,.90)" class="flex items-end p-2 spec text-white">90%</div>
+</div>
+</div>
+<p class="spec mt-2">tokens: petroleo-600/5 · /10 · /25 · /50 · /75 · /90 · overlays de foto usam petroleo-950/70 → transparent</p>
+<span class="ds-label block mt-6">Participação em gradientes</span>
+<div class="grid grid-cols-2 gap-3 mt-3">
+<div class="h-20 rounded-lg" style="background:linear-gradient(90deg,#165B5A,#4E8A86,#9CB8A5)"><span class="spec p-2 block text-white/80">g-primary · 90° petróleo → sálvia</span></div>
+<div class="h-20 rounded-lg" style="background:linear-gradient(135deg,#2e5a72,#284B63 60%,#1e3a4d)"><span class="spec p-2 block text-white/80">g-card · 135° cartão CMA+</span></div>
+<div class="h-20 rounded-lg" style="background:linear-gradient(90deg,#C77B5B,#DFA38A,#F2EBDD)"><span class="spec p-2 block text-ink/70">g-warm · 90° terracota → areia</span></div>
+<div class="h-20 rounded-lg" style="background:linear-gradient(180deg,#F2EBDD,#FAF9F6)"><span class="spec p-2 block">g-phead · 180° areia → branco quente</span></div>
+<div class="h-20 rounded-lg col-span-2" style="background:radial-gradient(60% 50% at 10% 10%,rgba(156,184,165,.5),transparent 60%),radial-gradient(50% 45% at 90% 20%,rgba(199,123,91,.3),transparent 60%),radial-gradient(60% 60% at 60% 100%,rgba(40,75,99,.25),transparent 60%),#fff"><span class="spec p-2 block">g-mesh · .mesh-bg (fundo do hero, animado)</span></div>
+</div>
+</div>
+</div>
+
+<!-- papéis semânticos + regras contextuais -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+<div class="scroll-reveal">
+<span class="ds-label">Papel semântico</span>
+<div class="mt-3 overflow-x-auto rounded-xl border border-line bg-white/80 backdrop-blur-sm">
+<table class="spec-table">
+<thead><tr><th>Papel</th><th>Token</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:#165B5A"></span>Primary</td><td class="font-mono text-xs">petroleo-600</td><td>botões principais, títulos h1/h3, links, ícones ativos, navbar CTA</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:#9CB8A5"></span>Secondary</td><td class="font-mono text-xs">sage-400</td><td>onda do logo, texto sobre petróleo, marquee, ilustrações, divisores</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:#C77B5B"></span>Accent</td><td class="font-mono text-xs">terracota-500</td><td>eyebrows, sublinhados, sol, badges de destaque, beams especiais</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:#284B63"></span>Institutional</td><td class="font-mono text-xs">azul-600</td><td>"CENTRO MÉDICO", cartão CMA+, toast, chips de dados</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle border border-line" style="background:#F2EBDD"></span>Neutral</td><td class="font-mono text-xs">areia · line · mut · ink</td><td>superfícies, bordas, texto secundário e primário</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:#2C716F"></span>Feedback</td><td class="font-mono text-xs">ok #2C716F · warn #B7791F · err #B4483A · info #3A6580</td><td>estados de formulário, toasts, badges de status</td></tr>
+<tr><td><span class="inline-block w-3 h-3 rounded-full mr-2 align-middle" style="background:linear-gradient(90deg,#165B5A,#9CB8A5,#C77B5B)"></span>Decorative</td><td class="font-mono text-xs">g-primary · g-warm · blobs · aurora</td><td>fundos animados, texto gradiente, glows, beams (nunca para transmitir estado)</td></tr>
+</tbody></table></div>
+</div>
+<div class="scroll-reveal delay-200">
+<span class="ds-label">Regras de uso contextual</span>
+<div class="mt-3 overflow-x-auto rounded-xl border border-line bg-white/80 backdrop-blur-sm">
+<table class="spec-table">
+<thead><tr><th>Contexto</th><th>Regra</th></tr></thead>
+<tbody>
+<tr><td>Text</td><td>ink (corpo) · mut (secundário) · petroleo-600 (títulos/links) · terracota-700 para texto pequeno em terracota · sálvia só ≥ 24px sobre petróleo</td></tr>
+<tr><td>Background</td><td>#fff (página) · areia-50 (seção alternada) · areia-100 (phead) · petroleo-600/800 (dark) · overlays petroleo-950/70 sobre foto</td></tr>
+<tr><td>Border</td><td>line #E4DED2 padrão · petroleo-600 em foco/ativo · terracota-200 em badges de destaque · white/12 em dark</td></tr>
+<tr><td>Hover</td><td>primary → #0F4746 + sombra petroleo/28 · links → terracota underline scaleX(1) · cards → border #C9C1B0 + translateY(-2px)</td></tr>
+<tr><td>Active</td><td>scale(.98) · nav item com border-bottom terracota · tab com bg ink</td></tr>
+<tr><td>Disabled</td><td>opacity .45 · sem sombra · cursor not-allowed · inputs com bg areia-50 e texto #9AA5A3</td></tr>
+<tr><td>Focus</td><td>outline 2px terracota offset 3px (botões) · ring 4px petroleo/12 (inputs)</td></tr>
+</tbody></table></div>
+</div>
+</div>
+
+<!-- acessibilidade / contraste -->
+<div class="scroll-reveal">
+<span class="ds-label">Acessibilidade · contraste (WCAG 2.1)</span>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3 mt-3">
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#1C2827;border:1px solid #E4DED2"><b class="font-display">Aa</b><span class="spec">ink / branco<br/>15.2 : 1 · AAA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#165B5A;border:1px solid #E4DED2"><b class="font-display">Aa</b><span class="spec">petróleo / branco<br/>7.8 : 1 · AAA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#284B63;border:1px solid #E4DED2"><b class="font-display">Aa</b><span class="spec">azul / branco<br/>9.2 : 1 · AAA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#5F6F6D;border:1px solid #E4DED2"><b class="font-display">Aa</b><span class="spec">muted / branco<br/>5.3 : 1 · AA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#874D38;border:1px solid #E4DED2"><b class="font-display">Aa</b><span class="spec">terracota-700 / branco<br/>6.7 : 1 · AA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#fff;color:#C77B5B;border:1px solid #E4DED2"><b class="font-display text-2xl">Aa</b><span class="spec">terracota / branco<br/>3.3 : 1 · AA large</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#165B5A;color:#fff"><b class="font-display">Aa</b><span class="spec text-white/80">branco / petróleo<br/>7.8 : 1 · AAA</span></div>
+<div class="rounded-lg p-4 h-28 flex flex-col justify-between" style="background:#165B5A;color:#9CB8A5"><b class="font-display text-2xl">Aa</b><span class="spec text-sage-300">sálvia / petróleo<br/>3.7 : 1 · AA large</span></div>
+</div>
+<p class="note">Sálvia sobre branco (2.1 : 1) é apenas decorativa: ondas, marquee em fundo escuro, ilustrações. Terracota puro fica reservado a texto ≥ 24px, ícones e elementos gráficos; para texto pequeno use terracota-700.</p>
+</div>
+</div>
+</section>
+
+<!-- =====================================================================
+     4. UI COMPONENTS (com animações)
+     ===================================================================== -->
+<section class="relative z-10 w-full border-t border-line/70 pt-24 pb-24 lg:py-32 overflow-hidden ds-section bg-areia-50/40" id="componentes">
+<div class="absolute inset-0 dots-bg opacity-50 pointer-events-none"></div>
+<div class="absolute -left-40 top-1/3 w-[640px] h-[640px] rounded-full bg-sage-100/60 blur-[120px] animate-float-slow pointer-events-none"></div>
+<div class="absolute right-[-10%] bottom-0 w-[520px] h-[520px] rounded-full bg-terracota-50 blur-[110px] animate-morph pointer-events-none"></div>
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
+<div class="mb-16 max-w-4xl">
+<p class="eyebrow scroll-reveal">04 · UI Components</p>
+<h2 class="lg:text-7xl text-4xl font-medium text-ink tracking-tight mb-6 scroll-reveal font-display">Peças que <span class="text-shine">respiram.</span></h2>
+<p class="lead scroll-reveal delay-100">Cada componente traz sua micro-animação: shimmer, beam, glow que segue o mouse, linha que cresce, ícone que desliza. Nada pisca; tudo desliza com o easing padrão <span class="font-mono text-sm text-petroleo-700">cubic-bezier(.16, 1, .3, 1)</span>.</p>
+</div>
+
+<!-- ============ BUTTONS ============ -->
+<div class="mb-20">
+<div class="flex items-end justify-between mb-6 scroll-reveal"><h3 class="font-display text-2xl font-semibold text-ink">Buttons</h3><span class="ds-label">.btn · .btn-beam · .pill-btn · .lnk</span></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-8 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8 scroll-reveal">
+<div class="flex flex-wrap gap-4 items-center">
+<button class="btn btn-shimmer" data-ripple>Primary <span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></button>
+<button class="btn terra btn-shimmer" data-ripple>Accent <span class="iconify w-4 h-4" data-icon="solar:calendar-add-linear"></span></button>
+<button class="btn ghost" data-ripple>Ghost</button>
+<button class="btn inv shadow-soft border-line" data-ripple>Inverted</button>
+<a class="btn-beam"><span>Beam <span class="iconify w-4 h-4" data-icon="solar:stars-minimalistic-linear"></span></span></a>
+<button class="pill-btn"><span>Pill com disco</span><span class="disc"><span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></span></button>
+<a class="lnk">Link com sublinhado</a>
+</div>
+<div class="flex flex-wrap gap-4 items-center mt-6 pt-6 border-t border-line">
+<button class="btn sm">Small</button><button class="btn">Default</button><button class="btn lg">Large</button>
+<button class="btn" disabled>Disabled</button>
+<button class="btn" data-loading>Loading <span class="spinner ml-1"></span></button>
+<button class="w-12 h-12 rounded-full bg-ink text-white flex items-center justify-center hover:bg-petroleo-600 transition-colors hover:rotate-45 duration-500" aria-label="Icon button"><span class="iconify w-5 h-5" data-icon="solar:add-circle-linear"></span></button>
+<button class="w-12 h-12 rounded-full border border-line bg-white text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all duration-500 group"><span class="iconify w-5 h-5 group-hover:translate-y-0.5 transition-transform" data-icon="solar:arrow-down-linear"></span></button>
+<button class="relative z-10 bg-white text-ink pl-6 pr-4 py-3 rounded font-semibold text-[11px] uppercase tracking-widest hover:bg-areia-50 transition-all flex items-center gap-3 group/btn shadow-soft border border-line">Agendar visita<div class="w-6 h-6 bg-ink text-white rounded-full flex items-center justify-center group-hover/btn:scale-110 group-hover/btn:bg-petroleo-600 transition-all"><span class="iconify w-3 h-3" data-icon="solar:arrow-right-linear"></span></div></button>
+</div>
+</div>
+<div class="lg:col-span-4 scroll-reveal delay-200">
+<div class="code h-full"><span class="c">/* spec .btn */</span><br/>font: Montserrat 700 15px/1<br/>padding: 16px 24px · radius 10px<br/>bg petroleo-600 · border 1.5px<br/><span class="k">hover</span>: bg #0F4746 · translateY(-1px)<br/>  shadow 0 12px 30px petroleo/28<br/>  ícone translateX(4px)<br/><span class="k">active</span>: scale(.98)<br/><span class="k">focus</span>: outline 2px terracota +3px<br/><span class="k">disabled</span>: opacity .45<br/>transition: .18s soft · shadow .3s<br/><br/><span class="c">/* .btn-shimmer */</span> sweep 1.4s ∞ no hover<br/><span class="c">/* .btn-beam */</span> conic 2.4s spin (gemini)<br/><span class="c">/* .pill-btn */</span> disco gira -45° e fica petróleo<br/><span class="c">/* [data-ripple] */</span> onda .6s ao clicar</div>
+</div>
+</div>
+</div>
+
+<!-- ============ INPUTS ============ -->
+<div class="mb-20">
+<div class="flex items-end justify-between mb-6 scroll-reveal"><h3 class="font-display text-2xl font-semibold text-ink">Inputs</h3><span class="ds-label">.uf (index.html) · .input-box · .chk-box · .toggle</span></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-5 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8 scroll-reveal">
+<span class="ds-label">Underline (formulários do site)</span>
+<form class="uf" onsubmit="return false">
+<label class="line-anim"><span>Nome completo</span><input type="text" placeholder="Como devemos te chamar?"/></label>
+<label class="line-anim"><span>WhatsApp</span><input type="tel" placeholder="(24) 9 0000-0000"/><div class="help">Só usamos para confirmar o horário.</div></label>
+<label class="line-anim ok"><span>E-mail</span><input type="email" value="paciente@exemplo.com"/></label>
+<label class="line-anim err"><span>CPF</span><input type="text" value="000.000"/><div class="help">Digite os 11 dígitos.</div></label>
+<label><span>Especialidade</span><select><option>Cardiologia</option><option>Clínica geral</option><option>Pediatria</option></select></label>
+<label class="line-anim"><span>Mensagem</span><textarea rows="2" placeholder="Conte brevemente o motivo"></textarea></label>
+<label class="chk"><input type="checkbox"/> Li e aceito a <a>política de privacidade</a>.</label>
+<button class="btn btn-shimmer">Enviar pelo WhatsApp <span class="iconify w-4 h-4" data-icon="ri:whatsapp-line"></span></button>
+</form>
+</div>
+<div class="lg:col-span-4 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8 scroll-reveal delay-100 space-y-6">
+<span class="ds-label">Boxed · estados</span>
+<div class="relative group"><span class="iconify absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-mut group-focus-within:text-petroleo-600 transition-colors" data-icon="solar:magnifer-linear"></span><input class="input-box" placeholder="Buscar exame ou especialidade"/></div>
+<div class="relative"><span class="iconify absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-mut" data-icon="solar:user-linear"></span><input class="input-box" value="Preenchido" /></div>
+<div class="relative"><span class="iconify absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-mut" data-icon="solar:lock-linear"></span><input class="input-box" disabled value="Desabilitado"/></div>
+<div class="flex flex-wrap gap-6 pt-2">
+<label class="flex items-center gap-3 cursor-pointer text-sm text-ink"><input type="checkbox" class="sr-only" checked/><span class="chk-box"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Checkbox</label>
+<label class="flex items-center gap-3 cursor-pointer text-sm text-ink"><input type="checkbox" class="sr-only" checked/><span class="toggle"></span>Toggle</label>
+<label class="flex items-center gap-3 cursor-pointer text-sm text-ink"><input type="radio" name="r" class="sr-only" checked/><span class="radio-dot"></span>Presencial</label>
+<label class="flex items-center gap-3 cursor-pointer text-sm text-ink"><input type="radio" name="r" class="sr-only"/><span class="radio-dot"></span>Telemedicina</label>
+</div>
+<div><label class="ds-label block mb-3">Range · 40%</label><input type="range" class="range" min="0" max="100" value="40" data-range/></div>
+</div>
+<div class="lg:col-span-3 scroll-reveal delay-200"><div class="code h-full"><span class="c">/* .uf underline */</span><br/>label span: Inter 600 12px .1em upper<br/>input: 16px · border-bottom 1.5px line<br/><span class="k">focus</span>: linha petróleo cresce<br/>  scaleX(0→1) .4s (.line-anim::after)<br/>  label vira petróleo<br/><span class="k">error</span>: #B4483A linha + help<br/><span class="k">ok</span>: #2C716F<br/><br/><span class="c">/* .input-box */</span><br/>radius 8px · padding 12/14 · pl 42<br/><span class="k">focus</span>: ring 4px petroleo/12<br/><span class="k">disabled</span>: bg areia-50<br/><br/><span class="c">/* .chk-box / .toggle */</span><br/>check scale(0→1) elastic .25s<br/>toggle knob translateX(20px) .35s elastic</div></div>
+</div>
+</div>
+
+<!-- ============ CARDS ============ -->
+<div class="mb-20">
+<div class="flex items-end justify-between mb-6 scroll-reveal"><h3 class="font-display text-2xl font-semibold text-ink">Cards</h3><span class="ds-label">.bento-card · .flashlight-card · .trace-card · .photo · .glass-panel</span></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6" data-bento-grid>
+<div class="bento-card scroll-reveal delay-100 lg:col-span-2 flex flex-col justify-between min-h-[240px]"><div class="glow"></div>
+<div class="h-12 w-12 bg-petroleo-50 rounded-lg flex items-center justify-center text-petroleo-600 mb-8 relative z-10 group-hover:scale-110 transition-transform"><span class="iconify w-6 h-6" data-icon="solar:stethoscope-linear"></span></div>
+<div class="relative z-10"><h3 class="text-lg font-semibold text-ink mb-2 tracking-tight font-display">Bento · glow segue o mouse</h3><p class="text-sm text-mut leading-relaxed">radial-gradient(420px at --mouse-x --mouse-y). Hover: fundo branco, borda #C9C1B0, sobe 2px.</p></div></div>
+<div class="flashlight-card scroll-reveal delay-200 lg:col-span-2 p-8 flex flex-col justify-between min-h-[240px]" data-flashlight>
+<div class="h-12 w-12 bg-sage-50 rounded-lg flex items-center justify-center text-sage-600 mb-8"><span class="iconify w-6 h-6" data-icon="solar:sun-2-linear"></span></div>
+<div><h3 class="text-lg font-semibold text-ink mb-2 tracking-tight font-display">Flashlight · luz sálvia</h3><p class="text-sm text-mut leading-relaxed">Versão clara do flashlight-card do Gemini: um facho de 500px em sálvia/35 acompanha o cursor.</p></div></div>
+<div class="trace-card scroll-reveal delay-300 lg:col-span-2 p-8 flex flex-col justify-between min-h-[240px] border border-transparent" data-flashlight>
+<div class="h-12 w-12 bg-terracota-50 rounded-lg flex items-center justify-center text-terracota-500 mb-8"><span class="iconify w-6 h-6" data-icon="solar:bolt-circle-linear"></span></div>
+<div><h3 class="text-lg font-semibold text-ink mb-2 tracking-tight font-display">Trace · borda que acende</h3><p class="text-sm text-mut leading-relaxed">Borda de 1px com gradiente radial terracota preso ao mouse (mask-composite). "Trace Border" do Gemini, em cor de marca.</p></div></div>
+
+<div class="scroll-reveal delay-100 lg:col-span-3 relative h-[360px] rounded-xl overflow-hidden border border-line shadow-soft group" id="hero-carousel">
+<div class="carousel-slide active"><img src="assets/img/paciente.jpg" alt="" class="parallax-img" data-speed="0.03"/></div>
+<div class="carousel-slide"><img src="assets/img/medica.webp" alt=""/></div>
+<div class="carousel-slide"><img src="assets/brand/recepcao-logo-vertical.jpg" alt=""/></div>
+<div class="absolute inset-0 bg-gradient-to-t from-petroleo-950/70 via-transparent to-transparent pointer-events-none"></div>
+<div class="absolute bottom-6 left-6 right-6 flex items-end justify-between text-white z-10">
+<div><span class="text-[10px] font-mono uppercase tracking-widest text-sage-200">Carousel · Ken Burns (digital-architect)</span><h3 class="font-display font-semibold text-2xl tracking-tight mt-1">Fade 1.5s + scale 1→1.1 em 10s</h3></div>
+<div class="flex gap-2" data-carousel-dots></div>
+</div>
+<div class="absolute top-6 right-6 z-20 bg-white/90 backdrop-blur border border-line p-3 rounded shadow-sm text-right"><span class="block text-2xl font-bold text-ink tracking-tight font-display">98%</span><span class="block text-mut font-mono text-[10px] uppercase tracking-widest">satisfação</span></div>
+</div>
+
+<div class="scroll-reveal delay-200 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div class="bg-white p-8 rounded-xl border border-line hover:border-[#c9c1b0] hover:shadow-soft transition-all duration-300 flex flex-col justify-between group">
+<div><div class="flex gap-1 text-terracota-400 mb-5"><span class="iconify w-4 h-4" data-icon="solar:star-bold"></span><span class="iconify w-4 h-4" data-icon="solar:star-bold"></span><span class="iconify w-4 h-4" data-icon="solar:star-bold"></span><span class="iconify w-4 h-4" data-icon="solar:star-bold"></span><span class="iconify w-4 h-4" data-icon="solar:star-bold"></span></div>
+<p class="text-base font-light leading-relaxed text-ink mb-6">"Ter o laboratório no mesmo lugar da consulta me poupou uma viagem até a cidade."</p></div>
+<div class="flex items-center gap-3 border-t border-line pt-4"><img class="w-9 h-9 rounded-full object-cover ring-2 ring-white" src="assets/img/avatar-4.avif" alt=""/><div><h4 class="font-medium text-ink text-sm">Maria Helena</h4><span class="text-xs text-mut">Paciente desde 2022</span></div></div>
+</div>
+<div class="glass-panel rounded-xl p-8 relative overflow-hidden flex flex-col justify-between">
+<div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-sage-200/60 blur-2xl animate-morph"></div>
+<div class="relative"><div class="flex items-center gap-2 text-petroleo-600 mb-2"><span class="iconify w-4 h-4" data-icon="solar:user-check-linear"></span><span class="text-[10px] font-semibold uppercase tracking-widest">Portal</span></div><h3 class="text-xl font-semibold leading-tight tracking-tight text-ink font-display">Próxima consulta</h3></div>
+<div class="relative mt-6"><p class="text-sm text-mut font-medium leading-relaxed mb-4 border-l-2 border-petroleo-100 pl-3">Dra. Carla Silva<span class="block text-mut font-normal">Cardiologia · amanhã, 10:00</span></p>
+<div class="flex items-center justify-between border-t border-line pt-4"><span class="badge badge-ok">Confirmada</span><button class="text-xs font-semibold uppercase tracking-wide text-petroleo-600 hover:text-petroleo-800 transition-colors flex items-center gap-1 group/btn">Detalhes <span class="iconify w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" data-icon="solar:arrow-right-linear"></span></button></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ============ NAVBAR ============ -->
+<div class="mb-20">
+<div class="flex items-end justify-between mb-6 scroll-reveal"><h3 class="font-display text-2xl font-semibold text-ink">Navbar</h3><span class="ds-label">sticky · bg-white/70 · backdrop-blur-md · .nav-link · #mobile-menu</span></div>
+<div class="scroll-reveal rounded-xl border border-line overflow-hidden bg-white/80 backdrop-blur-sm">
+<div class="h-[80px] flex items-center justify-between px-6 lg:px-10 border-b border-line bg-white/70 backdrop-blur-md">
+<div class="flex items-center gap-3"><svg viewBox="0 0 240 110" class="w-10 h-auto"><use href="#brand-serra"/></svg><span class="font-display font-bold text-lg tracking-tight text-petroleo-600">avelar</span></div>
+<div class="hidden md:flex gap-x-8 items-center"><a class="nav-link on">Início</a><a class="nav-link">Clube CMA+</a><a class="nav-link">Especialidades</a><a class="nav-link">Exames</a><a class="nav-link">Contato</a></div>
+<div class="flex items-center gap-4"><a class="hidden md:inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider bg-ink text-white py-2.5 px-5 rounded hover:bg-petroleo-600 transition-all shadow-md hover:shadow-lg">Agendar</a><button class="md:hidden text-mut"><span class="iconify w-6 h-6" data-icon="solar:hamburger-menu-linear"></span></button></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-8">
+<div class="spec"><b>Estrutura</b><br/>altura 80px (lg 100px) · padding 6% · sticky top-0 z-50<br/>bg white/70 + backdrop-blur-md · border-b line/70<br/>entra com .animate-reveal (clip-path inset 100%→0)</div>
+<div class="spec"><b>Links</b><br/>Inter 500 14px mut · hover ink<br/>sublinhado terracota scaleX(0→1) .3s<br/>ativo: .on (sublinhado fixo)</div>
+<div class="spec"><b>Mobile</b><br/>#mobile-menu fixed inset-0 · bg white/95 blur-xl<br/>.hidden-menu → .visible-menu (translateY -20px→0, .4s)<br/>#open-menu / #close-menu · body overflow hidden</div>
+</div>
+</div>
+</div>
+
+<!-- ============ SECTIONS ============ -->
+<div class="mb-20">
+<div class="flex items-end justify-between mb-6 scroll-reveal"><h3 class="font-display text-2xl font-semibold text-ink">Sections</h3><span class="ds-label">padrões de dobra · fundos · divisores</span></div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="scroll-reveal rounded-xl border border-line overflow-hidden bg-white relative h-72">
+<div class="absolute inset-0 hidden lg:block"><div class="grid-line-v" style="left:6%"></div><div class="grid-line-v" style="left:28%"><div class="beam-v" style="animation:beam-v 5s infinite"></div></div><div class="grid-line-v" style="left:62%"></div><div class="grid-line-v" style="right:6%"></div><div class="grid-line-h" style="top:30%"></div></div>
+<div class="relative p-8"><span class="ds-label">A · Editorial claro</span><h4 class="font-display font-semibold text-xl mt-3 text-ink">Grid + beams + marker</h4><p class="text-sm text-mut mt-2">bg branco · linhas petroleo/7 · beams 5–9s · markers 5px nos cantos · usado no hero e depoimentos.</p></div>
+<div class="marker top-[30%] left-[28%] -translate-x-1/2 -translate-y-1/2 !opacity-100"></div>
+</div>
+<div class="scroll-reveal delay-100 rounded-xl border border-line overflow-hidden mesh-bg relative h-72 grain">
+<div class="relative p-8 z-10"><span class="ds-label">B · Mesh animado</span><h4 class="font-display font-semibold text-xl mt-3 text-ink">.mesh-bg + .grain</h4><p class="text-sm text-mut mt-2">3 radial-gradients (sálvia, terracota, azul) em background-size 200% animados 18s; grão SVG soft-light 12%.</p></div>
+</div>
+<div class="scroll-reveal delay-200 rounded-xl overflow-hidden aurora relative h-72 grain">
+<div class="relative p-8 z-10 text-white"><span class="ds-label !text-sage-300">C · Dark aurora</span><h4 class="font-display font-semibold text-xl mt-3">.aurora</h4><p class="text-sm text-sage-200 mt-2 font-light">conic-gradient girando 40s com blur 120px sobre petroleo-800; usado em CTA e rodapé.</p><button class="btn inv sm mt-5">Ação em dark</button></div>
+</div>
+</div>
+<!-- divisores -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+<div class="scroll-reveal rounded-xl border border-line overflow-hidden bg-white p-4"><span class="ds-label">Divisor · onda infinita (.wave-track)</span>
+<div class="h-16 mt-3 overflow-hidden"><div class="wave-track h-full"><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="#165B5A" opacity=".12"/><path d="M0,80 C200,20 400,120 600,80 C800,40 1000,120 1200,80 L1200,120 L0,120 Z" fill="#9CB8A5" opacity=".35"/></svg><svg viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z" fill="#165B5A" opacity=".12"/><path d="M0,80 C200,20 400,120 600,80 C800,40 1000,120 1200,80 L1200,120 L0,120 Z" fill="#9CB8A5" opacity=".35"/></svg></div></div></div>
+<div class="scroll-reveal delay-100 rounded-xl border border-line overflow-hidden bg-white p-4"><span class="ds-label">Divisor · linha de pulso (.ecg)</span>
+<svg class="w-full h-16 mt-3" viewBox="0 0 1200 80" fill="none"><path class="ecg" d="M0 40 H300 L330 40 L345 10 L360 70 L375 25 L390 40 H700 L720 40 L735 15 L750 65 L765 30 L780 40 H1200" stroke="#C77B5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 40 H1200" stroke="#E4DED2" stroke-width="1"/></svg></div>
+</div>
+</div>
+
+<!-- ============ MODAL + BADGES + TOOLTIPS ============ -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-20">
+<div class="scroll-reveal bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8">
+<div class="flex items-end justify-between mb-6"><h3 class="font-display text-2xl font-semibold text-ink">Modal</h3><span class="ds-label">.modal.open</span></div>
+<p class="text-sm text-mut mb-6">Backdrop ink/45 com blur 8px; diálogo sobe 24px e escala .96→1 em .5s. Fecha com ESC, clique fora ou botão.</p>
+<button class="btn btn-shimmer" data-open-modal>Abrir modal <span class="iconify w-4 h-4" data-icon="solar:calendar-add-linear"></span></button>
+<button class="btn ghost sm ml-2" data-toast="Horário confirmado para amanhã, 10:00.">Mostrar toast</button>
+</div>
+<div class="scroll-reveal delay-100 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8">
+<div class="flex items-end justify-between mb-6"><h3 class="font-display text-2xl font-semibold text-ink">Badges</h3><span class="ds-label">.badge-*</span></div>
+<div class="flex flex-wrap gap-3">
+<span class="badge badge-p">Primary</span><span class="badge badge-s">Sálvia</span><span class="badge badge-t">Terracota</span><span class="badge badge-a">Azul</span><span class="badge badge-dark">Dark</span><span class="badge badge-outline">Outline</span>
+<span class="badge badge-ok"><span class="iconify w-3 h-3" data-icon="solar:check-circle-linear"></span>Sucesso</span><span class="badge badge-warn"><span class="iconify w-3 h-3" data-icon="solar:danger-triangle-linear"></span>Atenção</span><span class="badge badge-err"><span class="iconify w-3 h-3" data-icon="solar:close-circle-linear"></span>Erro</span><span class="badge badge-info"><span class="iconify w-3 h-3" data-icon="solar:info-circle-linear"></span>Info</span>
+<span class="badge badge-p"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-petroleo-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-petroleo-500"></span></span>Ao vivo</span>
+<span class="text-xs font-mono text-petroleo-700 bg-petroleo-50 border border-petroleo-100 px-2 py-1 rounded">Compatível com LGPD</span>
+</div>
+<p class="spec mt-6">Inter 700 10px · tracking .16em · uppercase · padding 6/12 · radius 9999 · border 1px tom-100 · bg tom-50 · texto tom-700</p>
+</div>
+<div class="scroll-reveal delay-200 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8">
+<div class="flex items-end justify-between mb-6"><h3 class="font-display text-2xl font-semibold text-ink">Tooltips</h3><span class="ds-label">.tip › .tooltip-box</span></div>
+<div class="flex flex-wrap gap-8 items-center py-6 justify-center">
+<span class="tip"><button class="w-11 h-11 rounded-full border border-line bg-white flex items-center justify-center text-mut hover:text-ink hover:border-ink transition-colors"><span class="iconify w-5 h-5" data-icon="solar:info-circle-linear"></span></button><div class="tooltip-box"><div>Detalhes</div></div></span>
+<span class="tip"><button class="w-11 h-11 rounded-full border border-line bg-white flex items-center justify-center text-mut hover:text-ink hover:border-ink transition-colors"><span class="iconify w-5 h-5" data-icon="solar:calendar-linear"></span></button><div class="tooltip-box light"><div>Agenda · claro</div></div></span>
+<span class="tip"><button class="w-11 h-11 rounded-full border border-line bg-white flex items-center justify-center text-mut hover:text-ink hover:border-ink transition-colors"><span class="iconify w-5 h-5" data-icon="solar:map-point-linear"></span></button><div class="tooltip-box right"><div>À direita</div></div></span>
+<span class="tip"><span class="badge badge-t cursor-help">Clube CMA+</span><div class="tooltip-box"><div>Não é plano de saúde</div></div></span>
+</div>
+<p class="spec mt-4">entra com translateY(10px) scale(.95) → 0/1 em .3s elastic (gemini2 .tooltip-box) · bg ink · Inter 600 11px upper · seta 5px</p>
+</div>
+</div>
+
+<!-- ============ FAQ + MISC ============ -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="scroll-reveal bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8">
+<div class="flex items-end justify-between mb-6"><h3 class="font-display text-2xl font-semibold text-ink">Accordion / FAQ</h3><span class="ds-label">details.faq (index) · [data-faq-toggle] (white-medical)</span></div>
+<details class="faq"><summary>Vocês aceitam meu convênio?<span></span></summary><p>Aceitamos os principais convênios da região. Confirme o seu com a recepção pelo WhatsApp.</p></details>
+<details class="faq"><summary>Como acesso meus resultados?<span></span></summary><p>Os resultados ficam disponíveis no portal assim que revisados; você recebe um aviso por e-mail.</p></details>
+<details class="faq"><summary>O Clube CMA+ é um plano de saúde?<span></span></summary><p>Não. É um programa de benefícios, sem cobertura assistencial, conforme o manual da marca.</p></details>
+</div>
+<div class="scroll-reveal delay-100 bg-white/80 backdrop-blur-sm border border-line rounded-xl p-8 space-y-6">
+<div class="flex items-end justify-between"><h3 class="font-display text-2xl font-semibold text-ink">Tabs · progresso · skeleton</h3><span class="ds-label">.tab · .skeleton</span></div>
+<div class="flex gap-1 bg-areia-50 rounded-full p-1 w-max" data-tabs="demo"><button class="tab on">Consultas</button><button class="tab">Exames</button><button class="tab">Enfermagem</button></div>
+<div><div class="flex justify-between spec mb-2"><span>Preparo do exame</span><b>72%</b></div><div class="h-1.5 bg-areia-100 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-petroleo-600 to-sage-400 rounded-full transition-all duration-[1500ms]" style="width:72%" data-progress></div></div></div>
+<div class="flex gap-4 items-center"><div class="skeleton w-12 h-12 rounded-full"></div><div class="flex-1 space-y-2"><div class="skeleton h-3 w-2/3"></div><div class="skeleton h-3 w-1/2"></div></div></div>
+<div class="flex flex-wrap gap-3 pt-2">
+<div class="stat group cursor-default"><div class="num text-3xl font-display font-bold text-ink transition-colors">99,9%</div><div class="bar"></div><p class="text-xs text-mut">precisão diagnóstica</p></div>
+<div class="flex -space-x-2 items-center ml-auto"><img class="h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-1.webp" alt=""/><img class="h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-2.webp" alt=""/><img class="h-8 w-8 rounded-full ring-2 ring-white object-cover" src="assets/img/avatar-3.avif" alt=""/><div class="h-8 w-8 rounded-full ring-2 ring-white bg-areia-100 flex items-center justify-center text-[10px] font-semibold text-petroleo-700">+12</div></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA dark (white-medical cta-banner + aurora) -->
+<section class="relative z-10 w-full aurora grain py-24 lg:py-32 overflow-hidden">
+<div class="absolute inset-0 pointer-events-none z-[1]"><div class="grid-line-v" style="left:6%;background:rgba(255,255,255,.06)"><div class="beam-v beam-s" style="animation:beam-v 7s infinite"></div></div><div class="grid-line-v" style="right:6%;background:rgba(255,255,255,.06)"><div class="beam-v beam-t" style="animation:beam-v 8s infinite 3s"></div></div></div>
+<div class="absolute -bottom-10 left-0 right-0 text-center text-[24vw] lg:text-[16vw] font-display font-extrabold leading-none text-ghost-light select-none pointer-events-none z-[1]" aria-hidden="true">avelar</div>
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-10">
+<div class="text-center md:text-left scroll-reveal">
+<p class="eyebrow light justify-center md:justify-start">Chamada para ação</p>
+<h3 class="text-4xl lg:text-5xl font-medium text-white tracking-tight mb-3 font-display">Pronto para cuidar <span class="text-shine-warm">de você?</span></h3>
+<p class="text-sage-200 text-lg font-light">Agende pelo WhatsApp e seja atendido perto de casa.</p>
+</div>
+<div class="flex flex-wrap gap-4 scroll-reveal delay-200"><a class="btn inv btn-shimmer lg">Agendar pelo WhatsApp <span class="iconify w-5 h-5" data-icon="ri:whatsapp-line"></span></a><a class="btn-beam"><span class="!bg-petroleo-900 border border-white/20">Conhecer o Clube CMA+</span></a></div>
+</div>
+</section>
+
+<!-- =====================================================================
+     5. ÍCONES
+     ===================================================================== -->
+<section class="relative z-10 w-full bg-white border-t border-line/70 pt-24 pb-24 lg:py-32 overflow-hidden ds-section" id="icones">
+<div class="absolute inset-0 pointer-events-none"><svg class="w-full h-full opacity-60"><rect width="100%" height="100%" fill="url(#p-dots-brand)"/></svg></div>
+<div class="absolute right-[8%] top-16 w-[420px] h-[420px] rounded-full bg-petroleo-50 blur-[100px] animate-drift pointer-events-none"></div>
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-end">
+<div class="lg:col-span-7"><p class="eyebrow scroll-reveal">05 · Ícones</p><h2 class="lg:text-7xl text-4xl font-medium text-ink tracking-tight scroll-reveal font-display">Linha fina, <span class="text-ghost">24px</span>, sem preenchimento.</h2></div>
+<p class="lg:col-span-5 lead scroll-reveal delay-100">Iconify com o set <b class="font-medium text-ink">Solar Linear</b> (herdado do white-medical) para UI e medicina; <b class="font-medium text-ink">Remix Icon</b> para redes sociais; Lucide disponível como fallback; símbolos da marca em SVG inline.</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-10">
+<div class="lg:col-span-4 bg-areia-50/70 border border-line rounded-xl p-8 scroll-reveal">
+<span class="ds-label">Símbolos da marca · &lt;use href="#brand-…"&gt;</span>
+<div class="grid grid-cols-3 gap-4 mt-5">
+<div class="kf-tile !h-32 group"><svg viewBox="0 0 240 110" class="w-16 h-auto transition-transform duration-700 group-hover:-translate-y-1"><use href="#brand-serra"/></svg><span class="label">serra</span></div>
+<div class="kf-tile !h-32 group text-petroleo-600"><svg viewBox="0 0 240 110" class="w-16 h-auto transition-colors duration-500 group-hover:text-terracota-500"><use href="#brand-serra-mono"/></svg><span class="label">serra mono</span></div>
+<div class="kf-tile !h-32 group text-sage-400"><svg viewBox="0 0 360 30" class="w-16 h-auto group-hover:text-petroleo-600 transition-colors"><use href="#brand-wave"/></svg><span class="label">onda</span></div>
+<div class="kf-tile !h-32 group"><span class="w-10 h-10 rounded-full bg-terracota-500 block transition-transform duration-700 group-hover:-translate-y-2 group-hover:shadow-glow-t"></span><span class="label">sol</span></div>
+<div class="kf-tile !h-32 group text-petroleo-600"><svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" class="group-hover:text-[#25D366] transition-colors"><path d="M20.5 3.5A11.8 11.8 0 0 0 12 0C5.5 0 .2 5.3.2 11.8c0 2.1.5 4.1 1.6 5.9L0 24l6.5-1.7a11.8 11.8 0 0 0 5.5 1.4c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.3-8.4zM12 21.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.7 9.7 0 0 1 2.2 11.8C2.2 6.4 6.6 2 12 2c2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c0 5.4-4.4 9.9-9.8 9.9zm5.4-7.3c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5c.1-.2 0-.4 0-.5L8.9 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/></svg><span class="label">whatsapp (index)</span></div>
+<div class="kf-tile !h-32 group text-petroleo-600"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:translate-x-1"><path d="M5 12h14M13 5l7 7-7 7"/></svg><span class="label">seta (index)</span></div>
+</div>
+</div>
+<div class="lg:col-span-8 bg-white border border-line rounded-xl p-8 scroll-reveal delay-100">
+<div class="flex flex-wrap items-center justify-between gap-3 mb-5"><span class="ds-label">Solar Linear · UI &amp; medicina · &lt;span class="iconify" data-icon="solar:…-linear"&gt;</span><span class="spec">hover: cor petróleo + scale 1.1 · .2s</span></div>
+<div class="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3" id="icon-grid">
+<!-- preenchido por JS a partir da lista ICONS -->
+</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="bg-white border border-line rounded-xl p-8 scroll-reveal">
+<span class="ds-label">Tamanhos</span>
+<div class="flex items-end gap-6 mt-5 text-petroleo-600">
+<div class="flex flex-col items-center gap-2"><span class="iconify w-3.5 h-3.5" data-icon="solar:heart-pulse-linear"></span><span class="spec">14</span></div>
+<div class="flex flex-col items-center gap-2"><span class="iconify w-4 h-4" data-icon="solar:heart-pulse-linear"></span><span class="spec">16</span></div>
+<div class="flex flex-col items-center gap-2"><span class="iconify w-5 h-5" data-icon="solar:heart-pulse-linear"></span><span class="spec">20</span></div>
+<div class="flex flex-col items-center gap-2"><span class="iconify w-6 h-6" data-icon="solar:heart-pulse-linear"></span><span class="spec">24 ★</span></div>
+<div class="flex flex-col items-center gap-2"><span class="iconify w-8 h-8" data-icon="solar:heart-pulse-linear"></span><span class="spec">32</span></div>
+<div class="flex flex-col items-center gap-2 text-petroleo-100"><span class="iconify w-16 h-16" data-icon="solar:heart-pulse-linear"></span><span class="spec">64 deco</span></div>
+</div>
+<p class="spec mt-5">stroke 1.5 (linear) · botões 16 · nav 24 · cards 24 em caixa 48px tom-50 · decorativos 64 em tom-100/200</p>
+</div>
+<div class="bg-white border border-line rounded-xl p-8 scroll-reveal delay-100">
+<span class="ds-label">Redes · Remix Icon (ri:) · Lucide</span>
+<div class="flex gap-3 mt-5">
+<a class="w-11 h-11 rounded-full border border-line flex items-center justify-center text-mut hover:text-white hover:bg-petroleo-600 hover:border-petroleo-600 transition-all duration-300 hover:-translate-y-1"><span class="iconify w-4 h-4" data-icon="ri:instagram-line"></span></a>
+<a class="w-11 h-11 rounded-full border border-line flex items-center justify-center text-mut hover:text-white hover:bg-petroleo-600 hover:border-petroleo-600 transition-all duration-300 hover:-translate-y-1"><span class="iconify w-4 h-4" data-icon="ri:facebook-circle-line"></span></a>
+<a class="w-11 h-11 rounded-full border border-line flex items-center justify-center text-mut hover:text-white hover:bg-[#25D366] hover:border-[#25D366] transition-all duration-300 hover:-translate-y-1"><span class="iconify w-4 h-4" data-icon="ri:whatsapp-line"></span></a>
+<a class="w-11 h-11 rounded-full border border-line flex items-center justify-center text-mut hover:text-white hover:bg-petroleo-600 hover:border-petroleo-600 transition-all duration-300 hover:-translate-y-1"><span class="iconify w-4 h-4" data-icon="ri:map-pin-line"></span></a>
+</div>
+<div class="flex gap-4 mt-6 text-mut items-center"><i data-lucide="stethoscope" class="w-5 h-5"></i><i data-lucide="activity" class="w-5 h-5"></i><i data-lucide="calendar-check" class="w-5 h-5"></i><i data-lucide="syringe" class="w-5 h-5"></i><i data-lucide="pill" class="w-5 h-5"></i><span class="spec ml-2">&lt;i data-lucide="…"&gt; · lucide.createIcons()</span></div>
+</div>
+<div class="bg-white border border-line rounded-xl p-8 scroll-reveal delay-200">
+<span class="ds-label">Micro-animações de ícone (gemini2)</span>
+<div class="grid grid-cols-4 gap-3 mt-5">
+<div class="kf-tile !h-24 group cursor-pointer text-mut"><svg class="w-6 h-6 stroke-current fill-none stroke-[1.5] transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg><span class="label">expand</span></div>
+<div class="kf-tile !h-24 group cursor-pointer text-mut"><div class="relative"><svg class="w-6 h-6 stroke-current fill-none stroke-[1.5] group-hover:animate-[shake_.5s_ease-in-out]" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-terracota-500 rounded-full border border-white scale-0 group-hover:scale-100 transition-transform"></span></div><span class="label">notify</span></div>
+<div class="kf-tile !h-24 group cursor-pointer text-mut"><svg class="w-6 h-6 stroke-current fill-transparent stroke-[1.5] transition-all duration-300 group-hover:fill-petroleo-600 group-hover:stroke-petroleo-600" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg><span class="label">save</span></div>
+<div class="kf-tile !h-24 group cursor-pointer text-mut"><svg class="w-6 h-6 stroke-current fill-none stroke-[1.5]" viewBox="0 0 24 24"><path class="stroke-draw" d="M5 13l4 4L19 7" style="stroke-dasharray:24;stroke-dashoffset:24"/><circle cx="12" cy="12" r="10"/></svg><span class="label">draw</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- =====================================================================
+     6. ANIMAÇÕES
+     ===================================================================== -->
+<section class="relative z-10 w-full border-t border-line/70 pt-24 pb-24 lg:py-32 overflow-hidden ds-section mesh-bg grain" id="animacoes">
+<div class="absolute inset-0 pointer-events-none hidden lg:block z-0">
+<div class="grid-line-v" style="left:6%"><div class="beam-v" style="animation:beam-v 6s infinite"></div></div><div class="grid-line-v" style="left:28%"></div><div class="grid-line-v" style="left:62%"><div class="beam-v beam-t" style="animation:beam-v 7s infinite 2s"></div></div><div class="grid-line-v" style="right:6%"><div class="beam-v beam-s" style="animation:beam-v 9s infinite 4s"></div></div>
+</div>
+<div class="relative z-10 lg:px-[6%] max-w-[1600px] mr-auto ml-auto pr-6 pl-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 items-end">
+<div class="lg:col-span-7"><p class="eyebrow scroll-reveal">06 · Animações</p><h2 class="lg:text-7xl text-4xl font-medium text-ink tracking-tight scroll-reveal font-display"><span class="text-reveal-wrapper"><span class="text-reveal-content">Surgir, deslizar,</span></span> <span class="text-reveal-wrapper"><span class="text-reveal-content delay-200 text-shine">iluminar.</span></span></h2></div>
+<p class="lg:col-span-5 lead scroll-reveal delay-100">Três famílias: <b class="font-medium text-ink">fundo</b> (blobs, mesh, aurora, beams, serra), <b class="font-medium text-ink">surgimento</b> (reveal-up, scroll-reveal, animationIn, text-reveal) e <b class="font-medium text-ink">interação</b> (shimmer, glow, ripple, elastic). Clique num cartão para repetir.</p>
+</div>
+
+<!-- tokens de movimento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="bg-white/80 backdrop-blur-sm border border-line rounded-xl p-6 scroll-reveal"><span class="ds-label">Easings</span>
+<div class="spec mt-3">--ease-out <b>cubic-bezier(.16, 1, .3, 1)</b> · revelações, hover de cards<br/>--ease-elastic <b>cubic-bezier(.34, 1.56, .64, 1)</b> · toggles, tooltips, checks<br/>--ease-soft <b>cubic-bezier(.4, 0, .2, 1)</b> · botões, cores<br/>linear · marquee, beams, spin, shine</div></div>
+<div class="bg-white/80 backdrop-blur-sm border border-line rounded-xl p-6 scroll-reveal delay-100"><span class="ds-label">Durações</span>
+<div class="spec mt-3">--d-fast <b>.18s</b> cores/transform de botão<br/>--d-base <b>.3s</b> tooltips, bordas, glow<br/>--d-slow <b>.6s</b> modal, ripple<br/>--d-reveal <b>1.0s</b> reveal-up / scroll-reveal<br/>fundo <b>6–40s</b> beams, drift, aurora, marquee</div></div>
+<div class="bg-white/80 backdrop-blur-sm border border-line rounded-xl p-6 scroll-reveal delay-200"><span class="ds-label">Coreografia</span>
+<div class="spec mt-3">stagger <b>100ms</b> (.delay-100/200/300/500/700/1000)<br/>hero: título → 100/200/300 · CTAs 500/700 · social 1000<br/>scroll: threshold .1 (white-medical) / .15 (digital-architect) / .2 (gemini) · once<br/>prefers-reduced-motion: tudo vira instantâneo</div></div>
+</div>
+
+<!-- catálogo de keyframes -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="kf-grid">
+<div class="kf-tile scroll-reveal" data-kf><div class="w-24 h-12 rounded bg-petroleo-600 animate-reveal"></div><span class="label">reveal-up · .animate-reveal</span></div>
+<div class="kf-tile scroll-reveal delay-100" data-kf><div class="w-24 h-12 rounded bg-sage-400" style="animation:fade-in 1.2s ease both"></div><span class="label">fade-in</span></div>
+<div class="kf-tile scroll-reveal delay-200" data-kf><div class="w-24 h-12 rounded bg-terracota-500 anim-in"></div><span class="label">animationIn · blur</span></div>
+<div class="kf-tile scroll-reveal delay-300" data-kf><div class="text-clip-anim text-3xl font-display font-extrabold text-petroleo-600" data-split="avelar"></div><span class="label">textSlide · letra a letra</span></div>
+<div class="kf-tile scroll-reveal delay-500" data-kf><h4 class="text-3xl font-display font-bold text-ink reveal-active"><span class="text-reveal-wrapper"><span class="text-reveal-content">máscara</span></span></h4><span class="label">text-reveal-wrapper</span></div>
+
+<div class="kf-tile scroll-reveal" data-kf><div class="relative w-32 h-[1px] bg-line overflow-hidden"><div class="beam-h" style="animation:beam-h 3s infinite"></div></div><span class="label">beam-h</span></div>
+<div class="kf-tile scroll-reveal delay-100" data-kf><div class="relative w-[1px] h-24 bg-line overflow-hidden"><div class="beam-v beam-t" style="animation:beam-v 3s infinite"></div></div><span class="label">beam-v</span></div>
+<div class="kf-tile scroll-reveal delay-200" data-kf><div class="w-32 overflow-hidden mask-linear-fade"><div class="flex gap-6 w-max animate-marquee text-xs font-mono uppercase text-mut"><span>Exames</span><span>Consultas</span><span>Enfermagem</span><span>Exames</span><span>Consultas</span><span>Enfermagem</span></div></div><span class="label">marquee + mask</span></div>
+<div class="kf-tile scroll-reveal delay-300" data-kf><span class="relative flex h-4 w-4"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span></span><span class="label">ping (Tailwind)</span></div>
+<div class="kf-tile scroll-reveal delay-500" data-kf><div class="relative w-16 h-16"><span class="absolute inset-0 rounded-full border border-terracota-400 animate-pulse-ring"></span><span class="absolute inset-0 rounded-full border border-terracota-400 animate-pulse-ring" style="animation-delay:.8s"></span><span class="absolute inset-[30%] rounded-full bg-terracota-500"></span></div><span class="label">pulse-ring</span></div>
+
+<div class="kf-tile scroll-reveal" data-kf><button class="btn sm btn-shimmer">shimmer</button><span class="label">shimmer sweep (hover)</span></div>
+<div class="kf-tile scroll-reveal delay-100" data-kf><a class="btn-beam"><span class="!py-3 !px-5 text-sm">beam</span></a><span class="label">conic spin border</span></div>
+<div class="kf-tile scroll-reveal delay-200" data-kf><div class="w-14 h-14 bg-gradient-to-br from-petroleo-600 to-sage-400 animate-morph"></div><span class="label">morph (gemini2)</span></div>
+<div class="kf-tile scroll-reveal delay-300" data-kf><div class="w-12 h-12 rounded-full bg-terracota-500 animate-float shadow-glow-t"></div><span class="label">float</span></div>
+<div class="kf-tile scroll-reveal delay-500" data-kf><div class="text-3xl font-display font-extrabold text-shine">shine</div><span class="label">shine · gradiente</span></div>
+
+<div class="kf-tile scroll-reveal" data-kf><svg viewBox="30 40 300 160" class="logo-anim w-28 h-auto"><circle class="lg-sun" cx="226.9" cy="103.7" r="35.7" fill="#C77B5B"/><path class="lg-back" d="M 40.0 183.5 Q 103.0 78.5 166.0 131.0 Q 208.0 162.5 271.0 183.5 Z" fill="#9CB8A5"/><path class="lg-front" d="M 82.0 183.5 Q 155.5 57.5 229.0 120.5 Q 260.5 152.0 292.0 183.5 Z" fill="#165B5A"/></svg><span class="label">sunrise + serra-up</span></div>
+<div class="kf-tile scroll-reveal delay-100" data-kf><svg viewBox="0 0 360 30" class="logo-anim w-28 h-auto text-sage-400"><path class="lg-wave" d="M2 20C100 42 220 -2 358 20" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" style="animation-delay:.1s"/></svg><span class="label">draw-wave · dashoffset</span></div>
+<div class="kf-tile scroll-reveal delay-200 !p-0 overflow-hidden" data-kf><div class="carousel-slide active"><img src="assets/img/paciente.jpg" alt=""/></div><span class="label !text-white z-10">ken burns 10s</span></div>
+<div class="kf-tile scroll-reveal delay-300 flashlight-card" data-flashlight><span class="iconify w-8 h-8 text-mut" data-icon="solar:sun-2-linear"></span><span class="label">flashlight (mouse)</span></div>
+<div class="kf-tile scroll-reveal delay-500" data-kf><div class="w-28 space-y-2"><div class="skeleton h-3 w-full"></div><div class="skeleton h-3 w-2/3"></div></div><span class="label">skeleton shimmer</span></div>
+
+<div class="kf-tile scroll-reveal" data-kf><div class="w-20 h-20 rounded-full bg-sage-200 blur-xl animate-drift"></div><span class="label">drift (blobs)</span></div>
+<div class="kf-tile scroll-reveal delay-100 !p-0 overflow-hidden" data-kf><div class="absolute inset-0 aurora"></div><span class="label !text-white z-10">aurora (conic 40s)</span></div>
+<div class="kf-tile scroll-reveal delay-200 !p-0 overflow-hidden" data-kf><div class="absolute inset-0 dots-bg"></div><span class="label z-10">dots-move 30s</span></div>
+<div class="kf-tile scroll-reveal delay-300" data-kf><svg class="w-28 h-10" viewBox="0 0 120 40" fill="none"><path class="ecg" d="M0 20H30L38 20L42 6L48 34L54 12L58 20H120" stroke="#C77B5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:300;stroke-dashoffset:300;animation-duration:3s"/></svg><span class="label">ecg-draw</span></div>
+<div class="kf-tile scroll-reveal delay-500" data-kf><div class="w-10 h-10 rounded-full border-2 border-petroleo-100 border-t-petroleo-600 animate-spin"></div><span class="label">spin (loading)</span></div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-12">
+<div class="code scroll-reveal"><span class="c">/* white-medical — surgimento */</span><br/>@keyframes reveal-up { 0% { clip-path: inset(100% 0 0 0); transform: translateY(20px); opacity: 0 } 100% { clip-path: inset(0); transform: none; opacity: 1 } }<br/>.animate-reveal { animation: reveal-up 1s cubic-bezier(.16,1,.3,1) forwards }<br/>.scroll-reveal { opacity: 0; transform: translateY(20px); transition: all 1s cubic-bezier(.16,1,.3,1) }<br/>.scroll-reveal.is-visible { opacity: 1; transform: none }<br/><br/><span class="c">/* animations-gemini — blur in */</span><br/>@keyframes animationIn { 0% { opacity:0; transform:translateY(30px); filter:blur(10px) } 100% { opacity:1; transform:none; filter:blur(0) } }<br/>.animate-on-scroll { animation-play-state: paused } .animate { running }</div>
+<div class="code scroll-reveal delay-100"><span class="c">// JS — o mesmo observer do white-medical (interactions.js)</span><br/>new IntersectionObserver((entries, obs) => {<br/>  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add(<span class="k">'is-visible'</span>); obs.unobserve(e.target) } })<br/>}, { threshold: .1 }).observe(el)<br/><br/><span class="c">// bento glow (white-medical) + flashlight (gemini)</span><br/>card.style.setProperty(<span class="k">'--mouse-x'</span>, x + 'px'); card.style.setProperty(<span class="k">'--mouse-y'</span>, y + 'px')<br/><br/><span class="c">// parallax (digital-architect)</span><br/>el.style.transform = `translateY(${scrollY * el.dataset.speed}px)`</div>
+</div>
+</div>
+</section>
+
+<!-- =====================================================================
+     FOOTER (index.html footer + digital-architect big text)
+     ===================================================================== -->
+<footer class="relative z-10 w-full bg-petroleo-600 text-sage-400 pt-24 pb-10 overflow-hidden grain">
+<div class="absolute inset-0 pointer-events-none"><div class="absolute -top-40 right-[10%] w-[600px] h-[600px] rounded-full bg-sage-400/10 blur-[120px] animate-drift"></div><div class="grid-line-h" style="top:0;background:rgba(255,255,255,.08)"><div class="beam-h beam-s" style="animation:beam-h 8s infinite"></div></div></div>
+<div class="relative max-w-[1600px] mx-auto px-6 lg:px-[6%]">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
+<div class="lg:col-span-5 scroll-reveal">
+<p class="font-display font-extrabold text-[clamp(40px,6vw,72px)] text-white tracking-[-.03em] leading-none mb-5">avelar</p>
+<svg viewBox="40 44 697 163" class="h-12 w-auto" aria-label="Centro Médico Avelar"><circle cx="226.9" cy="103.7" r="35.7" fill="#C77B5B"/><path d="M 40.0 183.5 Q 103.0 78.5 166.0 131.0 Q 208.0 162.5 271.0 183.5 Z" fill="#9CB8A5"/><path d="M 82.0 183.5 Q 155.5 57.5 229.0 120.5 Q 260.5 152.0 292.0 183.5 Z" fill="#FFFFFF"/><text x="344.0" y="66.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:600;font-size:23px;letter-spacing:7px" fill="#9CB8A5">CENTRO MÉDICO</text><text x="342.0" y="176.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:128px;letter-spacing:-2px" fill="#FFFFFF">avelar</text><path d="M 344.0 200.0 C 442.0 222.0, 562.0 178.0, 702.0 200.0" fill="none" stroke="#9CB8A5" stroke-width="7" stroke-linecap="round"/></svg>
+<p class="mt-5 text-sm max-w-sm">Saúde integrada para todas as fases da vida. Rua Antônio de Mattos, 260 · Avelar, Paty do Alferes · RJ.</p>
+</div>
+<div class="lg:col-span-2 scroll-reveal delay-100"><h4 class="text-[11.5px] font-semibold tracking-[.14em] uppercase text-white mb-4">Design system</h4><ul class="space-y-2 text-[15px]"><li><a class="text-white/90 hover:text-terracota-300 transition-colors" href="#hero">Hero</a></li><li><a class="text-white/90 hover:text-terracota-300 transition-colors" href="#tipografia">Tipografia</a></li><li><a class="text-white/90 hover:text-terracota-300 transition-colors" href="#cores">Cores</a></li><li><a class="text-white/90 hover:text-terracota-300 transition-colors" href="#componentes">Componentes</a></li></ul></div>
+<div class="lg:col-span-2 scroll-reveal delay-200"><h4 class="text-[11.5px] font-semibold tracking-[.14em] uppercase text-white mb-4">Referências</h4><ul class="space-y-2 text-[15px] text-white/90"><li>white-medical (VITALIS)</li><li>HTML site novo</li><li>animations-gemini 1 · 2</li><li>digital-architect</li><li>Site_CMA/index.html</li></ul></div>
+<div class="lg:col-span-3 scroll-reveal delay-300"><div class="bg-white/5 border border-white/10 p-6 rounded-xl backdrop-blur"><span class="block text-[11px] font-mono uppercase tracking-widest text-sage-300 mb-2">Assets</span><span class="block text-sm text-white/90 leading-relaxed">assets/brand · logos, símbolo, vídeos<br/>assets/fonts · Montserrat, Inter, Geist Mono<br/>assets/js · tailwind, iconify, lucide<br/>assets/css · white-medical-base.css</span></div></div>
+</div>
+<div class="flex flex-col md:flex-row items-center justify-between pt-6 border-t border-white/15 gap-4 text-[13px]">
+<span>© <span id="ano"></span> Centro Médico Avelar. Todos os direitos reservados.</span>
+<span>O Clube CMA+ Benefícios não é plano de saúde.</span>
+<div class="flex gap-3"><a class="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white hover:text-petroleo-600 transition-all" aria-label="Instagram"><span class="iconify w-4 h-4" data-icon="ri:instagram-line"></span></a><a class="w-9 h-9 rounded-full border border-white/25 flex items-center justify-center hover:bg-white hover:text-petroleo-600 transition-all" aria-label="Facebook"><span class="iconify w-4 h-4" data-icon="ri:facebook-circle-line"></span></a></div>
+</div>
+</div>
+<div class="mt-16 text-center opacity-[.07] pointer-events-none select-none overflow-hidden leading-none" aria-hidden="true"><span class="text-[24vw] font-display font-extrabold tracking-tighter whitespace-nowrap text-white">avelar</span></div>
+</footer>
+
+<!-- whatsapp fab (index.html) -->
+<a class="wa-fab" aria-label="WhatsApp" href="#componentes"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M20.5 3.5A11.8 11.8 0 0 0 12 0C5.5 0 .2 5.3.2 11.8c0 2.1.5 4.1 1.6 5.9L0 24l6.5-1.7a11.8 11.8 0 0 0 5.5 1.4c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.3-8.4zM12 21.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.8 1 1-3.7-.2-.4A9.7 9.7 0 0 1 2.2 11.8C2.2 6.4 6.6 2 12 2c2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c0 5.4-4.4 9.9-9.8 9.9zm5.4-7.3c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1l-.9 1.2c-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5.3-.5c.1-.2 0-.4 0-.5L8.9 7c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/></svg><span class="hidden sm:inline">Agendar pelo WhatsApp</span></a>
+
+<!-- toast (index.html #toast) -->
+<div class="toast" id="toast"><span class="iconify w-4 h-4 text-sage-300" data-icon="solar:check-circle-linear"></span><span data-toast-text>Copiado</span></div>
+
+<!-- modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div class="backdrop" data-close-modal></div>
+<div class="dialog">
+<div class="relative h-36 overflow-hidden bg-petroleo-600 aurora grain"><div class="absolute inset-0 flex items-end p-6 z-10"><div><span class="eyebrow light !mb-2">Agendamento</span><h3 id="modal-title" class="font-display font-semibold text-2xl text-white">Confirmar consulta</h3></div></div><button class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white hover:text-petroleo-600 transition-colors" data-close-modal aria-label="Fechar"><span class="iconify w-5 h-5" data-icon="solar:close-circle-linear"></span></button></div>
+<div class="p-8">
+<p class="text-sm text-mut leading-relaxed mb-6">Cardiologia com Dra. Carla Silva · amanhã às 10:00. Vamos abrir o WhatsApp com a mensagem pronta para a recepção confirmar.</p>
+<div class="uf -mt-4"><label class="line-anim"><span>Seu nome</span><input type="text" placeholder="Nome completo"/></label></div>
+<div class="flex gap-3 mt-8 justify-end"><button class="btn ghost sm" data-close-modal>Cancelar</button><button class="btn sm btn-shimmer" data-close-modal data-toast="Consulta confirmada · amanhã, 10:00">Confirmar <span class="iconify w-4 h-4" data-icon="solar:arrow-right-linear"></span></button></div>
+</div>
+</div>
+</div>
+
+<!-- =====================================================================
+     JS — interações (mesmos hooks do white-medical interactions.js + digital-architect + gemini)
+     ===================================================================== -->
+<script>
+(function(){
+  const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Lucide icons (white-medical)
+  if (window.lucide && typeof lucide.createIcons==='function') lucide.createIcons();
+
+  // Mobile menu (white-medical: #open-menu / #close-menu / #mobile-menu)
+  const menuBtn=$('#open-menu'), closeBtn=$('#close-menu'), mobileMenu=$('#mobile-menu');
+  function toggleMenu(){
+    const hidden=mobileMenu.classList.contains('hidden-menu');
+    mobileMenu.classList.toggle('hidden-menu',!hidden); mobileMenu.classList.toggle('visible-menu',hidden);
+    document.body.style.overflow=hidden?'hidden':'';
+  }
+  menuBtn&&menuBtn.addEventListener('click',toggleMenu); closeBtn&&closeBtn.addEventListener('click',toggleMenu);
+  $$('#mobile-menu a').forEach(a=>a.addEventListener('click',()=>{ if(mobileMenu.classList.contains('visible-menu')) toggleMenu(); }));
+
+  // Scroll reveal (white-medical .scroll-reveal → .is-visible) + (digital-architect .reveal → .active) + (gemini .animate-on-scroll → .animate)
+  const io=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(e=>{ if(!e.isIntersecting) return;
+      const t=e.target; t.classList.add('is-visible','active','animate','in','reveal-active');
+      if(t.dataset.progress!==undefined){ /* nothing */ }
+      obs.unobserve(t);
+    });
+  },{threshold:.1});
+  $$('.scroll-reveal, .reveal, .animate-on-scroll, [data-split], h2:has(.text-reveal-content), h1:has(.text-reveal-content)').forEach(el=>io.observe(el));
+
+  // text-clip-anim: split letters (gemini)
+  function split(el){
+    const txt=el.dataset.split||el.textContent; el.innerHTML='';
+    [...txt].forEach((ch,i)=>{ const s=document.createElement('span'); s.textContent=ch===' '?' ':ch; s.style.animationDelay=(i*0.06)+'s'; el.appendChild(s); });
+  }
+  $$('[data-split]').forEach(split);
+  $$('[data-replay-split]').forEach(b=>b.addEventListener('click',()=>{ $$('[data-split]',b.parentElement).forEach(split); }));
+
+  // FAQ (white-medical [data-faq-toggle])
+  $$('[data-faq-toggle]').forEach(btn=>btn.addEventListener('click',()=>{ const p=btn.nextElementSibling; p&&p.classList.toggle('hidden'); }));
+
+  // Bento mouse glow (white-medical) + flashlight/trace (gemini)
+  $$('[data-bento-grid]').forEach(grid=>grid.addEventListener('mousemove',ev=>{
+    for(const card of grid.children){ const r=card.getBoundingClientRect(); card.style.setProperty('--mouse-x',(ev.clientX-r.left)+'px'); card.style.setProperty('--mouse-y',(ev.clientY-r.top)+'px'); }
+  }));
+  $$('[data-flashlight]').forEach(card=>card.addEventListener('mousemove',ev=>{ const r=card.getBoundingClientRect(); card.style.setProperty('--mouse-x',(ev.clientX-r.left)+'px'); card.style.setProperty('--mouse-y',(ev.clientY-r.top)+'px'); }));
+
+  // Carousel (digital-architect) + dots
+  const car=$('#hero-carousel');
+  if(car){ const slides=$$('.carousel-slide',car), dots=$('[data-carousel-dots]',car); let cur=0;
+    slides.forEach((_,i)=>{ const d=document.createElement('button'); d.className='w-2 h-2 rounded-full bg-white/40 transition-all duration-300'; d.setAttribute('aria-label','Slide '+(i+1)); d.addEventListener('click',()=>go(i)); dots.appendChild(d); });
+    function go(i){ slides[cur].classList.remove('active'); dots.children[cur].className='w-2 h-2 rounded-full bg-white/40 transition-all duration-300'; cur=i; slides[cur].classList.add('active'); dots.children[cur].className='w-6 h-2 rounded-full bg-white transition-all duration-300'; }
+    go(0); if(!reduce) setInterval(()=>go((cur+1)%slides.length),5000);
+  }
+
+  // Parallax (digital-architect .parallax-img / .parallax-element) — rAF
+  const par=$$('.parallax-img, .parallax-element'); let ticking=false;
+  function onScroll(){ if(ticking||reduce) return; ticking=true; requestAnimationFrame(()=>{ const y=window.scrollY; par.forEach(el=>{ const r=el.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return; el.style.transform=`translateY(${(y-(r.top+y-innerHeight))*(parseFloat(el.dataset.speed)||.1)*.5}px)`; }); ticking=false; }); }
+  addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  // Navbar: link ativo por seção
+  const links=$$('.nav-link[href^="#"]');
+  const secIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id)); } }),{rootMargin:'-40% 0px -55% 0px'});
+  ['tipografia','cores','componentes','icones','animacoes'].forEach(id=>{ const s=document.getElementById(id); s&&secIO.observe(s); });
+  $$('[data-scroll]').forEach(b=>b.addEventListener('click',()=>{ const t=$(b.dataset.scroll); t&&t.scrollIntoView({behavior:'smooth'}); }));
+
+  // Hero: replay da logo
+  $$('[data-replay-logo]').forEach(b=>b.addEventListener('click',()=>{ const svg=$('#hero .logo-anim'); if(!svg) return; const p=svg.parentNode, c=svg.cloneNode(true); p.replaceChild(c,svg); }));
+  // kf tiles: clique repete a animação
+  $$('[data-kf]').forEach(t=>t.addEventListener('click',()=>{ const inner=t.innerHTML; t.innerHTML=inner; $$('[data-split]',t).forEach(split); }));
+
+  // Vídeo hero: pausar/retomar
+  $$('[data-video-toggle]').forEach(b=>b.addEventListener('click',()=>{ const v=b.closest('.group\\/vid, [class*="group/vid"]')?.querySelector('video')||$('#hero video'); if(!v) return; const ic=b.querySelector('.iconify'); if(v.paused){ v.play(); ic&&ic.setAttribute('data-icon','solar:pause-linear'); } else { v.pause(); ic&&ic.setAttribute('data-icon','solar:play-linear'); } }));
+
+  // Ripple
+  $$('[data-ripple]').forEach(b=>b.addEventListener('click',ev=>{ const r=b.getBoundingClientRect(); const s=document.createElement('span'); const d=Math.max(r.width,r.height); s.className='ripple'; s.style.cssText=`width:${d}px;height:${d}px;left:${ev.clientX-r.left-d/2}px;top:${ev.clientY-r.top-d/2}px`; b.appendChild(s); setTimeout(()=>s.remove(),600); }));
+
+  // Tabs
+  $$('[data-tabs]').forEach(g=>$$('.tab',g).forEach(t=>t.addEventListener('click',()=>{ $$('.tab',g).forEach(x=>x.classList.remove('on')); t.classList.add('on'); if(g.dataset.tabs==='type'){ const spec=t.dataset.tab==='spec'; $$('#type-scale .type-row').forEach(r=>{ r.children[0].classList.toggle('lg:col-span-6',spec); r.children[0].classList.toggle('lg:col-span-2',!spec); r.children[1].classList.toggle('lg:col-span-6',spec); r.children[1].classList.toggle('lg:col-span-10',!spec); }); } })));
+
+  // Range
+  $$('[data-range]').forEach(r=>{ const set=()=>r.style.setProperty('--val',r.value+'%'); r.addEventListener('input',set); set(); });
+
+  // Toast (index.html)
+  const toast=$('#toast'); let tt;
+  window.showToast=function(msg){ $('[data-toast-text]',toast).textContent=msg; toast.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>toast.classList.remove('show'),2600); };
+  $$('[data-toast]').forEach(b=>b.addEventListener('click',()=>showToast(b.dataset.toast)));
+
+  // Modal
+  const modal=$('#modal');
+  function openModal(){ modal.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+  $$('[data-open-modal]').forEach(b=>b.addEventListener('click',openModal));
+  $$('[data-close-modal]').forEach(b=>b.addEventListener('click',closeModal));
+  addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+  // Swatches: copiar hex
+  $$('[data-hex]').forEach(s=>s.addEventListener('click',()=>{ const hex=s.dataset.hex; (navigator.clipboard?navigator.clipboard.writeText(hex):Promise.resolve()).finally(()=>showToast(hex+' copiado')); }));
+
+  // Ícones Solar (grade)
+  const ICONS=['solar:stethoscope-linear','solar:heart-pulse-linear','solar:test-tube-linear','solar:document-medicine-linear','solar:calendar-add-linear','solar:calendar-linear','solar:user-check-linear','solar:users-group-two-rounded-linear','solar:monitor-camera-linear','solar:shield-check-linear','solar:graph-up-linear','solar:add-square-linear','solar:add-circle-linear','solar:close-circle-linear','solar:hamburger-menu-linear','solar:arrow-right-linear','solar:arrow-down-linear','solar:arrow-right-up-linear','solar:magnifer-linear','solar:map-point-linear','solar:phone-linear','solar:letter-linear','solar:clock-circle-linear','solar:info-circle-linear','solar:check-circle-linear','solar:danger-triangle-linear','solar:star-bold','solar:sun-2-linear','solar:pulse-linear','solar:health-linear','solar:medical-kit-linear','solar:hospital-linear','solar:pills-linear','solar:syringe-linear','solar:dna-linear','solar:body-linear','solar:bolt-circle-linear','solar:stars-minimalistic-linear','solar:play-circle-linear','solar:videocamera-record-linear'];
+  const grid=$('#icon-grid'); if(grid){ ICONS.forEach(ic=>{ const d=document.createElement('div'); d.className='group flex flex-col items-center justify-center gap-2 p-3 rounded-lg border border-line bg-white hover:border-petroleo-200 hover:shadow-soft transition-all cursor-pointer'; d.innerHTML=`<span class="iconify w-6 h-6 text-ink group-hover:text-petroleo-600 group-hover:scale-110 transition-all duration-200" data-icon="${ic}"></span><span class="text-[9px] font-mono text-mut text-center leading-tight">${ic.split(':')[1].replace('-linear','')}</span>`; d.addEventListener('click',()=>{ (navigator.clipboard?navigator.clipboard.writeText(ic):Promise.resolve()).finally(()=>showToast(ic+' copiado')); }); grid.appendChild(d); }); }
+
+  // Ano
+  const ano=$('#ano'); ano&&(ano.textContent=new Date().getFullYear());
+
+  // Canvas: serra viva (ondas em camadas, cores da marca)
+  const cv=$('#serra-canvas');
+  if(cv && !reduce){ const ctx=cv.getContext('2d'); let w,h,t=0;
+    function size(){ const r=cv.getBoundingClientRect(); w=cv.width=r.width*devicePixelRatio; h=cv.height=r.height*devicePixelRatio; }
+    size(); addEventListener('resize',size);
+    const layers=[{c:'rgba(156,184,165,.16)',a:.32,f:.0016,s:.00035,y:.62},{c:'rgba(22,91,90,.10)',a:.26,f:.0022,s:-.00025,y:.72},{c:'rgba(199,123,91,.08)',a:.2,f:.0030,s:.00045,y:.82}];
+    function draw(){ t+=16; ctx.clearRect(0,0,w,h);
+      layers.forEach(L=>{ ctx.beginPath(); ctx.moveTo(0,h);
+        for(let x=0;x<=w;x+=8){ const y=h*L.y + Math.sin(x*L.f/devicePixelRatio + t*L.s)*h*L.a*.5 + Math.sin(x*L.f*.37/devicePixelRatio - t*L.s*1.7)*h*L.a*.25; ctx.lineTo(x,y); }
+        ctx.lineTo(w,h); ctx.closePath(); ctx.fillStyle=L.c; ctx.fill(); });
+      // sol
+      const sx=w*.30+Math.sin(t*.0002)*w*.02, sy=h*.28+Math.cos(t*.00025)*h*.03; const g=ctx.createRadialGradient(sx,sy,0,sx,sy,h*.28); g.addColorStop(0,'rgba(199,123,91,.16)'); g.addColorStop(1,'rgba(199,123,91,0)'); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,h*.28,0,Math.PI*2); ctx.fill();
+      requestAnimationFrame(draw); }
+    draw();
+  }
+})();
+</script>
+</body>
+</html>
