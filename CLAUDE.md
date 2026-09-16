@@ -6,7 +6,7 @@ Idioma de trabalho: **português do Brasil**. Responda e escreva código/coment�
 
 | Pasta | Conteúdo |
 |---|---|
-| `site/` | Site publicável (estático): `index.html` gerado + `assets/` (quadros do vídeo da marca, vídeo do Clube, ícones, `og.jpg`) + `fotos/` (fotos reais) + arquivos de publicação (`404.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, `CNAME`, `.nojekyll`). É o que vai para a hospedagem. **Não edite `site/index.html` à mão: ele é gerado.** |
+| `site/` | Site publicável (estático): `index.html` gerado + `assets/` (quadros do vídeo da marca, vídeo do Clube, ícones, `og.jpg`) + `fotos/` (fotos reais e artes provisórias da marca) + arquivos de publicação (`404.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, `.nojekyll`). É o que vai para a hospedagem. **Não edite `site/index.html` à mão: ele é gerado.** |
 | `geradores/` | Pacote Python (rode como módulo, a partir da raiz). `site/` gera o site; `marca/` gera peças, renderiza SVG→PNG e o manual PDF; `social/` gera feed, destaques e fotos de perfil; `legado/` guarda explorações antigas; `fonts/` tem as fontes woff2. |
 | `marca/` | Design system (`design-system/designer_system.html`), manual de identidade original (PDF), manuais de aplicação das três marcas (PDF) e logotipos PNG. Pacotes completos (zip) ficam fora do repositório (ver `marca/pacotes/LEIA-ME.txt`). |
 | `midia/` | Vídeos-fonte (logo surgindo, homem apresentando o cartão CMA+) e imagens de referência. |
@@ -21,9 +21,10 @@ Idioma de trabalho: **português do Brasil**. Responda e escreva código/coment�
 Sempre a partir da **raiz do projeto**, como módulo:
 
 ```bash
-python -m geradores.site.build      # regenera site/index.html + favicon.svg, manifest, robots, sitemap, 404, CNAME
+python -m geradores.site.build      # regenera site/index.html + favicon.svg, manifest, robots, sitemap e 404
 python -m geradores.site.test       # Playwright: capturas desktop (1440) e mobile (390) de todas as rotas em build/shots; sai com erro se houver overflow horizontal ou erro de console
 python -m geradores.site.icones     # regenera site/assets/icon-192.png, icon-512.png, apple-touch-icon.png e og.jpg (Playwright)
+python -m geradores.site.fotos_placeholder   # regera as artes provisórias dos espaços de foto (Playwright)
 python -m http.server -d site 8080  # pré-visualizar em http://localhost:8080/#/inicio
 ```
 
@@ -34,12 +35,13 @@ Fluxo de uma alteração: editar `geradores/site/build.py` (conteúdo), `site.cs
 ### Arquitetura do site
 - Arquivo único, **SPA com rotas por hash**: `#/inicio`, `#/clube`, `#/especialidades`, `#/exames`, `#/enfermagem`, `#/unidade`, `#/contato`, `#/indica`, `#/trabalhe`, `#/cliente` (Área do Cliente — esqueleto, acesso "em implantação"), `#/privacidade`, `#/regulamento`.
 - Conteúdo das páginas: dicionário `PAGES` em `geradores/site/build.py` (HTML gerado por f-strings Python). CSS em `site.css` (vanilla, sem Tailwind), JS em `site.js`.
-- `CFG` no topo do JS = bloco "CONFIGURAÇÃO — edite aqui": WhatsApp, telefone, e-mails, horário, RT, DPO, CNPJ, endereço, lat/lng (opcional), redes. **Ainda são placeholders `[PREENCHER]`.** Domínio: `SITE_URL` (definitivo) e `DOMINIO_ATIVO` em `build.py`; enquanto `False`, as URLs absolutas usam o endereço do GitHub Pages e o `CNAME` não é gerado.
+- `CFG` no topo do JS = bloco "CONFIGURAÇÃO — edite aqui": WhatsApp, telefone, e-mails, horário (completo e `horario_curto` para o selo do hero), RT, DPO, CNPJ, endereço, lat/lng (opcional), redes. Preenchido com os dados reais em 15/09/2026; faltam só `email`, `email_rh` e lat/lng. Chave vazia faz o bloco sumir da página: elementos com `data-req="chave"` são removidos no `bind()`, e sem `email_rh` o currículo vai pelo WhatsApp.
+- Domínio: `SITE_URL` + `DOMINIO_ATIVO` em `build.py` alimentam canonical, Open Graph, JSON-LD, sitemap e robots. Com `DOMINIO_ATIVO = False` as URLs absolutas caem em `URL_PROVISORIA` (endereço da Vercel).
 - Formulários não têm back-end: montam a mensagem e abrem o WhatsApp (`wa.me`) ou o e-mail (currículo).
 - Mapa: imagem do Google Maps embutida + deep links (Google Maps, Waze, rota, Apple Maps, copiar endereço) via `GEO`; "Ver mapa interativo" carrega o embed do Google sem chave de API.
 - **Hero (home):** a marca surge com o scroll — sequência de 41 quadros JPEG (`site/assets/frames/f001..f041.jpg`, extraídos de `midia/video-institucional-logo.mp4`) desenhada em `<canvas>` conforme o progresso da rolagem (`heroUpdate` no JS). A marca se completa em 50% do trecho de scroll; o logotipo entra no cabeçalho (`#hdr.logo-on`) a partir de 55%. Regenerar quadros: `ffmpeg -t 3.34 -i midia/video-institucional-logo.mp4 -vf "fps=12,scale=960:-1,colorlevels=rimax=0.92:gimax=0.92:bimax=0.92" -q:v 5 site/assets/frames/f%03d.jpg` (o `colorlevels` clareia o fundo do vídeo para se fundir ao branco; o canvas usa `mix-blend-mode:multiply`). O número de quadros é detectado no build.
 - Página Clube CMA+: cabeçalho com vídeo `assets/clube-cartao.mp4` (loop mudo, botão pausar).
-- Fotos reais: salvar `site/fotos/fachada.jpg`, `atendimento.jpg`, `equipe.jpg` (jpg/jpeg/png/webp) e rodar o build — `foto_real()` insere o `<img>` no `<figure data-photo>` correspondente; sem arquivo, fica o gradiente da marca.
+- Fotos: `foto_real()` procura, em ordem, `site/fotos/<espaco>.jpg|jpeg|png|webp` (foto real), depois `<espaco>.placeholder.jpg` (arte da marca, gerada por `geradores.site.fotos_placeholder`) e, se não houver nenhum, deixa o gradiente da marca. Espaços: `fachada` (4:5), `atendimento` e `equipe` (16:9). Basta salvar a foto real com o nome do espaço para ela assumir — não precisa apagar a arte provisória.
 - Cuidado com nomes de classe: `.ghost` é a variante de botão (`btn ghost`, `app ghost`); o lettering gigante do hero é `.ghost-word`, o do rodapé é `.fghost` e o das seções escuras é `.ghost-l`.
 
 ### Peças de marca e social (saídas em `build/`)
@@ -69,10 +71,10 @@ Branco como palco; grade editorial 6% · 28% · 62% · 94% com feixes de luz (`.
 - LGPD: formulários com aceite explícito e link para `#/privacidade`; site não armazena dados.
 
 ## Pendências conhecidas
-- Preencher `CFG` (contatos, RT/CRM, DPO, CNPJ, redes, lat/lng) em `geradores/site/site.js`.
-- Domínio definitivo `centromedicoavelar.com.br` (confirmado em 14/09/2026) ainda sem DNS: `DOMINIO_ATIVO = False` em `geradores/site/build.py`. Quando o DNS estiver configurado, mudar para `True` (gera o `CNAME` e troca as URLs absolutas), rebuild e commit.
-- Publicação: repositório `github.com/centromedicoavelar-code/site-` conectado ao Vercel (pasta `site/`). Domínio: adicionar no Vercel (Settings → Domains) e criar os registros DNS indicados; depois `DOMINIO_ATIVO = True`.
-- Inserir fotos reais (fachada, atendimento, equipe) em `site/fotos/`.
+- **E-mails da clínica**: `email` (administrativo) e `email_rh` em `geradores/site/site.js` estão vazios — enquanto isso o cartão de e-mail não aparece e o currículo é enviado pelo WhatsApp.
+- **Fotos reais** (fachada, atendimento, equipe): hoje entram as artes provisórias da marca. Salvar as fotos em `site/fotos/` com o nome do espaço e rodar o build.
+- **lat/lng da entrada** no `CFG`: sem elas, mapa e rotas usam o endereço por extenso.
+- Conferir com a clínica: grafia do nome no responsável técnico, se o CRM leva a sigla do estado e se o e-mail do encarregado LGPD entra na política de privacidade.
 - Publicar regulamentos do Clube CMA+ e do Amigo Indica em `#/regulamento`.
 - Área do Cliente: hoje é esqueleto; plano em `docs/PROMPTS_secoes_CMA.md` (Etapa 14) prevê Supabase/Auth.
 - Feed do Instagram aguarda revisão do Branding antes de publicar.

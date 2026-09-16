@@ -1,19 +1,20 @@
 // ===================== CONFIGURAÇÃO — edite aqui =====================
 const CFG = {
-  whatsapp: "5524000000000",                 // só números, com DDI e DDD  [PREENCHER]
-  whatsapp_fmt: "(24) 00000-0000",           // como aparece no site        [PREENCHER]
-  telefone: "(24) 0000-0000",                // [PREENCHER]
-  email: "contato@centromedicoavelar.com.br",// [PREENCHER]
-  email_rh: "rh@centromedicoavelar.com.br",  // [PREENCHER]
-  horario: "Segunda a sexta, 8h às 18h",     // [CONFIRMAR]
-  rt: "Responsável técnico: nome — CRM 00000",  // [PREENCHER]
-  dpo: "Encarregado pelo tratamento de dados: nome e e-mail a definir.", // [PREENCHER]
-  cnpj: "00.000.000/0001-00",                // [PREENCHER]
+  whatsapp: "5524988295550",                 // só números, com DDI e DDD
+  whatsapp_fmt: "(24) 98829-5550",           // como aparece no site
+  telefone: "(24) 98829-5550",               // mesmo número do WhatsApp, para chamadas de voz
+  email: "",                                 // [PREENCHER] e-mail administrativo; vazio esconde os blocos de e-mail
+  email_rh: "",                              // [PREENCHER] e-mail do RH; vazio envia o currículo pelo WhatsApp
+  horario: "Segunda a sexta, das 8h às 19h · Sábado, das 8h às 18h",
+  horario_curto: "Seg a sex 8h–19h · Sáb 8h–18h",   // versão compacta (selo do hero)
+  rt: "Responsabilidade técnica: Letícia Pires de Araujo — CRM 52 136026-4",
+  dpo: "Encarregado pelo tratamento de dados pessoais: Lucas da Silva Lemos. Solicitações pelos canais de contato da unidade.",
+  cnpj: "59.256.998/0001-32",
   endereco: "Rua Antônio de Mattos, 260 - Avelar, Paty do Alferes - RJ, 26950-000",
   lat: "",  // opcional: coordenadas exatas da entrada (Google Maps → botão direito → copiar)
   lng: "",
-  instagram: "https://instagram.com/",       // [PREENCHER]
-  facebook: "https://facebook.com/",         // [PREENCHER]
+  instagram: "https://www.instagram.com/centromedicoavelar/",
+  facebook: "https://www.facebook.com/profile.php?id=61594360353271",
   frames: "assets/frames/f{n}.jpg",          // sequência de quadros do vídeo da marca (hero)
   n_frames: __NFRAMES__,
 };
@@ -47,6 +48,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') menu(false);
 
 // ---------- vínculos (WhatsApp, config, formulários) ----------
 function bind(root){
+  $$('[data-req]', root).forEach(el => { if (!CFG[el.dataset.req]) el.remove(); });   // some com o bloco quando o dado ainda não existe
   $$('[data-wa]', root).forEach(a => { a.href = wa(a.dataset.wa); a.target = '_blank'; a.rel = 'noopener'; });
   $$('[data-cfg-text]', root).forEach(el => { el.textContent = CFG[el.dataset.cfgText] || ''; });
   $$('[data-cfg]', root).forEach(a => {
@@ -67,7 +69,8 @@ function bind(root){
     for (const [k, v] of fd.entries()) if (v && v !== 'on') linhas.push(k + ': ' + v);
     const head = {clube:'Solicitação de adesão ao Clube CMA+', contato:'Mensagem pelo site', indica:'Indicação — Amigo Indica', trabalhe:'Cadastro no banco de talentos'}[kind];
     const corpo = head + '\n' + linhas.join('\n');
-    if (kind === 'trabalhe') location.href = 'mailto:' + CFG.email_rh + '?subject=' + encodeURIComponent(head) + '&body=' + encodeURIComponent(corpo + '\n\n(Anexe seu currículo em PDF a este e-mail.)');
+    if (kind === 'trabalhe' && CFG.email_rh) location.href = 'mailto:' + CFG.email_rh + '?subject=' + encodeURIComponent(head) + '&body=' + encodeURIComponent(corpo + '\n\n(Anexe seu currículo em PDF a este e-mail.)');
+    else if (kind === 'trabalhe') window.open(wa(corpo + '\n\n(Envio do currículo em PDF nesta conversa.)'), '_blank', 'noopener');
     else window.open(wa(corpo), '_blank', 'noopener');
     toast('Abrindo o canal de envio…');
   }));

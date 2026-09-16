@@ -5,7 +5,7 @@ O QUE É
 Esta pasta é o site publicável: index.html (arquivo único, gerado — não edite à mão),
 assets/ (quadros do vídeo da marca, vídeo do Clube, ícones, imagem de compartilhamento),
 fotos/ (fotos reais), mais os arquivos de publicação: 404.html, robots.txt, sitemap.xml,
-site.webmanifest, .nojekyll e, quando o domínio estiver ativo, CNAME.
+site.webmanifest e .nojekyll.
 
 Abas: Início, Clube CMA+, Especialidades, Exames, Enfermagem, Unidade, Contato,
 Amigo Indica, Trabalhe Conosco, Área do Cliente (em implantação), Política de
@@ -23,18 +23,21 @@ midia/video-institucional-logo.mp4) são desenhados conforme a rolagem. Quando a
 termina de surgir, o logotipo entra no cabeçalho. Quem tem "reduzir movimento" ativado
 vê a marca já formada. O número de quadros é detectado automaticamente no build.
 
-FOTOS REAIS
+FOTOS
 Salve em fotos/ com estes nomes (jpg, jpeg, png ou webp):
   fachada.jpg       hero e cartão da unidade (vertical, 4:5)
   atendimento.jpg   página Enfermagem (16:9)
   equipe.jpg        página Trabalhe Conosco (16:9)
 Depois rode o build: as imagens entram automaticamente nos espaços data-photo.
-Enquanto não houver foto, aparece o gradiente da marca com a serra.
+Enquanto a foto real não chega, entra a arte da marca (<espaco>.placeholder.jpg,
+gerada por python -m geradores.site.fotos_placeholder). A foto real tem prioridade:
+basta salvá-la com o nome do espaço, sem apagar a arte provisória.
 
 O QUE PREENCHER ANTES DE PUBLICAR
-Bloco CFG no topo de geradores/site/site.js: whatsapp, whatsapp_fmt, telefone, email,
-email_rh, horario, rt, dpo, cnpj, endereco (já preenchido), lat/lng (opcional),
-instagram, facebook. Domínio: SITE_URL e DOMINIO_ATIVO em geradores/site/build.py (o CNAME só é gerado com DOMINIO_ATIVO = True).
+Bloco CFG no topo de geradores/site/site.js. Preenchido em 15/09/2026; continuam
+vazios: email, email_rh (e-mails da clínica) e lat/lng da entrada. Chave vazia
+esconde o bloco no site em vez de deixar campo em branco. Domínio: SITE_URL e
+DOMINIO_ATIVO em geradores/site/build.py — hoje www.centromedicoavelar.com.
 
 MAPA, ROTAS E FORMULÁRIOS
 Botões Google Maps, Waze, Traçar rota, Apple Maps, Copiar endereço e "Ver mapa

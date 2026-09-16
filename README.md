@@ -37,9 +37,10 @@ python -m playwright install chromium
 Todos os comandos rodam **a partir da raiz do projeto**:
 
 ```bash
-python -m geradores.site.build     # gera site/index.html (+ favicon.svg, manifest, robots, sitemap, 404, CNAME)
+python -m geradores.site.build     # gera site/index.html (+ favicon.svg, manifest, robots, sitemap e 404)
 python -m geradores.site.test      # capturas desktop/mobile de todas as rotas em build/shots; falha se houver overflow ou erro de console
 python -m geradores.site.icones    # regenera site/assets/icon-*.png, apple-touch-icon.png e og.jpg
+python -m geradores.site.fotos_placeholder   # regera as artes provisórias dos espaços de foto
 python -m http.server -d site 8080 # pré-visualizar em http://localhost:8080/#/inicio
 ```
 
@@ -60,8 +61,13 @@ Os contatos, responsável técnico, encarregado LGPD, CNPJ e redes sociais ficam
 `DOMINIO_ATIVO` em [`geradores/site/build.py`](geradores/site/build.py). Depois de editar, rode o build
 e faça commit do `site/` regenerado.
 
-Fotos reais: salve `fachada.jpg`, `atendimento.jpg` e `equipe.jpg` em `site/fotos/` e rode o build —
-o gerador insere as imagens automaticamente nos espaços correspondentes.
+Uma chave vazia no `CFG` esconde o bloco correspondente em vez de mostrar campo vazio. É o caso
+dos e-mails, que ainda não existem: sem `email` o cartão de e-mail não aparece, e sem `email_rh`
+o currículo do "Trabalhe Conosco" é enviado pelo WhatsApp.
+
+Fotos: salve `fachada.jpg` (4:5), `atendimento.jpg` e `equipe.jpg` (16:9) em `site/fotos/` e rode o
+build — o gerador insere as imagens nos espaços correspondentes. Enquanto as fotos reais não chegam,
+entram as artes da marca (`<espaco>.placeholder.jpg`), geradas por `geradores.site.fotos_placeholder`.
 
 ## Publicação (Vercel)
 
@@ -71,11 +77,11 @@ O repositório está conectado ao Vercel: cada push na `main` gera um deploy de 
 o projeto com uma aplicação Python). O workflow **Verificar site** roda a cada push e falha
 se o `site/` versionado estiver desatualizado ou se os testes quebrarem.
 
-Domínio próprio (`centromedicoavelar.com.br`): em **Vercel → Settings → Domains**, adicione o
-domínio e siga os registros DNS que o Vercel indicar (normalmente `A @ 76.76.21.21` e
-`CNAME www cname.vercel-dns.com`). Depois mude `DOMINIO_ATIVO` para `True` em
-`geradores/site/build.py`, rode o build e faça commit, para que canonical, Open Graph e
-sitemap passem a usar o domínio.
+Domínio: o site responde em **https://www.centromedicoavelar.com** (domínio configurado no Vercel,
+ativo desde 15/09/2026). É o valor de `SITE_URL`, com `DOMINIO_ATIVO = True` em
+`geradores/site/build.py` — é ele que aparece em canonical, Open Graph, JSON-LD, sitemap e robots.
+Para trocar de domínio: adicione o novo em **Vercel → Settings → Domains**, crie os registros DNS
+indicados, atualize `SITE_URL` e rode o build.
 
 Alternativa sem o Vercel: qualquer hospedagem estática (Cloudflare Pages, Netlify, GitHub Pages,
 Hostinger) serve, basta enviar a pasta `site/`.

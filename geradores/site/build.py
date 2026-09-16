@@ -9,8 +9,8 @@ from geradores.marca.pack_serra import serra, principal, icon_inner, SERRA_W, SE
 
 SP = pathlib.Path(__file__).parent
 OUT = SITE                                              # pasta publicável
-SITE_URL = "https://centromedicoavelar.com.br"          # domínio definitivo da clínica (sem barra no fim)
-DOMINIO_ATIVO = False                                   # mude para True quando o DNS estiver configurado: gera o CNAME e usa o domínio nas URLs absolutas
+SITE_URL = "https://www.centromedicoavelar.com"         # domínio da clínica (sem barra no fim), apontado para a Vercel
+DOMINIO_ATIVO = True                                    # False enquanto o DNS não responder: as URLs absolutas caem em URL_PROVISORIA
 URL_PROVISORIA = "https://site-kpj7-black.vercel.app"   # endereço do Vercel enquanto o domínio não está ativo
 URL_PUBLICA = SITE_URL if DOMINIO_ATIVO else URL_PROVISORIA  # usada em canonical, Open Graph, JSON-LD, sitemap e robots
 N_FRAMES = len(list((OUT/"assets/frames").glob("f*.jpg")))
@@ -62,11 +62,16 @@ WA = '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-h
 
 FOTO_ALT = {"fachada": "Fachada do Centro Médico Avelar", "atendimento": "Atendimento de enfermagem no Centro Médico Avelar", "equipe": "Equipe do Centro Médico Avelar"}
 def foto_real(kind):
-    """Se existir site/fotos/<kind>.(jpg|jpeg|png|webp), devolve a tag <img>; senão, string vazia (fica o gradiente da marca)."""
+    """Imagem do espaço de foto, na ordem: foto real (site/fotos/<kind>.jpg|jpeg|png|webp),
+    arte provisória da marca (<kind>.placeholder.*, gerada por geradores.site.fotos_placeholder)
+    ou nada — aí fica o gradiente da marca. Basta salvar a foto real para ela assumir."""
+    lazy = "" if kind == "fachada" else ' loading="lazy"'
     for ext in ("jpg", "jpeg", "png", "webp"):
         if (OUT/"fotos"/f"{kind}.{ext}").exists():
-            lazy = "" if kind == "fachada" else ' loading="lazy"'
             return f'<img src="fotos/{kind}.{ext}" alt="{FOTO_ALT.get(kind, "")}"{lazy}>'
+    for ext in ("jpg", "jpeg", "png", "webp"):
+        if (OUT/"fotos"/f"{kind}.placeholder.{ext}").exists():
+            return f'<img src="fotos/{kind}.placeholder.{ext}" alt="Centro Médico Avelar"{lazy}>'
     return ""
 def photo(kind, cls="", caption=""):
     tones = {"fachada": (P, "#0f4443"), "equipe": (A, "#1b3448"), "atendimento": ("#2a6b69", P), "avelar": ("#6f8f7b", P)}
@@ -145,7 +150,7 @@ PAGES["inicio"] = f"""
         <a class="btn-beam" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar."><span class="btn-shimmer">Agendar consulta {ARROW}</span></a>
         <a class="pill-btn" href="#/clube"><span>Conhecer o Clube CMA+</span><span class="disc">{ic(I["arrow"],16)}</span></a>
       </div>
-      <div class="h-status"><span class="dot"></span><span class="st-t">Atendimento</span><span class="st-v mono" data-cfg-text="horario"></span></div>
+      <div class="h-status"><span class="dot"></span><span class="st-t">Atendimento</span><span class="st-v mono" data-cfg-text="horario_curto"></span></div>
     </div>
     <div class="h-media">
       <div class="beam-vline"><div class="beam-v" style="animation-duration:4s"></div></div>
@@ -327,7 +332,7 @@ PAGES["unidade"] = head("Unidade", "Avelar —", "Uma unidade central, pensada p
 PAGES["contato"] = head("Contato", "Fale", "Agendamentos, informações e dúvidas pelo WhatsApp ou pelo telefone da unidade.", ghost="com a gente.") + f"""
 <section class="sec white rel"><div class="wrap split">
   <div class="scroll-reveal">
-    <div class="chan"><a data-wa="Olá! Gostaria de falar com o Centro Médico Avelar.">{WA}<span>WhatsApp</span><b data-cfg-text="whatsapp_fmt"></b><small>Agendamentos e informações</small></a><a data-cfg="tel">{ic(I["phone"],20)}<span>Telefone</span><b data-cfg-text="telefone"></b><small>Atendimento na unidade</small></a><a data-cfg="mail">{ic(I["mail"],20)}<span>E-mail</span><b data-cfg-text="email"></b><small>Assuntos administrativos</small></a><div>{ic(I["clock"],20)}<span>Horário</span><b data-cfg-text="horario"></b><small>Segunda a sexta</small></div></div>
+    <div class="chan"><a data-wa="Olá! Gostaria de falar com o Centro Médico Avelar.">{WA}<span>WhatsApp</span><b data-cfg-text="whatsapp_fmt"></b><small>Agendamentos e informações</small></a><a data-cfg="tel">{ic(I["phone"],20)}<span>Telefone</span><b data-cfg-text="telefone"></b><small>Atendimento na unidade</small></a><a data-cfg="mail" data-req="email">{ic(I["mail"],20)}<span>E-mail</span><b data-cfg-text="email"></b><small>Assuntos administrativos</small></a><div>{ic(I["clock"],20)}<span>Horário</span><b data-cfg-text="horario"></b><small>Inclusive aos sábados</small></div></div>
     <h2 class="h3">Endereço</h2>
     <a class="mapa-mini" data-cfg="maps"><img src="{MAPIMG}" alt="Mapa"></a>
     <p data-cfg-text="endereco"></p>
@@ -351,7 +356,7 @@ PAGES["trabalhe"] = head("Trabalhe Conosco", "Faça parte", "Cadastre-se no banc
   <div class="scroll-reveal"><h2 class="h3">Quem buscamos</h2><p>Profissionais de saúde, recepção e apoio administrativo que compartilhem o jeito de cuidar do Centro Médico Avelar: humano, direto, seguro e próximo da comunidade.</p>
     <h2 class="h3">Vagas abertas</h2><p class="note">Nenhuma vaga publicada no momento. Cadastre-se para ser avisado.</p>{photo("equipe","wide","Equipe")}</div>
   <aside class="side glass-panel scroll-reveal d1">{tile("briefcase","p")}<h3>Cadastrar currículo</h3>
-    {form("trabalhe",[fi("Nome completo","Nome"),fi("Telefone / WhatsApp","Telefone","tel"),fi("E-mail","E-mail","email"),fs("Área de interesse","Área",["Enfermagem","Medicina","Psicologia","Recepção","Administrativo","Higienização","Outra"]),ft("Resumo profissional","Resumo")],"Enviar por e-mail",'<p class="small">Anexe o currículo em PDF ao e-mail que será aberto.</p>')}</aside>
+    {form("trabalhe",[fi("Nome completo","Nome"),fi("Telefone / WhatsApp","Telefone","tel"),fi("E-mail","E-mail","email"),fs("Área de interesse","Área",["Enfermagem","Medicina","Psicologia","Recepção","Administrativo","Higienização","Outra"]),ft("Resumo profissional","Resumo")],"Enviar cadastro",'<p class="small">Anexe o currículo em PDF no canal que abrir.</p>')}</aside>
 </div></section>"""
 
 PAGES["cliente"] = head("Área do Cliente", "Seus resultados,", "Acompanhe exames, agendamentos e o seu Clube CMA+ em um só lugar. O acesso on-line está em implantação.", ghost="no seu tempo.") + f"""
@@ -406,7 +411,7 @@ FOOT = f'''<footer class="grain"><div class="f-glow"></div><div class="grid-line
     <div class="scroll-reveal"><p class="fbig">avelar</p>{LOGO_INV}<p style="margin-top:16px">Saúde integrada para todas as fases da vida.</p><p data-cfg-text="endereco"></p><p>CNPJ <span data-cfg-text="cnpj"></span></p></div>
     <div class="scroll-reveal d1"><h4>Navegação</h4><a href="#/inicio">Início</a><a href="#/clube">Clube CMA+</a><a href="#/especialidades">Especialidades</a><a href="#/exames">Exames</a><a href="#/enfermagem">Enfermagem</a></div>
     <div class="scroll-reveal d2"><h4>Institucional</h4><a href="#/unidade">Unidade</a><a href="#/contato">Contato</a><a href="#/indica">Amigo Indica</a><a href="#/trabalhe">Trabalhe Conosco</a><a href="#/cliente">Área do cliente</a><a href="#/regulamento">Regulamentos</a><a href="#/privacidade">Política de Privacidade</a></div>
-    <div class="scroll-reveal d3"><div class="fbox"><h4>Atendimento</h4><a data-wa="Olá! Gostaria de falar com o Centro Médico Avelar.">WhatsApp <span data-cfg-text="whatsapp_fmt"></span></a><a data-cfg="tel">Telefone <span data-cfg-text="telefone"></span></a><a data-cfg="mail"><span data-cfg-text="email"></span></a><a><span data-cfg-text="horario"></span></a>
+    <div class="scroll-reveal d3"><div class="fbox"><h4>Atendimento</h4><a data-wa="Olá! Gostaria de falar com o Centro Médico Avelar.">WhatsApp <span data-cfg-text="whatsapp_fmt"></span></a><a data-cfg="tel">Telefone <span data-cfg-text="telefone"></span></a><a data-cfg="mail" data-req="email"><span data-cfg-text="email"></span></a><a><span data-cfg-text="horario"></span></a>
       <div class="soc"><a data-social="instagram" aria-label="Instagram">{ic(I["ig"],16)}</a><a data-social="facebook" aria-label="Facebook">{ic(I["fb"],16)}</a><a data-wa="Olá!" class="wa" aria-label="WhatsApp">{WA}</a></div></div></div>
   </div>
   <div class="fbot"><span>© <span id="ano"></span> Centro Médico Avelar. Todos os direitos reservados.</span><span>O Clube CMA+ Benefícios não é plano de saúde.</span><span data-cfg-text="rt"></span></div>
@@ -432,8 +437,6 @@ BUILD.mkdir(exist_ok=True)
 
 # ---------------- arquivos de publicação (GitHub Pages / hospedagem estática) ----------------
 def gravar(rel, txt): (OUT/rel).write_text(txt, encoding="utf-8", newline="\n")
-if DOMINIO_ATIVO: gravar("CNAME", SITE_URL.split("//", 1)[1] + "\n")   # domínio personalizado do GitHub Pages
-elif (OUT/"CNAME").exists(): (OUT/"CNAME").unlink()                     # sem DNS, o CNAME deixaria o site inacessível
 gravar(".nojekyll", "")                                 # Pages não deve processar com Jekyll
 gravar("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {URL_PUBLICA}/sitemap.xml\n")
 gravar("sitemap.xml", '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

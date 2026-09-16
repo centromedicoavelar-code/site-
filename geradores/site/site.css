@@ -150,7 +150,7 @@ main{position:relative;z-index:1}
 .hero .h-badges,.hero h1 .l1{opacity:1;transform:none;filter:none} .hero.s2 h1 .l2{opacity:1;transform:none;filter:none} .hero.s3 h1 .l3{opacity:1;transform:none;filter:none}
 .h-lead{margin:18px auto 0;font-size:16px;color:var(--mut);font-weight:300;max-width:440px;line-height:1.55;opacity:0;transform:translateY(16px);transition:all .45s var(--ease-out)}
 .h-ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;margin-top:26px;opacity:0;transform:translateY(16px);transition:all .45s var(--ease-out) .05s}
-.h-status{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:24px;font-size:12px;color:var(--mut);opacity:0;transition:opacity .5s .1s}
+.h-status{display:flex;align-items:center;gap:4px 10px;flex-wrap:wrap;justify-content:center;margin-top:24px;font-size:12px;color:var(--mut);opacity:0;transition:opacity .5s .1s}
 .st-t{font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--ink);font-size:11px} .st-v{font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 .hero.s3 .h-lead,.hero.s4 .h-ctas,.hero.s4 .h-status{opacity:1;transform:none}
 .hs-txt{font-size:15.5px;color:var(--mut);line-height:1.6;max-width:360px}
@@ -255,6 +255,7 @@ main{position:relative;z-index:1}
 .ecg-line{width:100%;height:60px;margin-bottom:10px} .ecg{stroke-dasharray:1200;stroke-dashoffset:1200;animation:ecg-draw 4s var(--ease-out) infinite}
 @keyframes ecg-draw{0%{stroke-dashoffset:1200;opacity:0}10%{opacity:1}70%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 .chan{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--p);margin-bottom:40px}
+.chan>*:last-child:nth-child(odd){grid-column:1/-1;border-right:0}
 .chan>*{display:block;padding:22px 20px 22px 0;border-bottom:1px solid var(--line);position:relative;transition:background .2s} .chan>a:hover{background:rgba(250,249,246,.9)} .chan>*:nth-child(odd){border-right:1px solid var(--line)} .chan>*:nth-child(even){padding-left:20px}
 .chan svg{position:absolute;right:16px;top:24px;color:var(--t);width:20px;height:20px}
 .chan span{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);font-weight:600} .chan b{display:block;font-family:'Montserrat';font-weight:700;font-size:20px;color:var(--p);margin:6px 0 2px;overflow-wrap:anywhere;padding-right:34px} .chan small{color:var(--mut)}
@@ -320,12 +321,15 @@ footer .logo{height:48px;width:auto}
   .facts{grid-template-columns:1fr} .facts>div{border-right:0;padding-left:0!important}
   .chan{grid-template-columns:1fr} .chan>*{border-right:0!important;padding-left:0!important}
   .wa-fab span{display:none} .brand .logo{height:36px} .mapa-card{padding:26px}
-  .h-media{margin:6px 16px 0;height:min(32vh,240px)} .h-copy{padding:18px 16px 0} .h-lead{font-size:15px}
+  .st-v{flex-basis:100%;font-size:10px;letter-spacing:.05em}   /* horário em linha própria, longe do botão do WhatsApp */
+  .h-media{margin:6px 16px 0;height:min(30vh,220px)} .h-copy{padding:14px 16px 0} .h-lead{font-size:15px} .h-status{margin-top:14px}
   .h-ctas{gap:12px} .btn-beam>span{padding:14px 20px;font-size:14px}
   .hero h1{font-size:clamp(38px,11vw,48px)}
   .cc-top b{font-size:36px} .cc-serra{width:90px}
 }
-@media (max-height:700px) and (max-width:1023px){ .h-lead{display:none} .h-media{height:min(30vh,200px)} }
+@media (max-height:700px) and (max-width:1023px){ .h-lead{display:none} .h-media{height:min(26vh,160px)} .h-status{margin-top:10px} }
+/* tela muito baixa: o selo de horário sai (o horário continua em Contato, Unidade e rodapé) */
+@media (max-height:660px) and (max-width:1023px){ .h-status{display:none} }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .scroll-reveal,.trc,.h-badges,.hero h1>span,.h-lead,.h-ctas,.h-status{opacity:1!important;transform:none!important;filter:none!important}
