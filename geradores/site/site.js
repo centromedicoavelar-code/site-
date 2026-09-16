@@ -13,6 +13,8 @@ const CFG = {
   endereco: "Rua Antônio de Mattos, 260 - Avelar, Paty do Alferes - RJ, 26950-000",
   lat: "",  // opcional: coordenadas exatas da entrada (Google Maps → botão direito → copiar)
   lng: "",
+  app: "https://app.centromedicoavelar.com",                  // aplicativo do paciente (login por e-mail e senha)
+  app_conta: "https://app.centromedicoavelar.com/criar-conta",// primeiro acesso
   instagram: "https://www.instagram.com/centromedicoavelar/",
   facebook: "https://www.facebook.com/profile.php?id=61594360353271",
   frames: "assets/frames/f{n}.jpg",          // sequência de quadros do vídeo da marca (hero)
@@ -64,7 +66,6 @@ function bind(root){
   $$('form[data-form]', root).forEach(f => f.addEventListener('submit', e => {
     e.preventDefault();
     const kind = f.dataset.form;
-    if (kind === 'cliente') { toast('Área do Cliente em implantação — solicite seu acesso pelo WhatsApp.'); return; }
     const fd = new FormData(f), linhas = [];
     for (const [k, v] of fd.entries()) if (v && v !== 'on') linhas.push(k + ': ' + v);
     const head = {clube:'Solicitação de adesão ao Clube CMA+', contato:'Mensagem pelo site', indica:'Indicação — Amigo Indica', trabalhe:'Cadastro no banco de talentos'}[kind];

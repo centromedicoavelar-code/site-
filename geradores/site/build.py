@@ -359,7 +359,7 @@ PAGES["trabalhe"] = head("Trabalhe Conosco", "Faça parte", "Cadastre-se no banc
     {form("trabalhe",[fi("Nome completo","Nome"),fi("Telefone / WhatsApp","Telefone","tel"),fi("E-mail","E-mail","email"),fs("Área de interesse","Área",["Enfermagem","Medicina","Psicologia","Recepção","Administrativo","Higienização","Outra"]),ft("Resumo profissional","Resumo")],"Enviar cadastro",'<p class="small">Anexe o currículo em PDF no canal que abrir.</p>')}</aside>
 </div></section>"""
 
-PAGES["cliente"] = head("Área do Cliente", "Seus resultados,", "Acompanhe exames, agendamentos e o seu Clube CMA+ em um só lugar. O acesso on-line está em implantação.", ghost="no seu tempo.") + f"""
+PAGES["cliente"] = head("Área do Cliente", "Seus resultados,", "Acompanhe exames, agendamentos e o seu Clube CMA+ pelo aplicativo do Centro Médico Avelar.", ghost="no seu tempo.") + f"""
 <section class="sec white rel"><div class="wrap split">
   <div class="scroll-reveal">
     <div class="bento3 two" data-bento-grid>
@@ -368,10 +368,13 @@ PAGES["cliente"] = head("Área do Cliente", "Seus resultados,", "Acompanhe exame
       <div class="bento-card"><div class="glow"></div>{tile("star","t")}<h3>Clube CMA+</h3><p>Carteirinha digital, familiares incluídos e benefícios vigentes.</p><span class="badge badge-outline">Em breve</span></div>
       <div class="bento-card"><div class="glow"></div>{tile("shield","p")}<h3>Privacidade</h3><p>Dados tratados conforme a LGPD, com acesso restrito ao titular.</p><a class="lnk" href="#/privacidade">Política de privacidade</a></div>
     </div>
-    <p class="note">Enquanto o acesso on-line não é liberado, resultados podem ser retirados na unidade mediante documento com foto e protocolo.</p>
+    <p class="note">Os resultados também podem ser retirados na unidade, mediante documento com foto e protocolo.</p>
   </div>
-  <aside class="side glass-panel scroll-reveal d1">{tile("lock","p")}<h3>Entrar</h3><p class="small">Acesso liberado em breve para pacientes e membros CMA+.</p>
-    <form class="uf" data-form="cliente"><label class="line-anim"><span>CPF</span><input name="CPF" inputmode="numeric" placeholder="000.000.000-00" required></label><label class="line-anim"><span>Senha</span><input name="Senha" type="password" placeholder="••••••••" required></label><button class="btn btn-shimmer" type="submit">Entrar {ARROW}</button><p class="small" style="margin-top:14px">Primeiro acesso? <a class="lnk" data-wa="Olá! Gostaria de solicitar meu acesso à Área do Cliente do Centro Médico Avelar.">Solicitar pelo WhatsApp</a></p></form></aside>
+  <aside class="side glass-panel scroll-reveal d1">{tile("lock","p")}<h3>Entrar no aplicativo</h3>
+    <p class="small">O acesso on-line fica no aplicativo do Centro Médico Avelar, com e-mail e senha.</p>
+    <a class="btn btn-shimmer" data-cfg="app">Abrir o aplicativo {ARROW}</a>
+    <p class="small" style="margin-top:16px">Primeiro acesso? <a class="lnk" data-cfg="app_conta">Criar minha conta</a></p>
+    <p class="small" style="margin-top:8px">Dúvidas sobre o acesso? <a class="lnk" data-wa="Olá! Preciso de ajuda com o acesso ao aplicativo do Centro Médico Avelar.">Falar pelo WhatsApp</a></p></aside>
 </div></section>"""
 
 PAGES["privacidade"] = head("LGPD", "Política de", "Como o Centro Médico Avelar trata os dados pessoais coletados por este site.", ghost="Privacidade.") + """

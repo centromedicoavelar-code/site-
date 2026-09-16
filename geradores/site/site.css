@@ -243,6 +243,7 @@ main{position:relative;z-index:1}
 .row .num{font-family:'Geist Mono',monospace;font-weight:500;color:var(--t);font-size:13px}
 .row .name{font-family:'Montserrat';font-weight:700;font-size:21px;color:var(--p);letter-spacing:-.01em;display:flex;align-items:center;gap:14px} .row .name .tile{width:40px;height:40px;border-radius:10px} .row .name .tile svg{width:20px;height:20px}
 .row .desc{color:var(--mut);font-size:15px} .row .go{display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat';font-weight:700;font-size:14px;color:var(--p)} .row .go svg{transition:transform .2s} .row:hover .go svg{transform:translateX(4px)}
+.side>.btn{width:100%;justify-content:center;margin-top:22px}
 .side{border-radius:16px;padding:30px;position:sticky;top:calc(var(--hh) + 16px)} .side h3{margin:16px 0 6px;color:var(--p)} .side .tile{margin-bottom:4px}
 .uf label{display:block;margin-top:18px} .uf label>span{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:600;margin-bottom:6px;transition:color .18s}
 .uf input,.uf select,.uf textarea{width:100%;border:0;border-bottom:1.5px solid var(--line);background:transparent;padding:10px 0;font:inherit;font-size:16px;color:var(--ink);border-radius:0;transition:border-color .3s}

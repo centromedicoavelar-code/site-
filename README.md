@@ -61,6 +61,9 @@ Os contatos, responsável técnico, encarregado LGPD, CNPJ e redes sociais ficam
 `DOMINIO_ATIVO` em [`geradores/site/build.py`](geradores/site/build.py). Depois de editar, rode o build
 e faça commit do `site/` regenerado.
 
+A Área do Cliente (`#/cliente`) não tem login próprio: ela leva ao aplicativo do paciente,
+em https://app.centromedicoavelar.com (URLs nas chaves `app` e `app_conta` do `CFG`).
+
 Uma chave vazia no `CFG` esconde o bloco correspondente em vez de mostrar campo vazio. É o caso
 dos e-mails, que ainda não existem: sem `email` o cartão de e-mail não aparece, e sem `email_rh`
 o currículo do "Trabalhe Conosco" é enviado pelo WhatsApp.

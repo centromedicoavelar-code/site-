@@ -33,11 +33,12 @@ Dependências: Python 3.11+ (o build usa só a biblioteca padrão); `pip install
 Fluxo de uma alteração: editar `geradores/site/build.py` (conteúdo), `site.css` ou `site.js` → `python -m geradores.site.build` → `python -m geradores.site.test` → conferir capturas em `build/shots` → commit incluindo o `site/` regenerado (o workflow falha se o `site/` versionado estiver desatualizado).
 
 ### Arquitetura do site
-- Arquivo único, **SPA com rotas por hash**: `#/inicio`, `#/clube`, `#/especialidades`, `#/exames`, `#/enfermagem`, `#/unidade`, `#/contato`, `#/indica`, `#/trabalhe`, `#/cliente` (Área do Cliente — esqueleto, acesso "em implantação"), `#/privacidade`, `#/regulamento`.
+- Arquivo único, **SPA com rotas por hash**: `#/inicio`, `#/clube`, `#/especialidades`, `#/exames`, `#/enfermagem`, `#/unidade`, `#/contato`, `#/indica`, `#/trabalhe`, `#/cliente` (Área do Cliente — explica o acesso e leva ao aplicativo), `#/privacidade`, `#/regulamento`.
 - Conteúdo das páginas: dicionário `PAGES` em `geradores/site/build.py` (HTML gerado por f-strings Python). CSS em `site.css` (vanilla, sem Tailwind), JS em `site.js`.
 - `CFG` no topo do JS = bloco "CONFIGURAÇÃO — edite aqui": WhatsApp, telefone, e-mails, horário (completo e `horario_curto` para o selo do hero), RT, DPO, CNPJ, endereço, lat/lng (opcional), redes. Preenchido com os dados reais em 15/09/2026; faltam só `email`, `email_rh` e lat/lng. Chave vazia faz o bloco sumir da página: elementos com `data-req="chave"` são removidos no `bind()`, e sem `email_rh` o currículo vai pelo WhatsApp.
 - Domínio: `SITE_URL` + `DOMINIO_ATIVO` em `build.py` alimentam canonical, Open Graph, JSON-LD, sitemap e robots. Com `DOMINIO_ATIVO = False` as URLs absolutas caem em `URL_PROVISORIA` (endereço da Vercel).
 - Formulários não têm back-end: montam a mensagem e abrem o WhatsApp (`wa.me`) ou o e-mail (currículo).
+- Área do Cliente: o acesso é o aplicativo do paciente em `https://app.centromedicoavelar.com` (login por e-mail e senha, rotas `/login`, `/criar-conta`, `/esqueci-a-senha`). URLs no `CFG`: `app` e `app_conta`. A página não tem mais formulário próprio.
 - Mapa: imagem do Google Maps embutida + deep links (Google Maps, Waze, rota, Apple Maps, copiar endereço) via `GEO`; "Ver mapa interativo" carrega o embed do Google sem chave de API.
 - **Hero (home):** a marca surge com o scroll — sequência de 41 quadros JPEG (`site/assets/frames/f001..f041.jpg`, extraídos de `midia/video-institucional-logo.mp4`) desenhada em `<canvas>` conforme o progresso da rolagem (`heroUpdate` no JS). A marca se completa em 50% do trecho de scroll; o logotipo entra no cabeçalho (`#hdr.logo-on`) a partir de 55%. Regenerar quadros: `ffmpeg -t 3.34 -i midia/video-institucional-logo.mp4 -vf "fps=12,scale=960:-1,colorlevels=rimax=0.92:gimax=0.92:bimax=0.92" -q:v 5 site/assets/frames/f%03d.jpg` (o `colorlevels` clareia o fundo do vídeo para se fundir ao branco; o canvas usa `mix-blend-mode:multiply`). O número de quadros é detectado no build.
 - Página Clube CMA+: cabeçalho com vídeo `assets/clube-cartao.mp4` (loop mudo, botão pausar).
@@ -75,6 +76,7 @@ Branco como palco; grade editorial 6% · 28% · 62% · 94% com feixes de luz (`.
 - **Fotos reais** (fachada, atendimento, equipe): hoje entram as artes provisórias da marca. Salvar as fotos em `site/fotos/` com o nome do espaço e rodar o build.
 - **lat/lng da entrada** no `CFG`: sem elas, mapa e rotas usam o endereço por extenso.
 - Conferir com a clínica: grafia do nome no responsável técnico, se o CRM leva a sigla do estado e se o e-mail do encarregado LGPD entra na política de privacidade.
+- Nomes diferentes para a mesma coisa: o site diz "Área do Cliente" e o aplicativo se apresenta como "Área do Paciente". Alinhar quando a clínica decidir.
+- Os cartões de Resultados, Agendamentos e Clube CMA+ na Área do Cliente continuam marcados "Em breve" — confirmar o que o aplicativo já entrega e tirar o selo do que estiver no ar.
 - Publicar regulamentos do Clube CMA+ e do Amigo Indica em `#/regulamento`.
-- Área do Cliente: hoje é esqueleto; plano em `docs/PROMPTS_secoes_CMA.md` (Etapa 14) prevê Supabase/Auth.
 - Feed do Instagram aguarda revisão do Branding antes de publicar.
