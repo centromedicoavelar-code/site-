@@ -292,9 +292,23 @@ footer .logo{height:48px;width:auto}
 @media (min-width:1024px){
   :root{--hh:92px}
   .wrap{padding:0 var(--pad)} .hwrap{padding:0 var(--pad)}
-  .hnav ul{display:flex} .hlink{display:inline-flex} .hright .btn.sm{display:inline-flex} .burger{display:none}
   .ggrid,.glines,.marker,.beam-line,.beam-vline{display:block}
   .brand .logo{height:44px}
+}
+/* Menu completo só a partir de 1360px (notebook de 1366 em diante). Os 9 links, o
+   "Área do cliente" e o Agendar passavam da borda direita até em 1440px; abaixo
+   disso fica o botão de menu. */
+@media (min-width:1360px){
+  .hnav ul{display:flex;gap:16px} .nav-link{font-size:13px}
+  .hlink{display:inline-flex} .hright .btn.sm{display:inline-flex} .burger{display:none}
+  .hwrap{padding:0 clamp(20px,2.5vw,48px)}
+}
+/* "Área do cliente" vira só o ícone até haver espaço para o texto. */
+@media (min-width:1360px) and (max-width:1535px){
+  .hlink{font-size:0;gap:0;padding:8px} .hlink svg{width:18px;height:18px}
+}
+/* Abertura com rolagem (a marca surgindo) a partir de 1280px; abaixo ela surge sozinha. */
+@media (min-width:1280px){
   .hero{height:200vh}
   .hero-sticky{display:block}
   .h-side{display:flex;flex-direction:column;position:absolute;left:var(--pad);top:var(--hh);bottom:6%;width:22%;border-right:1px solid rgba(228,222,210,.7);padding:0}
@@ -306,10 +320,15 @@ footer .logo{height:48px;width:auto}
   .h-card{display:block;position:absolute;left:62%;right:var(--pad);top:62%;bottom:6%;border-left:1px solid rgba(228,222,210,.7);border-top:1px solid rgba(228,222,210,.7);overflow:hidden}
   .scrub-ui{left:24px;bottom:22px} .scrub-ui .ds-label{font-size:10.5px}
 }
-@media (min-width:1400px){ .hnav ul{gap:28px} .nav-link{font-size:14px} }
-@media (max-width:1023px){
-  .hero{height:170vh}
+@media (min-width:1600px){ .hnav ul{gap:26px} .nav-link{font-size:14px} }
+/* Celular e tablet: a marca surge sozinha ao abrir a página (heroAuto no JS), sem
+   trilho de rolagem. Antes a primeira tela mostrava só a caixa vazia e a palavra
+   "Saúde"; título, texto e o botão de agendar só apareciam depois de rolar. */
+@media (max-width:1279px){
+  .hero{height:auto}
+  .hero-sticky{position:relative;height:auto;min-height:0;padding-bottom:48px}
   .h-media{height:min(36vh,320px)}
+  .scrub-ui{display:none}
 }
 @media (max-width:960px){
   .split,.bento3,.bento3.two,.fases,.fg,.phead-g{grid-template-columns:1fr}
@@ -328,9 +347,8 @@ footer .logo{height:48px;width:auto}
   .hero h1{font-size:clamp(38px,11vw,48px)}
   .cc-top b{font-size:36px} .cc-serra{width:90px}
 }
-@media (max-height:700px) and (max-width:1023px){ .h-lead{display:none} .h-media{height:min(26vh,160px)} .h-status{margin-top:10px} }
-/* tela muito baixa: o selo de horário sai (o horário continua em Contato, Unidade e rodapé) */
-@media (max-height:660px) and (max-width:1023px){ .h-status{display:none} }
+/* tela baixa (celular deitado): a imagem da marca encolhe para o título aparecer junto */
+@media (max-height:520px) and (max-width:1279px){ .h-media{height:min(40vh,160px)} }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .scroll-reveal,.trc,.h-badges,.hero h1>span,.h-lead,.h-ctas,.h-status{opacity:1!important;transform:none!important;filter:none!important}
@@ -339,7 +357,7 @@ footer .logo{height:48px;width:auto}
 </style></head><body><header id="hdr"><div class="hwrap">
   <a class="brand" href="#/inicio" aria-label="Centro Médico Avelar — início"><svg viewBox="40 44 697 163" class="logo" aria-label="Centro Médico Avelar"><circle cx="226.9" cy="103.7" r="35.7" fill="#C77B5B"/><path d="M 40.0 183.5 Q 103.0 78.5 166.0 131.0 Q 208.0 162.5 271.0 183.5 Z" fill="#9CB8A5"/><path d="M 82.0 183.5 Q 155.5 57.5 229.0 120.5 Q 260.5 152.0 292.0 183.5 Z" fill="#165B5A"/><text x="344.0" y="66.0" text-anchor="start" style="font-family:'Montserrat',Arial,sans-serif;font-weight:600;font-size:23.0px;letter-spacing:7.0px" fill="#284B63">CENTRO MÉDICO</text><text x="342.0" y="176.0" style="font-family:'Montserrat',Arial,sans-serif;font-weight:700;font-size:128.0px;letter-spacing:-2.0px" fill="#165B5A">avelar</text><path d="M 344.0 200.0 C 442.0 222.0, 562.0 178.0, 702.0 200.0" fill="none" stroke="#9CB8A5" stroke-width="7.0" stroke-linecap="round"/></svg></a>
   <nav class="hnav" aria-label="Principal"><ul><li><a class="nav-link" href="#/inicio" data-nav="inicio">Início</a></li><li><a class="nav-link" href="#/clube" data-nav="clube">Clube CMA+</a></li><li><a class="nav-link" href="#/especialidades" data-nav="especialidades">Especialidades</a></li><li><a class="nav-link" href="#/exames" data-nav="exames">Exames</a></li><li><a class="nav-link" href="#/enfermagem" data-nav="enfermagem">Enfermagem</a></li><li><a class="nav-link" href="#/unidade" data-nav="unidade">Unidade</a></li><li><a class="nav-link" href="#/contato" data-nav="contato">Contato</a></li><li><a class="nav-link" href="#/indica" data-nav="indica">Amigo Indica</a></li><li><a class="nav-link" href="#/trabalhe" data-nav="trabalhe">Trabalhe Conosco</a></li></ul></nav>
-  <div class="hright"><a class="hlink" href="#/cliente"><svg class="ic " viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Área do cliente</a><a class="btn sm btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar <svg class="ic " viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a><button class="burger" id="open-menu" aria-label="Abrir menu" aria-expanded="false"><svg class="ic " viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+  <div class="hright"><a class="hlink" href="#/cliente" title="Área do cliente"><svg class="ic " viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Área do cliente</a><a class="btn sm btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar <svg class="ic " viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a><button class="burger" id="open-menu" aria-label="Abrir menu" aria-expanded="false"><svg class="ic " viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 </div></header>
 <div class="mmenu" id="mobile-menu" aria-hidden="true"><button class="mclose" id="close-menu" aria-label="Fechar menu"><svg class="ic " viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><nav class="mnav"><a href="#/inicio" data-nav="inicio">Início</a><a href="#/clube" data-nav="clube">Clube CMA+</a><a href="#/especialidades" data-nav="especialidades">Especialidades</a><a href="#/exames" data-nav="exames">Exames</a><a href="#/enfermagem" data-nav="enfermagem">Enfermagem</a><a href="#/unidade" data-nav="unidade">Unidade</a><a href="#/contato" data-nav="contato">Contato</a><a href="#/indica" data-nav="indica">Amigo Indica</a><a href="#/trabalhe" data-nav="trabalhe">Trabalhe Conosco</a><a href="#/cliente" data-nav="cliente">Área do cliente</a></nav><div class="mbot"><a class="btn btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar consulta <svg class="ic " viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div></div>
 <div class="ambient" aria-hidden="true"><div class="blob-fx b1"></div><div class="blob-fx b2"></div><div class="blob-fx b3"></div></div>
@@ -461,7 +479,7 @@ const hero = { el: null, cv: null, ctx: null, imgs: [], last: -1, active: false 
 function heroSetup(){
   hero.el = $('#hero'); hero.cv = $('#scrub'); hero.active = !!hero.el;
   if (!hero.active) return;
-  hero.ctx = hero.cv.getContext('2d'); hero.last = -1;
+  hero.ctx = hero.cv.getContext('2d'); hero.last = -1; hero.pAuto = null;
   if (!hero.imgs.length) {
     for (let i = 1; i <= CFG.n_frames; i++) {
       const im = new Image(); im.decoding = 'async';
@@ -487,8 +505,38 @@ function heroDraw(i){
   const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight), w = img.naturalWidth * s, h = img.naturalHeight * s;
   hero.ctx.clearRect(0, 0, cw, ch); hero.ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
 }
+// Celular e tablet: sem trilho de rolagem (ver site.css). A marca surge sozinha em
+// ~1,8 s ao abrir a página e título, texto e botões entram em seguida.
+const compacto = () => window.matchMedia('(max-width:1279px)').matches;
+function heroAuto(){
+  const t0 = performance.now(), dur = reduce ? 0 : 1800;
+  hero.autoId = (hero.autoId || 0) + 1;
+  const id = hero.autoId;
+  const passo = now => {
+    if (!hero.active || !hero.el.isConnected || id !== hero.autoId) return;
+    hero.pAuto = dur ? Math.min(1, (now - t0) / dur) : 1;
+    heroAutoAplicar(true);
+    if (hero.pAuto < 1) requestAnimationFrame(passo);
+  };
+  requestAnimationFrame(passo);
+}
+function heroAutoAplicar(redesenhar){
+  const p = hero.pAuto || 0;
+  const fi = Math.round(p * (CFG.n_frames - 1));
+  if (fi !== hero.last || redesenhar) { heroDraw(fi); hero.last = fi; }
+  hero.el.classList.toggle('s2', p > .25); hero.el.classList.toggle('s3', p > .5); hero.el.classList.toggle('s4', p > .75);
+  // A logo vai para o cabeçalho quando a da abertura sai de vista.
+  const m = $('.h-media'), topo = m ? m.getBoundingClientRect().bottom : 0;
+  hdr.classList.toggle('logo-on', topo < 60);
+  hdr.classList.toggle('scrolled', window.scrollY > 10);
+}
 function heroUpdate(force){
   if (!hero.active || !hero.el.isConnected) return;
+  if (compacto()) {
+    if (hero.pAuto == null) heroAuto();
+    else heroAutoAplicar(force);
+    return;
+  }
   const vh = window.innerHeight, rect = hero.el.getBoundingClientRect();
   const total = Math.max(1, hero.el.offsetHeight - vh);
   let p = reduce ? 1 : Math.min(1, Math.max(0, -rect.top / total));

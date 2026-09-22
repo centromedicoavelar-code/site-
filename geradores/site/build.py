@@ -403,7 +403,7 @@ JS = open(SP/"site.js", encoding="utf-8").read().replace("__PAGES__", json.dumps
 HEAD = f'''<header id="hdr"><div class="hwrap">
   <a class="brand" href="#/inicio" aria-label="Centro Médico Avelar — início">{LOGO}</a>
   <nav class="hnav" aria-label="Principal"><ul>{nav_html}</ul></nav>
-  <div class="hright"><a class="hlink" href="#/cliente">{ic(I["user"],16)} Área do cliente</a><a class="btn sm btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar {ARROW}</a><button class="burger" id="open-menu" aria-label="Abrir menu" aria-expanded="false">{ic(I["menu"],24)}</button></div>
+  <div class="hright"><a class="hlink" href="#/cliente" title="Área do cliente">{ic(I["user"],16)} Área do cliente</a><a class="btn sm btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar {ARROW}</a><button class="burger" id="open-menu" aria-label="Abrir menu" aria-expanded="false">{ic(I["menu"],24)}</button></div>
 </div></header>
 <div class="mmenu" id="mobile-menu" aria-hidden="true"><button class="mclose" id="close-menu" aria-label="Fechar menu">{ic(I["x"],26)}</button><nav class="mnav">{mnav_html}</nav><div class="mbot"><a class="btn btn-shimmer" data-wa="Olá! Gostaria de agendar uma consulta no Centro Médico Avelar.">Agendar consulta {ARROW}</a></div></div>
 <div class="ambient" aria-hidden="true"><div class="blob-fx b1"></div><div class="blob-fx b2"></div><div class="blob-fx b3"></div></div>

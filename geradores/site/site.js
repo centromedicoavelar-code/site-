@@ -105,7 +105,7 @@ const hero = { el: null, cv: null, ctx: null, imgs: [], last: -1, active: false 
 function heroSetup(){
   hero.el = $('#hero'); hero.cv = $('#scrub'); hero.active = !!hero.el;
   if (!hero.active) return;
-  hero.ctx = hero.cv.getContext('2d'); hero.last = -1;
+  hero.ctx = hero.cv.getContext('2d'); hero.last = -1; hero.pAuto = null;
   if (!hero.imgs.length) {
     for (let i = 1; i <= CFG.n_frames; i++) {
       const im = new Image(); im.decoding = 'async';
@@ -131,8 +131,38 @@ function heroDraw(i){
   const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight), w = img.naturalWidth * s, h = img.naturalHeight * s;
   hero.ctx.clearRect(0, 0, cw, ch); hero.ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
 }
+// Celular e tablet: sem trilho de rolagem (ver site.css). A marca surge sozinha em
+// ~1,8 s ao abrir a página e título, texto e botões entram em seguida.
+const compacto = () => window.matchMedia('(max-width:1279px)').matches;
+function heroAuto(){
+  const t0 = performance.now(), dur = reduce ? 0 : 1800;
+  hero.autoId = (hero.autoId || 0) + 1;
+  const id = hero.autoId;
+  const passo = now => {
+    if (!hero.active || !hero.el.isConnected || id !== hero.autoId) return;
+    hero.pAuto = dur ? Math.min(1, (now - t0) / dur) : 1;
+    heroAutoAplicar(true);
+    if (hero.pAuto < 1) requestAnimationFrame(passo);
+  };
+  requestAnimationFrame(passo);
+}
+function heroAutoAplicar(redesenhar){
+  const p = hero.pAuto || 0;
+  const fi = Math.round(p * (CFG.n_frames - 1));
+  if (fi !== hero.last || redesenhar) { heroDraw(fi); hero.last = fi; }
+  hero.el.classList.toggle('s2', p > .25); hero.el.classList.toggle('s3', p > .5); hero.el.classList.toggle('s4', p > .75);
+  // A logo vai para o cabeçalho quando a da abertura sai de vista.
+  const m = $('.h-media'), topo = m ? m.getBoundingClientRect().bottom : 0;
+  hdr.classList.toggle('logo-on', topo < 60);
+  hdr.classList.toggle('scrolled', window.scrollY > 10);
+}
 function heroUpdate(force){
   if (!hero.active || !hero.el.isConnected) return;
+  if (compacto()) {
+    if (hero.pAuto == null) heroAuto();
+    else heroAutoAplicar(force);
+    return;
+  }
   const vh = window.innerHeight, rect = hero.el.getBoundingClientRect();
   const total = Math.max(1, hero.el.offsetHeight - vh);
   let p = reduce ? 1 : Math.min(1, Math.max(0, -rect.top / total));

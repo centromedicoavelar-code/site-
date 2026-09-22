@@ -292,9 +292,23 @@ footer .logo{height:48px;width:auto}
 @media (min-width:1024px){
   :root{--hh:92px}
   .wrap{padding:0 var(--pad)} .hwrap{padding:0 var(--pad)}
-  .hnav ul{display:flex} .hlink{display:inline-flex} .hright .btn.sm{display:inline-flex} .burger{display:none}
   .ggrid,.glines,.marker,.beam-line,.beam-vline{display:block}
   .brand .logo{height:44px}
+}
+/* Menu completo só a partir de 1360px (notebook de 1366 em diante). Os 9 links, o
+   "Área do cliente" e o Agendar passavam da borda direita até em 1440px; abaixo
+   disso fica o botão de menu. */
+@media (min-width:1360px){
+  .hnav ul{display:flex;gap:16px} .nav-link{font-size:13px}
+  .hlink{display:inline-flex} .hright .btn.sm{display:inline-flex} .burger{display:none}
+  .hwrap{padding:0 clamp(20px,2.5vw,48px)}
+}
+/* "Área do cliente" vira só o ícone até haver espaço para o texto. */
+@media (min-width:1360px) and (max-width:1535px){
+  .hlink{font-size:0;gap:0;padding:8px} .hlink svg{width:18px;height:18px}
+}
+/* Abertura com rolagem (a marca surgindo) a partir de 1280px; abaixo ela surge sozinha. */
+@media (min-width:1280px){
   .hero{height:200vh}
   .hero-sticky{display:block}
   .h-side{display:flex;flex-direction:column;position:absolute;left:var(--pad);top:var(--hh);bottom:6%;width:22%;border-right:1px solid rgba(228,222,210,.7);padding:0}
@@ -306,10 +320,15 @@ footer .logo{height:48px;width:auto}
   .h-card{display:block;position:absolute;left:62%;right:var(--pad);top:62%;bottom:6%;border-left:1px solid rgba(228,222,210,.7);border-top:1px solid rgba(228,222,210,.7);overflow:hidden}
   .scrub-ui{left:24px;bottom:22px} .scrub-ui .ds-label{font-size:10.5px}
 }
-@media (min-width:1400px){ .hnav ul{gap:28px} .nav-link{font-size:14px} }
-@media (max-width:1023px){
-  .hero{height:170vh}
+@media (min-width:1600px){ .hnav ul{gap:26px} .nav-link{font-size:14px} }
+/* Celular e tablet: a marca surge sozinha ao abrir a página (heroAuto no JS), sem
+   trilho de rolagem. Antes a primeira tela mostrava só a caixa vazia e a palavra
+   "Saúde"; título, texto e o botão de agendar só apareciam depois de rolar. */
+@media (max-width:1279px){
+  .hero{height:auto}
+  .hero-sticky{position:relative;height:auto;min-height:0;padding-bottom:48px}
   .h-media{height:min(36vh,320px)}
+  .scrub-ui{display:none}
 }
 @media (max-width:960px){
   .split,.bento3,.bento3.two,.fases,.fg,.phead-g{grid-template-columns:1fr}
@@ -328,9 +347,8 @@ footer .logo{height:48px;width:auto}
   .hero h1{font-size:clamp(38px,11vw,48px)}
   .cc-top b{font-size:36px} .cc-serra{width:90px}
 }
-@media (max-height:700px) and (max-width:1023px){ .h-lead{display:none} .h-media{height:min(26vh,160px)} .h-status{margin-top:10px} }
-/* tela muito baixa: o selo de horário sai (o horário continua em Contato, Unidade e rodapé) */
-@media (max-height:660px) and (max-width:1023px){ .h-status{display:none} }
+/* tela baixa (celular deitado): a imagem da marca encolhe para o título aparecer junto */
+@media (max-height:520px) and (max-width:1279px){ .h-media{height:min(40vh,160px)} }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .scroll-reveal,.trc,.h-badges,.hero h1>span,.h-lead,.h-ctas,.h-status{opacity:1!important;transform:none!important;filter:none!important}
