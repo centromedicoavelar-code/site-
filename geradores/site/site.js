@@ -9,7 +9,8 @@ const CFG = {
   horario_curto: "Seg a sex 8h–19h · Sáb 8h–18h",   // versão compacta (selo do hero)
   rt: "Responsabilidade técnica: Letícia Pires de Araujo — CRM 52 136026-4",
   dpo: "Encarregado pelo tratamento de dados pessoais: Lucas da Silva Lemos. Solicitações pelos canais de contato da unidade.",
-  cnpj: "59.256.998/0001-32",
+  razao_social: "Centro Médico Avelar LTDA",  // como consta no cartão CNPJ
+  cnpj: "69.444.879/0001-67",                 // matriz, inscrita em 02/10/2026
   endereco: "Rua Antônio de Mattos, 260 - Avelar, Paty do Alferes - RJ, 26950-000",
   lat: "",  // opcional: coordenadas exatas da entrada (Google Maps → botão direito → copiar)
   lng: "",

@@ -411,7 +411,7 @@ HEAD = f'''<header id="hdr"><div class="hwrap">
 
 FOOT = f'''<footer class="grain"><div class="f-glow"></div><div class="grid-line-h" style="top:0;background:rgba(255,255,255,.08)"><div class="beam-h beam-s" style="animation-duration:8s"></div></div><div class="wrap">
   <div class="fg">
-    <div class="scroll-reveal"><p class="fbig">avelar</p>{LOGO_INV}<p style="margin-top:16px">Saúde integrada para todas as fases da vida.</p><p data-cfg-text="endereco"></p><p>CNPJ <span data-cfg-text="cnpj"></span></p></div>
+    <div class="scroll-reveal"><p class="fbig">avelar</p>{LOGO_INV}<p style="margin-top:16px">Saúde integrada para todas as fases da vida.</p><p data-cfg-text="endereco"></p><p><span data-cfg-text="razao_social"></span> · CNPJ <span data-cfg-text="cnpj"></span></p></div>
     <div class="scroll-reveal d1"><h4>Navegação</h4><a href="#/inicio">Início</a><a href="#/clube">Clube CMA+</a><a href="#/especialidades">Especialidades</a><a href="#/exames">Exames</a><a href="#/enfermagem">Enfermagem</a></div>
     <div class="scroll-reveal d2"><h4>Institucional</h4><a href="#/unidade">Unidade</a><a href="#/contato">Contato</a><a href="#/indica">Amigo Indica</a><a href="#/trabalhe">Trabalhe Conosco</a><a href="#/cliente">Área do cliente</a><a href="#/regulamento">Regulamentos</a><a href="#/privacidade">Política de Privacidade</a></div>
     <div class="scroll-reveal d3"><div class="fbox"><h4>Atendimento</h4><a data-wa="Olá! Gostaria de falar com o Centro Médico Avelar.">WhatsApp <span data-cfg-text="whatsapp_fmt"></span></a><a data-cfg="tel">Telefone <span data-cfg-text="telefone"></span></a><a data-cfg="mail" data-req="email"><span data-cfg-text="email"></span></a><a><span data-cfg-text="horario"></span></a>
