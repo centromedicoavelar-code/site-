@@ -20,6 +20,14 @@ const CFG = {
   facebook: "https://www.facebook.com/profile.php?id=61594360353271",
   frames: "assets/frames/f{n}.jpg",          // sequência de quadros do vídeo da marca (hero)
   n_frames: __NFRAMES__,
+  // Fontes de leads do CRM (Vitta Link → Configurações do CRM → Fontes de leads). A chave de cada
+  // fonte só serve para registrar lead; vazio = o formulário só abre o WhatsApp.
+  crm: "https://shahlfscrmigoneobxfc.supabase.co/functions/v1/crm-entrada?t=",
+  crm_fontes: {
+    contato: "fd415ca70f174ad9bcee0bda45477729de37365f1f204564b39056270dbc61bd",
+    clube: "05efcab2bdd84fa88c8598670918487b7354941786e24852924e35d324312610",
+    indica: "039e22ee49ad42d0ab8798a2cc01912d33dc84e9efdd46a09d1bb983e911b333",
+  },
 };
 // =====================================================================
 const PAGES = __PAGES__;
@@ -71,6 +79,13 @@ function bind(root){
     for (const [k, v] of fd.entries()) if (v && v !== 'on') linhas.push(k + ': ' + v);
     const head = {clube:'Solicitação de adesão ao Clube CMA+', contato:'Mensagem pelo site', indica:'Indicação — Amigo Indica', trabalhe:'Cadastro no banco de talentos'}[kind];
     const corpo = head + '\n' + linhas.join('\n');
+    // Registra o lead no CRM da clínica (não espera a resposta: o WhatsApp abre na hora).
+    const fonte = CFG.crm_fontes[kind];
+    if (fonte) {
+      const dados = Object.fromEntries(Array.from(fd.entries()).filter(([, v]) => v && v !== 'on'));
+      dados.pagina = location.href;
+      try { fetch(CFG.crm + fonte, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(dados), keepalive: true}).catch(() => {}); } catch (_) { /* sem rede: segue pelo WhatsApp */ }
+    }
     if (kind === 'trabalhe' && CFG.email_rh) location.href = 'mailto:' + CFG.email_rh + '?subject=' + encodeURIComponent(head) + '&body=' + encodeURIComponent(corpo + '\n\n(Anexe seu currículo em PDF a este e-mail.)');
     else if (kind === 'trabalhe') window.open(wa(corpo + '\n\n(Envio do currículo em PDF nesta conversa.)'), '_blank', 'noopener');
     else window.open(wa(corpo), '_blank', 'noopener');
