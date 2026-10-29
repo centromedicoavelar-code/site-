@@ -210,6 +210,17 @@ function render(){
   hero.active = false;
   if (page === 'inicio') heroSetup();
 }
+// Aviso de cookies: aparece até a pessoa tocar em "Entendi". Sem armazenamento
+// disponível (navegação privada), aparece de novo na próxima visita, e só.
+(function avisoCookies(){
+  const el = $('#ckb'); if (!el) return;
+  let visto = false;
+  try { visto = localStorage.getItem('cma_aviso_cookies') === '1'; } catch (e) {}
+  if (visto) return;
+  el.hidden = false;
+  $('#ckb-ok').addEventListener('click', () => { el.hidden = true; try { localStorage.setItem('cma_aviso_cookies', '1'); } catch (e) {} });
+  el.querySelector('a').addEventListener('click', () => { el.hidden = true; });
+})();
 window.addEventListener('hashchange', render);
 bind(document.body); render();
 $('#ano').textContent = new Date().getFullYear();
